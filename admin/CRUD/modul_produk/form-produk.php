@@ -32,6 +32,17 @@ if (isset($_GET['aksi'])) {
         } else {
           $status = "T";
         }
+        // simpan ukuran
+        $no = 0;
+        $ukuran = $_POST['ukuran'];
+        foreach($ukuran as $a)
+        {
+          $ukurans[] = $a[$no];
+        }
+        $no++;
+        
+        $hasil_ukuran = implode(',', $ukurans);
+        // batas simpan ukuran
         $judulseo = seo_title($_POST['judul']);
         $tglskrg = date('Y-m-d');
         $nmberkas  = $_FILES["foto"]["name"];
@@ -101,6 +112,7 @@ if (isset($_GET['aksi'])) {
              `kd_produk`, 
              `id_kategori`, 
              `id_merek`, 
+             `ukuran`, 
              `judul`, 
              `berat`, 
              `deskripsi`, 
@@ -120,6 +132,7 @@ if (isset($_GET['aksi'])) {
                 ('$_POST[kd_produk]',
                 '$_POST[id_kategori]',
                 '$_POST[id_merek]',
+                '$hasil_ukuran',
                 '$_POST[judul]',
 	              '$_POST[berat]',
                 '$_POST[deskripsi]',
@@ -140,6 +153,7 @@ if (isset($_GET['aksi'])) {
              `kd_produk`, 
              `id_kategori`, 
              `id_merek`, 
+             `ukuran`, 
              `judul`, 
              `berat`, 
              `deskripsi`, 
@@ -160,6 +174,7 @@ if (isset($_GET['aksi'])) {
                 '$_POST[kd_produk]',
                 '$_POST[id_kategori]',
                 '$_POST[id_merek]',
+                '$hasil_ukuran',
                 '$_POST[judul]',
 	              '$_POST[berat]',
                 '$_POST[deskripsi]',
@@ -251,6 +266,16 @@ if (isset($_GET['aksi'])) {
                           }
                           ?>
                         </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="ukuran" class="col-sm-2 control-label">Ukuran</label>
+                      <div class="col-sm-4">
+                        <input type="checkbox" name="ukuran[]" value="S" id="ukuran">&nbsp;&nbsp;&nbsp; S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" name="ukuran[]" value="M" id="ukuran">&nbsp;&nbsp;&nbsp; M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" name="ukuran[]" value="L" id="ukuran">&nbsp;&nbsp;&nbsp; L&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" name="ukuran[]" value="XL" id="ukuran">&nbsp;&nbsp;&nbsp; XL
                       </div>
                     </div>
 
@@ -382,6 +407,18 @@ if (isset($_GET['aksi'])) {
         } else {
           $status = "T";
         }
+
+        // simpan ukuran
+        $no = 0;
+        $ukuran = $_POST['ukuran'];
+        foreach($ukuran as $a)
+        {
+          $ukurans[] = $a[$no];
+        }
+        $no++;
+        
+        $hasil_ukuran = implode(',', $ukurans);
+        // batas simpan ukuran
         $judulseo = seo_title($_POST['judul']);
         $nmberkas  = $_FILES["foto"]["name"];
         $lokberkas = $_FILES["foto"]["tmp_name"];
@@ -436,11 +473,19 @@ if (isset($_GET['aksi'])) {
 
         $lihat = mysqli_fetch_assoc(mysqli_query($con, "SELECT * FROM tbl_produk where id_produk='$_GET[id_produk]'"));
         $kd_produk = $lihat["kd_produk"];
+        if($ukuran == NULL)
+        {
+          $save = mysqli_query($con, "UPDATE tbl_produk set judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]',harga_lama='$_POST[harga_lama]',
+    harga='$_POST[harga]', harga_grosir='$_POST[harga_grosir]', stok='$_POST[stok]', foto='$nmfoto', foto1='$nmfoto1',foto2='$nmfoto2',foto3='$nmfoto3',foto4='$nmfoto4', judul_seo='$judulseo', status='$status' where id_produk='$_GET[id_produk]'");
 
-        $save = mysqli_query($con, "UPDATE tbl_produk set judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]',harga_lama='$_POST[harga_lama]',
-		harga='$_POST[harga]', harga_grosir='$_POST[harga_grosir]', stok='$_POST[stok]', foto='$nmfoto', foto1='$nmfoto1',foto2='$nmfoto2',foto3='$nmfoto3',foto4='$nmfoto4', judul_seo='$judulseo', status='$status' where id_produk='$_GET[id_produk]'");
+        mysqli_query($con, "UPDATE tb_barang set nama_barang='$_POST[judul]', harga_jual='$_POST[harga]' where kode_barang='$kd_produk'");  
+        }else{
+          $save = mysqli_query($con, "UPDATE tbl_produk set ukuran='$hasil_ukuran', judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]',harga_lama='$_POST[harga_lama]',
+    harga='$_POST[harga]', harga_grosir='$_POST[harga_grosir]', stok='$_POST[stok]', foto='$nmfoto', foto1='$nmfoto1',foto2='$nmfoto2',foto3='$nmfoto3',foto4='$nmfoto4', judul_seo='$judulseo', status='$status' where id_produk='$_GET[id_produk]'");
 
         mysqli_query($con, "UPDATE tb_barang set nama_barang='$_POST[judul]', harga_jual='$_POST[harga]' where kode_barang='$kd_produk'");
+        }
+        
 
 
         if ($save) {
@@ -495,6 +540,17 @@ if (isset($_GET['aksi'])) {
                         <input type="text" name="id_merek" class="form-control" value="<?= $data['nama_merek']; ?>" disabled>
                       </div>
                     </div>
+
+                    <div class="form-group">
+                      <label for="ukuran" class="col-sm-2 control-label">Ukuran</label>
+                      <div class="col-sm-4">
+                        <input type="checkbox" name="ukuran[]" value="S" id="ukuran">&nbsp;&nbsp;&nbsp; S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" name="ukuran[]" value="M" id="ukuran">&nbsp;&nbsp;&nbsp; M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" name="ukuran[]" value="L" id="ukuran">&nbsp;&nbsp;&nbsp; L&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" name="ukuran[]" value="XL" id="ukuran">&nbsp;&nbsp;&nbsp; XL
+                      </div>
+                    </div>
+
                     <div class="form-group">
                       <label for="judul" class="col-sm-2 control-label">Judul</label>
                       <div class="col-sm-4">
@@ -773,6 +829,7 @@ if (isset($_GET['aksi'])) {
                     <th>Kode Produk</th>
                     <th>Kategori</th>
                     <th>Merek</th>
+                    <th>Ukuran</th>
                     <th>Judul</th>
                     <th>Harga Eceran</th>
                     <th>Harga Grosir</th>
@@ -800,6 +857,7 @@ if (isset($_GET['aksi'])) {
                       <td><?php echo  $r["kd_produk"]; ?></td>
                       <td><?php echo  $r["nama_kategori"]; ?></td>
                       <td><?php echo  $r["nama_merek"]; ?></td>
+                      <td><?php echo  $r["ukuran"]; ?></td>
                       <td><?php echo  $r["judul"]; ?></td>
                       <td><?php echo  "Rp. " . number_format($r["harga"]); ?></td>
                       <td><?php echo  "Rp. " . number_format($r["harga_grosir"]); ?></td>

@@ -49,19 +49,19 @@ $r = mysqli_fetch_assoc($sql);
 </div>
 <!-- Off-Canvas Mobile Menu-->
 <div class="offcanvas-container" id="mobile-menu"><a class="account-link" href="./">
-    <?php
-    if (!empty($_SESSION["email"])) { ?>
-      <div class="user-ava"><img src="foto/customer/<?= $r["fotoregis"]; ?>">
-      <?php } ?>
-      <?php
-      if (empty($_SESSION["email"])) { ?>
-        <div class="user-ava">
-          <img src="img/user-default.png" alt="Rafika Stores">
-        <?php } ?>
-        </div>
-        <div class="user-info">
+    <?php if (!empty($_SESSION["email"])) { ?>
+      <div class="user-ava">
+        <img src="foto/customer/<?= $r["fotoregis"]; ?>">
+      </div>
+    <?php } ?>
+    <?php if (empty($_SESSION["email"])) { ?>
+      <div class="user-ava">
+        <img src="img/user-default.png" alt="Ayo Hijrah">
+      </div>
+    <?php } ?>
+      <div class="user-info">
 
-        </div></a>
+      </div>
   <nav class="offcanvas-menu">
     <ul class="menu">
       <li class="has-children active"><span><a href="./"><span>Home</span></a></span>
@@ -77,7 +77,7 @@ $r = mysqli_fetch_assoc($sql);
       <li class="has-children"><span><a href="faq"><span>FAQ</span></a></span>
       </li>
       <!-- <li class="has-children"><span><a href="garansi"><span>Ketentuan Garansi</span></a></span> -->
-      </li>
+      <!-- </li> -->
       <li class="has-children"><span><a href="kontak"><span>Contact US</span></a></span>
       </li>
       <?php

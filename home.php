@@ -74,7 +74,8 @@ $r = mysqli_fetch_assoc($sql);
               <div class="inner">
                 <div class="text-center" style="padding:10px">
                   <center>
-                    <img src="foto/produk/<?= $r['foto'] ?>" alt="Category" class="img-responsive" style="height: 200px; "></center>
+                    <img src="foto/produk/<?= $r['foto'] ?>" alt="Category" class="img-responsive" style="height: 200px; ">
+                  </center>
                 </div>
               </div>
             </a>
@@ -112,4 +113,24 @@ $r = mysqli_fetch_assoc($sql);
     </div>
   </div>
   <div>
+</section>
+
+<section class="padding-top-3x">
+  <div class="container">
+    <h3 class="text-center mb-30">Brand</h3>
+<?php
+$data = mysqli_query($con,"SELECT logo, nama_merek FROM `tbl_merek`");
+?>
+    <div class="row">
+<?php foreach($data as $a){ ?>
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <img src="<?= $base_url ?>foto/merek/<?= $a['logo'] ?>" alt="Category" class="img-responsive" style="height: 200px; ">
+          </div>
+        </div>
+      </div>
+<?php } ?>
+    </div>
+  </div>
 </section>

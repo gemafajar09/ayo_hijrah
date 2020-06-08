@@ -32,7 +32,7 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
   
   <title>Ayo Hijrah</title>
   <!-- SEO Meta Tags-->
-  <meta name="description" content="RAFIKA STORES">
+  <meta name="description" content="Ayo Hijrah">
   <meta name="keywords" content="The Beauty Of Indonesian On Your Daily Wear">
   <meta name="author" content="RaikaStores">
   <!-- Mobile Specific Meta Tag-->

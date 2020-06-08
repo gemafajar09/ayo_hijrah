@@ -5,8 +5,20 @@
   switch ($aksi){
     case "tambahmerek" :
     if(isset($_POST['save'])){
+      // upload logo
+
+      // ambil data file
+      $namaFile = $_FILES['logo']['name'];
+      $namaSementara = $_FILES['logo']['tmp_name'];
+
+      // tentukan lokasi file akan dipindahkan
+      $dirUpload = "foto/merek/";
+
+      // pindahkan file
+      $terupload = move_uploaded_file($namaSementara, $dirUpload.$namaFile);
+
       $judulseo = seo_title($_POST['nama_merek']);
-      $save = mysqli_query($con, "INSERT INTO `tbl_merek`(`id_kategori`, `nama_merek`, `seo_merek`) VALUES( '$_POST[id_kategori]','$_POST[nama_merek]','$judulseo')");
+      $save = mysqli_query($con, "INSERT INTO `tbl_merek`(`id_kategori`, `nama_merek`, `seo_merek`, `logo`) VALUES( '$_POST[id_kategori]','$_POST[nama_merek]','$judulseo','$namaFile')");
       if($save) {
       echo"<script language=javascript>
             window.location='?page=merek';
@@ -32,7 +44,7 @@
       <div class="col-xs-12">
        <div class="box box-info">
             <!-- form start -->
-            <form action="" method="POST" class="form-horizontal">
+            <form action="" method="POST" enctype="multipart/form-data" class="form-horizontal">
               <div class="box-body ">
                 <div class="form-group" >
                   <label for="nmkat" class="col-sm-2 control-label">Kategori</label>
@@ -50,10 +62,17 @@
               </div>
         			<div class="form-group" >
                 <label for="nmsub" class="col-sm-2 control-label">Merek</label>
-                    <div class="col-sm-4">
-                      <input type="text" name="nama_merek" id="nmsub" class="form-control"  placeholder="Merek">
-                    </div>
-                </div>
+                  <div class="col-sm-4">
+                    <input type="text" name="nama_merek" id="nmsub" class="form-control"  placeholder="Merek">
+                  </div>
+              </div>
+
+              <div class="form-group" >
+                <label for="nmsub" class="col-sm-2 control-label">Logo</label>
+                  <div class="col-sm-4">
+                    <input type="file" name="logo" id="logo" class="form-control">
+                  </div>
+              </div>
 
               <div class="form-group">
                   <div class="col-sm-4 col-md-offset-2">
@@ -70,13 +89,28 @@
       break;
       case "editmerek":
       if(isset($_GET['id_merek'])){
+        // ambil data file
+      $namaFile = $_FILES['logo']['name'];
+      $namaSementara = $_FILES['logo']['tmp_name'];
+
+      // tentukan lokasi file akan dipindahkan
+      $dirUpload = "../foto/merek/";
+
+      // pindahkan file
+      $terupload = move_uploaded_file($namaSementara, $dirUpload.$namaFile);
+
         $judulseo = seo_title($_POST['nama_merek']);
         $sqlk = mysqli_query($con, "SELECT * FROM tbl_merek,tbl_kategori where tbl_merek.id_kategori=tbl_kategori.id_kategori AND id_merek='$_GET[id_merek]'");
         $data=mysqli_fetch_assoc($sqlk);
       }
 
       if(isset($_POST['save'])){
-        $save=mysqli_query($con, "UPDATE tbl_merek set nama_merek='$_POST[nama_merek]',seo_merek='$judulseo' where id_merek='$_GET[id_merek]'");
+        if($namaFile == NULL)
+        {
+          $save=mysqli_query($con, "UPDATE tbl_merek set nama_merek='$_POST[nama_merek]',seo_merek='$judulseo' where id_merek='$_GET[id_merek]'");
+        }else{
+          $save=mysqli_query($con, "UPDATE tbl_merek set nama_merek='$_POST[nama_merek]',seo_merek='$judulseo', logo='$namaFile' where id_merek='$_GET[id_merek]'");
+        }
         if($save) {
         echo"<script language=javascript>
               window.location='?page=merek';
@@ -102,7 +136,7 @@
   <div class="col-xs-12">
    <div class="box box-info">
         <!-- form start -->
-        <form action="" method="POST" class="form-horizontal">
+        <form action="" method="POST"  enctype="multipart/form-data" class="form-horizontal">
           <div class="box-body">
             <div class="form-group" >
               <label class="col-sm-2 control-label">Kategori</label>
@@ -117,6 +151,13 @@
                 <input type="text" name="nama_merek" id="nmsub" class="form-control"  value="<?= $data['nama_merek']; ?>">
               </div>
             </div>
+
+            <div class="form-group" >
+                <label for="nmsub" class="col-sm-2 control-label">Logo</label>
+                  <div class="col-sm-4">
+                    <input type="file" name="logo" id="logo" class="form-control">
+                  </div>
+              </div>
 
             <div class="form-group">
               <div class="col-sm-4 col-md-offset-2">
@@ -169,6 +210,7 @@ break;
 					               <th>No</th>
 					               <th>Nama Kategori</th>
 					               <th>Merek</th>
+                         <th>Logo</th>
 					               <th>Action</th>
                      </tr>
                   </thead>
@@ -184,6 +226,7 @@ break;
                       <td width='0' class='center'><?php echo $no; ?></td>
 						          <td><?php echo  $r["nama_kategori"]; ?></td>
 						          <td><?php echo  $r["nama_merek"]; ?></td>
+                      <td><img src="<?= $base_url ?>/foto/merek/<?= $r['logo'] ?>" width="120px"></td>
           				    <td>
                           <a class='btn btn-success btn-xs' title='Edit Data' href='?page=merek&aksi=editmerek&id_merek=<?php echo $r['id_merek']; ?>'><span class='glyphicon glyphicon-edit'></span></a>
 							           <a class='btn btn-danger btn-xs' title='Delete Data' href='?page=merek&aksi=hapusmerek&id_merek=<?php echo $r['id_merek'];?>'><span class='glyphicon glyphicon-remove'></span></a>
