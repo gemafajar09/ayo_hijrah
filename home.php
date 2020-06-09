@@ -40,7 +40,56 @@ $r = mysqli_fetch_assoc($sql);
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <!-- banner -->
 <section class="">
-  <img style="width: 100%" src="foto/banner.png"> 
+  <!-- <img style="width: 100%" src="foto/banner.png"> -->
+  <div class="container-fluid">
+    <!-- Small boxes (Stat box) -->
+    <div class="row">
+      <!-- Left col -->
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div id="wrapper">
+              <div class="container mb-end">
+                <center>
+                  <h3>KATEGORI</h3>
+                </center>
+                <div class="owl-carousel-2 owl-carousel dots-inside owl-loaded owl-drag" data-owl-carousel="{ &quot;loop&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 1000, &quot;items&quot;: 4, &quot;nav&quot;: true }">
+                  <?php
+                  $ambil = mysqli_query($con, "SELECT * FROM `tbl_kategori`");
+                  //$no = 0;
+                  while ($pecah = $ambil->fetch_object()) {
+                  ?>
+                    <div class="thumbnail">
+                      <center>
+                        <table border="0">
+                          <tr height="200px" align="center">
+                            <td><img src="<?= $base_url; ?>foto/kategori/<?php echo $pecah->foto_kategori ?>" style="width: 150px;"></td>
+                          </tr>
+                          <tr height="" align="center">
+                            <td>
+                              <hr>
+                              <b><?php echo $pecah->nama_kategori; ?></b>
+                            </td>
+                          </tr>
+                        </table>
+                      </center>
+                    </div>
+                  <?php
+                  }
+                  ?>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- /.Left col -->
+
+    </div>
+    <!-- /.row (main row) -->
+  </div><!-- /.container-fluid -->
 </section>
 
 <section class="padding-top-3x" style="background:url(foto/background/sft.jpg)">
