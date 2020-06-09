@@ -28,8 +28,9 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
 
 <!-- Mirrored from themes.rokaux.com/unishop/v2.2/template-1/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Apr 2018 05:47:23 GMT -->
 
-<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
   <title>Ayo Hijrah</title>
   <!-- SEO Meta Tags-->
   <meta name="description" content="RAFIKA STORES">
@@ -52,6 +53,7 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
   <link id="mainStyles" rel="stylesheet" media="screen" href="css/stylesfaq.css">
   <!-- Customizer Styles-->
   <link rel="stylesheet" media="screen" href="customizer/customizer.min.css">
+  <link rel="stylesheet" href="css/OwlCarousel/css/owl.carousel.min.css" type="text/css" />
   <style>
     .col-md-3 {
       display: inline-block;
@@ -137,7 +139,7 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
   <div style="background-color: #F2E9D8" class="offcanvas-wrapper">
     <!-- Page Content-->
     <!-- Main Slider-->
-<?php
+    <?php
     // cek mode maintenis
     if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
     ?>
@@ -185,7 +187,7 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
               </ul>
             </section>
             <p style="color: black">
-               <h5>Claim / Reject / Refund (Retur) : <br> <br>
+              <h5>Claim / Reject / Refund (Retur) : <br> <br>
                 Admin 1 : 0822-8384-8752 <br>
                 Admin 2 : 0813-7276-0284</h5>
               </<p>
@@ -308,6 +310,46 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
     })();
   </script>
   <!-- /WhatsHelp.io widget -->
+  <script type="text/javascript" src="css/OwlCarousel/js/owl.carousel.min.js"></script>
+  <script type="text/javascript" src="css/OwlCarousel/js/jquery.min.js"></script>
+  <link rel="stylesheet" href="css/OwlCarousel/css/owl.theme.default.css" type="text/css">
+
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".owl-carousel-2").owlCarousel({
+        items: 4,
+        loop: true,
+        margin: 10,
+        autoplay: true,
+        autoplayTimeout: 1000,
+        //autoplayHoverPause:true
+      });
+      $('.play').on('click', function() {
+        owl.trigger('play.owl.autoplay', [1000])
+      })
+      $('.stop').on('click', function() {
+        owl.truerigger('stop.owl.autoplay')
+      })
+    });
+
+    $(document).ready(function() {
+      $(".owl-carousel-3").owlCarousel({
+        items: 4,
+        loop: true,
+        margin: 10,
+        autoplay: true,
+        autoplayTimeout: 1000,
+        //autoplayHoverPause:true
+      });
+      $('.play').on('click', function() {
+        owl.trigger('play.owl.autoplay', [1000])
+      })
+      $('.stop').on('click', function() {
+        owl.truerigger('stop.owl.autoplay')
+      })
+    });
+  </script>
 
 </body>
 

@@ -1,0 +1,22 @@
+body{
+	background-color:#f8f8f8!important;
+}
+.wrapper{
+	width:100%;
+	height:auto;
+	margin-top:5%;
+}
+
+.owl-carousel-3 img{
+	margin-bottom:15px;
+}
+
+img{
+	width:270px;
+	height:150px;
+	object-fit:cover;
+}
+
+.mb-end{
+	margin-bottom:50px;
+}

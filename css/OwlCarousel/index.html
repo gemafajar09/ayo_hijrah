@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>OwlCarousel Slider</title>
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
+<link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css"/>
+</head>
+<body>
+
+
+<div class="wrapper">
+	<div class="container">
+		<h3>Basic Setup</h3>
+		<div class="owl-carousel-1 owl-carousel owl-theme">
+		  <div><img src="images/sample1.jpg"></div>
+		  <div><img src="images/sample2.jpg"></div>
+		  <div><img src="images/sample3.jpg"></div>
+		  <div><img src="images/sample1.jpg"></div>
+		  <div><img src="images/sample2.jpg"></div>
+		  <div><img src="images/sample3.jpg"></div>
+		</div>
+	</div>
+</div>
+
+<div class="wrapper">
+	<div class="container mb-end">
+		<h3>Auto Play</h3>
+		<div class="owl-carousel-2 owl-carousel owl-theme">
+		  <div><img src="images/sample1.jpg"></div>
+		  <div><img src="images/sample2.jpg"></div>
+		  <div><img src="images/sample3.jpg"></div>
+		  <div><img src="images/sample1.jpg"></div>
+		  <div><img src="images/sample2.jpg"></div>
+		  <div><img src="images/sample3.jpg"></div>
+		</div>
+	</div>
+</div>
+
+<div class="wrapper ">
+	<div class="container mb-end">
+		<h3>Multiple Image</h3>
+		<div class="owl-carousel-3 owl-carousel owl-theme ">
+		  <div>
+			<img src="images/sample1.jpg">
+			<img src="images/sample1.jpg">
+		  </div>
+		  <div>
+			<img src="images/sample2.jpg">
+			<img src="images/sample2.jpg">
+		  </div>
+		  <div>
+			<img src="images/sample3.jpg">
+			<img src="images/sample3.jpg">
+		  </div>
+		   <div>
+			<img src="images/sample1.jpg">
+			<img src="images/sample1.jpg">
+		  </div>
+		  <div>
+			<img src="images/sample2.jpg">
+			<img src="images/sample2.jpg">
+		  </div>
+		  <div>
+			<img src="images/sample3.jpg">
+			<img src="images/sample3.jpg">
+		  </div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/tether.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/owl.carousel.min.js"></script>
+<link rel="stylesheet" href="css/owl.theme.default.css" type="text/css">
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".owl-carousel-1").owlCarousel({
+		loop:true,
+		margin:10,
+		nav:true,
+		dots:true,
+		responsive:{
+			0:{
+				items:1
+			},
+			600:{
+				items:3
+			},
+			1000:{
+				items:5
+			}
+		}
+	})
+});
+
+$(document).ready(function(){
+	$(".owl-carousel-2").owlCarousel({
+		items:4,
+		loop:true,
+		margin:10,
+		autoplay:true,
+		autoplayTimeout:1000,
+		autoplayHoverPause:true
+	});
+	$('.play').on('click',function(){
+		owl.trigger('play.owl.autoplay',[1000])
+	})
+	$('.stop').on('click',function(){
+		owl.trigger('stop.owl.autoplay')
+	})
+});
+
+$(document).ready(function(){
+  $(".owl-carousel-3").owlCarousel({
+		items:4,
+		loop:true,
+		margin:10,
+		dots:true,
+	});
+});
+
+</script>
+</body>
+</html>

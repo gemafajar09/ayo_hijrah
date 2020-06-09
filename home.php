@@ -34,13 +34,62 @@ $r = mysqli_fetch_assoc($sql);
 </section>
 <!-- Top Categories-->
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  <!-- banner -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<!-- banner -->
 <section class="">
-  <img style="width: 100%" src="foto/banner.png"> 
+  <!-- <img style="width: 100%" src="foto/banner.png"> -->
+  <div class="container-fluid">
+    <!-- Small boxes (Stat box) -->
+    <div class="row">
+      <!-- Left col -->
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div id="wrapper">
+              <div class="container mb-end">
+                <center>
+                  <h3>KATEGORI</h3>
+                </center>
+                <div class="owl-carousel-2 owl-carousel dots-inside owl-loaded owl-drag" data-owl-carousel="{ &quot;loop&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 1000, &quot;items&quot;: 4, &quot;nav&quot;: true }">
+                  <?php
+                  $ambil = mysqli_query($con, "SELECT * FROM `tbl_kategori`");
+                  //$no = 0;
+                  while ($pecah = $ambil->fetch_object()) {
+                  ?>
+                    <div class="thumbnail">
+                      <center>
+                        <table border="0">
+                          <tr height="200px" align="center">
+                            <td><img src="<?= $base_url; ?>foto/kategori/<?php echo $pecah->foto_kategori ?>" style="width: 150px;"></td>
+                          </tr>
+                          <tr height="" align="center">
+                            <td>
+                              <hr>
+                              <b><?php echo $pecah->nama_kategori; ?></b>
+                            </td>
+                          </tr>
+                        </table>
+                      </center>
+                    </div>
+                  <?php
+                  }
+                  ?>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- /.Left col -->
+
+    </div>
+    <!-- /.row (main row) -->
+  </div><!-- /.container-fluid -->
 </section>
 
 <section class="padding-top-3x" style="background:url(foto/background/sft.jpg)">
@@ -82,22 +131,22 @@ $r = mysqli_fetch_assoc($sql);
               <h4 class="card-title"><?= $judul; ?></h4>
               <p class="text-muted">
                 <?php
-                    if (!empty($r["harga_lama"])) { 
+                if (!empty($r["harga_lama"])) {
                 ?>
-                      <del><?= $harga_lama; ?></del>
+                  <del><?= $harga_lama; ?></del>
 
-                <?php 
-                    if($_SESSION['jenis_toko'] == 'Grosir'){
-                          echo $harga_grosir;
-                      }else{
-                        echo $harga;
-                } ?>
+                  <?php
+                  if ($_SESSION['jenis_toko'] == 'Grosir') {
+                    echo $harga_grosir;
+                  } else {
+                    echo $harga;
+                  } ?>
                 <?php } ?>
                 <?php
                 if (empty($r["harga_lama"])) { ?>
                   <?= $harga; ?>
                 <?php } ?></p>
-                <?php
+              <?php
               if ($r['stok'] > 0) {
 
                 echo "<a class='btn btn-outline-primary' href='view-produk-$r[id_produk]'>View Products</a>";
