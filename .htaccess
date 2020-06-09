@@ -1,0 +1,31 @@
+RewriteEngine on
+RewriteCond $1 !^(index\.php)
+RewriteRule ^$ index.php?module=home [L]
+RewriteRule ^shop$ index.php?module=shop [L]
+RewriteRule ^shop-d$ index.php?module=shop_d [L]
+RewriteRule ^cara-beli$ index.php?module=carabelanja [L]
+RewriteRule ^baru$ index.php?module=baru [L]
+RewriteRule ^bekas$ index.php?module=bekas [L]
+RewriteRule ^about$ index.php?module=about [L]
+RewriteRule ^testimonial$ index.php?module=testimonial [L]
+RewriteRule ^info-rek$ index.php?module=info_rek [L]
+RewriteRule ^kontak$ index.php?module=contact [L]
+RewriteRule ^faq$ index.php?module=faq [L]
+RewriteRule ^garansi$ index.php?module=garansi [L]
+RewriteRule ^login$ login.php [L]
+RewriteRule ^registrasi$ registrasi.php [L]
+RewriteRule ^keranjang$ index.php?module=keranjang [L]
+RewriteRule ^my-profil$ index.php?module=acount_profil [L]
+RewriteRule ^pembayaran$ index.php?module=pembayaran [L]
+RewriteRule ^pembayaran3$ index.php?module=pembayaran3 [L]
+RewriteRule ^simpantrans$ index.php?module=simpantrans [L]
+RewriteRule ^histori-pesanan$ index.php?module=histori_pesanan [L]
+
+RewriteRule ^view-produk-(.*)$ index.php?module=view_produk&id_produk=$1 [L]
+RewriteRule ^del-keranjang-(.*)$ index.php?module=del_keranjang&id_keranjang=$1 [L]
+RewriteRule ^transaksi-(.*)$ index.php?module=transaksi&id=$1 [L]
+RewriteRule ^konfirmasi-(.*)$ index.php?module=konfirmasi_pembayaran&id_order=$1 [L]
+RewriteRule ^update-keranjang-(.*)$ index.php?module=update_keranjang&id_keranjang=$1 [L]
+RewriteRule ^shop-(.*)$ index.php?module=shop&pg=$1 [L]
+
+Options All -Indexes
