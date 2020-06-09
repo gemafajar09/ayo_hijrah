@@ -33,13 +33,7 @@ if (isset($_GET['aksi'])) {
           $status = "T";
         }
         // simpan ukuran
-        $no = 0;
-        $ukuran = $_POST['ukuran'];
-        foreach($ukuran as $a)
-        {
-          $ukurans[] = $a[$no];
-        }
-        $no++;
+        $ukuran = $_POST['ukuran'];;
         
         $hasil_ukuran = implode(',', $ukurans);
         // batas simpan ukuran
@@ -132,7 +126,7 @@ if (isset($_GET['aksi'])) {
                 ('$_POST[kd_produk]',
                 '$_POST[id_kategori]',
                 '$_POST[id_merek]',
-                '$hasil_ukuran',
+                '$ukuran',
                 '$_POST[judul]',
 	              '$_POST[berat]',
                 '$_POST[deskripsi]',
@@ -174,7 +168,7 @@ if (isset($_GET['aksi'])) {
                 '$_POST[kd_produk]',
                 '$_POST[id_kategori]',
                 '$_POST[id_merek]',
-                '$hasil_ukuran',
+                '$ukuran',
                 '$_POST[judul]',
 	              '$_POST[berat]',
                 '$_POST[deskripsi]',
@@ -272,10 +266,10 @@ if (isset($_GET['aksi'])) {
                     <div class="form-group">
                       <label for="ukuran" class="col-sm-2 control-label">Ukuran</label>
                       <div class="col-sm-4">
-                        <input type="checkbox" name="ukuran[]" value="S" id="ukuran">&nbsp;&nbsp;&nbsp; S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" name="ukuran[]" value="M" id="ukuran">&nbsp;&nbsp;&nbsp; M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" name="ukuran[]" value="L" id="ukuran">&nbsp;&nbsp;&nbsp; L&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" name="ukuran[]" value="XL" id="ukuran">&nbsp;&nbsp;&nbsp; XL
+                        <input type="radio" name="ukuran" value="S" id="ukuran">&nbsp;&nbsp;&nbsp; S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="ukuran" value="M" id="ukuran">&nbsp;&nbsp;&nbsp; M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="ukuran" value="L" id="ukuran">&nbsp;&nbsp;&nbsp; L&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="ukuran" value="XL" id="ukuran">&nbsp;&nbsp;&nbsp; XL
                       </div>
                     </div>
 
@@ -409,15 +403,7 @@ if (isset($_GET['aksi'])) {
         }
 
         // simpan ukuran
-        $no = 0;
         $ukuran = $_POST['ukuran'];
-        foreach($ukuran as $a)
-        {
-          $ukurans[] = $a[$no];
-        }
-        $no++;
-        
-        $hasil_ukuran = implode(',', $ukurans);
         // batas simpan ukuran
         $judulseo = seo_title($_POST['judul']);
         $nmberkas  = $_FILES["foto"]["name"];
@@ -480,7 +466,7 @@ if (isset($_GET['aksi'])) {
 
         mysqli_query($con, "UPDATE tb_barang set nama_barang='$_POST[judul]', harga_jual='$_POST[harga]' where kode_barang='$kd_produk'");  
         }else{
-          $save = mysqli_query($con, "UPDATE tbl_produk set ukuran='$hasil_ukuran', judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]',harga_lama='$_POST[harga_lama]',
+          $save = mysqli_query($con, "UPDATE tbl_produk set ukuran='$ukuran', judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]',harga_lama='$_POST[harga_lama]',
     harga='$_POST[harga]', harga_grosir='$_POST[harga_grosir]', stok='$_POST[stok]', foto='$nmfoto', foto1='$nmfoto1',foto2='$nmfoto2',foto3='$nmfoto3',foto4='$nmfoto4', judul_seo='$judulseo', status='$status' where id_produk='$_GET[id_produk]'");
 
         mysqli_query($con, "UPDATE tb_barang set nama_barang='$_POST[judul]', harga_jual='$_POST[harga]' where kode_barang='$kd_produk'");
@@ -544,10 +530,10 @@ if (isset($_GET['aksi'])) {
                     <div class="form-group">
                       <label for="ukuran" class="col-sm-2 control-label">Ukuran</label>
                       <div class="col-sm-4">
-                        <input type="checkbox" name="ukuran[]" value="S" id="ukuran">&nbsp;&nbsp;&nbsp; S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" name="ukuran[]" value="M" id="ukuran">&nbsp;&nbsp;&nbsp; M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" name="ukuran[]" value="L" id="ukuran">&nbsp;&nbsp;&nbsp; L&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" name="ukuran[]" value="XL" id="ukuran">&nbsp;&nbsp;&nbsp; XL
+                        <input type="radio" name="ukuran" value="S" id="ukuran">&nbsp;&nbsp;&nbsp; S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="ukuran" value="M" id="ukuran">&nbsp;&nbsp;&nbsp; M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="ukuran" value="L" id="ukuran">&nbsp;&nbsp;&nbsp; L&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="ukuran" value="XL" id="ukuran">&nbsp;&nbsp;&nbsp; XL
                       </div>
                     </div>
 
