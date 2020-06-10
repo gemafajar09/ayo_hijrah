@@ -1,0 +1,30 @@
+<-- table produk -->
+tbl_produk
+* id_produk
+- kd_produk
+- id_kategori
+- id_merek
+
+- judul
+- berat
+- deskripsi
+- diskon
+- harga_grosir
+- harga_eceran
+- status
+- jenis
+- judul_seo
+- tanggal_input
+
+tbl_detail_size
+* id_detail
+- kd_produk
+- ukuran
+- stok
+- terjual
+
+tbl_detail_foto
+* id_detail_foto
+- kd_produk
+- foto
+<-- table produk -->

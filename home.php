@@ -46,7 +46,7 @@ $r = mysqli_fetch_assoc($sql);
     <div class="row">
       <!-- Left col -->
       <div class="col-lg-12">
-        <div class="card">
+        <div class="card" style="background-color: transparent;">
           <div class="card-body">
             <div id="wrapper">
               <div class="container mb-end">
@@ -114,8 +114,7 @@ $r = mysqli_fetch_assoc($sql);
       $sql = mysqli_query($con, "SELECT * FROM tbl_produk ORDER BY id_produk desc LIMIT 8");
       while ($r = mysqli_fetch_assoc($sql)) {
         $harga_grosir = "Rp. " . number_format($r['harga_grosir'], 0, ',', '.');
-        $harga = "Rp. " . number_format($r['harga'], 0, ',', '.');
-        $harga_lama = "Rp. " . number_format($r['harga_lama'], 0, ',', '.');
+        $harga_eceran = "Rp. " . number_format($r['harga_eceran'], 0, ',', '.');
         $judul = substr($r['judul'], 0, 20) . "...";
       ?>
         <div class="col-sm-3">
@@ -123,7 +122,7 @@ $r = mysqli_fetch_assoc($sql);
               <div class="inner">
                 <div class="text-center" style="padding:10px">
                   <center>
-                    <img src="foto/produk/<?= $r['foto'] ?>" alt="Category" class="img-responsive" style="height: 200px; ">
+                    <img src="img/produk/<?= $r['foto'] ?>" alt="Category" class="img-responsive" style="height: 200px; ">
                   </center>
                 </div>
               </div>
@@ -131,30 +130,21 @@ $r = mysqli_fetch_assoc($sql);
             <div class="card-body text-center">
               <h4 class="card-title"><?= $judul; ?></h4>
               <p class="text-muted">
-                <?php
-                    if (!empty($r["harga_lama"])) { 
-                ?>
-                      <del><?= $harga_lama; ?></del>
-
+                
                 <?php 
                     if($_SESSION['jenis_toko'] == 'Grosir'){
-                          echo $harga_grosir;
+                        echo $harga_grosir;
                       }else{
-                        echo $harga;
+                        echo $harga_eceran;
                 } ?>
-                <?php } ?>
                 <?php
-                if (empty($r["harga_lama"])) { ?>
-                  <?= $harga; ?>
-                <?php } ?></p>
-                <?php
-              if ($r['stok'] > 0) {
+                if ($r['status'] == 'Y') {
 
-                echo "<a class='btn btn-outline-primary' href='view-produk-$r[id_produk]'>View Products</a>";
-              } else {
-                echo "<a class='btn btn-outline-danger'>SOLD OUT</a>";
-              }
-              ?>
+                  echo "<a class='btn btn-outline-primary' href='view-produk-$r[id_produk]'>View Products</a>";
+                } else {
+                  echo "<a class='btn btn-outline-danger'>SOLD OUT</a>";
+                }
+                ?>
             </div>
           </div>
         </div>

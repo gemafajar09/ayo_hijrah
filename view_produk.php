@@ -25,11 +25,11 @@
       <?php
       $sql = mysqli_query($con, "SELECT * FROM tbl_produk where id_produk='$_GET[id_produk]'");
       $r = mysqli_fetch_assoc($sql);
-      $harga = "Rp. " . number_format($r['harga'], 0, ',', '.');
+      $harga_eceran = "Rp. " . number_format($r['harga_eceran'], 0, ',', '.');
       $harga_grosir = "Rp. " . number_format($r['harga_grosir'], 0, ',', '.');
       $judul = substr($r['judul'], 0, 23) . "..";
       // var_dump($r);
-      $total = $r['harga_lama']-$r['harga'];
+      $total = $r['diskon']-$r['harga_eceran'];
       ?>
 
       <!-- Off-Canvas Wrapper-->
@@ -50,43 +50,35 @@
                   <div class="gallery-item"><a href="foto/produk/<?= $r['foto4'] ?>" data-hash="five" data-size="1000x667"></a></div>
                 </div>
                 <div class="product-carousel owl-carousel">
-                  <div data-hash="one"><img src="foto/produk/<?= $r['foto'] ?>" alt="Product"></div>
-                  <div data-hash="two"><img src="foto/produk/<?= $r['foto1'] ?>" alt="Product"></div>
-                  <div data-hash="three"><img src="foto/produk/<?= $r['foto2'] ?>" alt="Product"></div>
-                  <div data-hash="four"><img src="foto/produk/<?= $r['foto3'] ?>" alt="Product"></div>
-                  <div data-hash="five"><img src="foto/produk/<?= $r['foto4'] ?>" alt="Product"></div>
+                  <div data-hash="one"><img src="img/produk/<?= $r['foto'] ?>" alt="Product"></div>
+                  <?php 
+                    $no = 2;
+                    $data = mysqli_query($con,"SELECT * FROM tbl_detail_foto WHERE kd_produk='$r[kd_produk]'");
+                    foreach($data as $a){
+                  ?>
+                    <div data-hash="<?= $no++ ?>"><img src="img/produk_detail/<?= $a['foto'] ?>" alt="Product"></div>
+                  <?php } ?>
                 </div>
                 <ul class="product-thumbnails">
                   <?php if (empty($r["foto"])) { ?> &nbsp;
                   <?php } else { ?>
-                    <li class="active"><a href="#one"><img src="foto/produk/<?= $r['foto'] ?>"></a></li>
+                    <li class="active"><a href="#one"><img src="img/produk/<?= $r['foto'] ?>"></a></li>
                   <?php } ?>
 
-                  <?php if (empty($r["foto1"])) { ?> &nbsp;
-                  <?php } else { ?>
-                    <li><a href="#two"><img src="foto/produk/<?= $r['foto1'] ?>"></a></li>
-                  <?php } ?>
-
-                  <?php if (empty($r["foto2"])) { ?> &nbsp;
-                  <?php } else { ?>
-                    <li><a href="#three"><img src="foto/produk/<?= $r['foto2'] ?>"></a></li>
-                  <?php } ?>
-
-                  <?php if (empty($r["foto3"])) { ?> &nbsp;
-                  <?php } else { ?>
-                    <li><a href="#four"><img src="foto/produk/<?= $r['foto3'] ?>"></a></li>
-                  <?php } ?>
-
-                  <?php if (empty($r["foto4"])) { ?> &nbsp;
-                  <?php } else { ?>
-                    <li><a href="#five"><img src="foto/produk/<?= $r['foto4'] ?>"></a></li>
+                  <?php 
+                  $no = 2;
+                  $data = mysqli_query($con,"SELECT * FROM tbl_detail_foto WHERE kd_produk='$r[kd_produk]'");
+                  foreach($data as $a){
+                  ?>
+                    <li><a href="#<?= $no++ ?>"><img src="img/produk_detail/<?= $a['foto'] ?>"></a></li>
                   <?php } ?>
                 </ul>
               </div>
             </div>
             <!-- Product Info-->
             <input type="hidden" name="id_customer" value="<?= $_SESSION['idcs']; ?>">
-            <input type="hidden" name="id_produk" value="<?= $r['id_produk']; ?>">
+            <input type="hidden" name="id_produk" id="id_produk" value="<?= $r['id_produk']; ?>">
+            <input type="hidden" name="kd_produk" id="kd_produk" value="<?= $r['kd_produk']; ?>">
             <div class="col-md-6">
               <div class="padding-top-2x mt-2 hidden-md-up"></div>
               <div class="rating-stars"><i class="icon-star filled"></i><i class="icon-star filled"></i><i class="icon-star filled"></i><i class="icon-star filled"></i><i class="icon-star"></i>
@@ -96,7 +88,7 @@
               <?php if($_SESSION['jenis_toko'] == 'Grosir'){ ?>
                 <span class="h2 d-block"><?= $harga_grosir; ?></span>
               <?php }else{ ?>
-                <span class="h2 d-block"><?= $harga; ?></span>
+                <span class="h2 d-block"><?= $harga_eceran; ?></span>
               <?php } ?>
               <p><?= $r["deskripsi"]; ?></p>
               <div class="row margin-top-1x">
@@ -104,6 +96,18 @@
                   <div class="form-group">
                     <label for="quantity">Jumlah</label>
                     <input id="quantity_input" type="text" pattern="[0-9]*" name="jml" value="1" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <input type="radio" name="ukuran" onclick="cekStok('S')" value="S"><label>S</label>&nbsp;&nbsp;
+                    <input type="radio" name="ukuran" onclick="cekStok('M')" value="M"><label>M</label>&nbsp;&nbsp;
+                    <input type="radio" name="ukuran" onclick="cekStok('L')" value="L"><label>L</label>&nbsp;&nbsp;
+                    <input type="radio" name="ukuran" onclick="cekStok('XL')" value="XL"><label>XL</label>&nbsp;&nbsp;
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="quantity">Stok</label>
+                    <input type="text" pattern="[0-9]*" name="stok" id="stok" readonly value="" class="form-control">
                   </div>
                 </div>
               </div>
@@ -117,7 +121,7 @@
                   <?php if (!empty($_SESSION["email"])) { ?>
                   
                    <?php
-                    if ($r['stok'] > 0) {
+                    if ($r['status'] != 'T') {
 
                       echo "<button class='btn btn-primary' name='pesan' type='submit'><i class='icon-bag'></i> Beli</button>";
                     } else {
@@ -128,7 +132,7 @@
                   <?php } ?>
                   <?php if (empty($_SESSION["email"])) { ?>
                    <?php
-                    if ($r['stok'] > 0) {
+                    if ($r['status'] != 'T') {
                       if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
                         echo "Silahkan Tunggu Sampai Waktu Berakhir";
                       } else {
@@ -205,7 +209,7 @@
                 <button class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="Whishlist"><i class="icon-heart"></i></button>
                 
                  <?php
-                if ($r['stok'] > 0) {
+                if ($r['status'] != 'T') {
                   echo "<a class='btn btn-outline-primary btn-sm' href='view-produk-$r[id_produk]'>View Products</a>";
                 } else {
                   echo "<a class='btn btn-outline-danger btn-sm'>SOLD OUT</a>";
@@ -269,3 +273,28 @@ if (isset($_POST["pesan"])) {
     </div>
   </div>
 </div>
+
+<script>
+  function cekStok(id)
+  {
+    var kd_produk = $('#kd_produk').val()
+    
+    $.ajax({
+      url: 'cariStokBarang.php',
+      type: 'POST',
+      data: {'ukuran':id , 'kd_produk':kd_produk},
+      dataType: 'JSON',
+      success: function(data)
+      {
+        if(data != null)
+        {
+          $('#stok').val(data.stok)
+        }
+        else
+        {
+          $('#stok').val(0)
+        }
+      }
+    })
+  }
+</script>

@@ -32,13 +32,9 @@ if (isset($_GET['aksi'])) {
         } else {
           $status = "T";
         }
-        // simpan ukuran
-        $ukuran = $_POST['ukuran'];;
-        
-        $hasil_ukuran = implode(',', $ukurans);
-        // batas simpan ukuran
         $judulseo = seo_title($_POST['judul']);
         $tglskrg = date('Y-m-d');
+
         $nmberkas  = $_FILES["foto"]["name"];
         $lokberkas = $_FILES["foto"]["tmp_name"];
         $size     = $_FILES['foto']['size'];
@@ -47,145 +43,69 @@ if (isset($_GET['aksi'])) {
         } else {
           $date = date("YmdHis");
         }
+        // insert size
+        $ukuran = $_POST['ukuran'];
+        $stok = $_POST['stok'];
+        foreach($stok as $i => $a)
+        {
+          mysqli_query($con,"INSERT INTO `tbl_detail_size`(`kd_produk`, `ukuran`, `stok`) VALUES ('$_POST[kd_produk]','$ukuran[$i]','$stok[$i]')");
+        }
+        // batas input size
+        // upload foto
         $nmfoto = $date . $nmberkas;
         if ($size < 1048576) {
           if (!empty($lokberkas)) {
-            move_uploaded_file($lokberkas, "../foto/produk/$nmfoto");
+            move_uploaded_file($lokberkas, "../img/produk/$nmfoto");
           }
           $nmberkas1  = $_FILES["foto1"]["name"];
           $lokberkas1 = $_FILES["foto1"]["tmp_name"];
-          if (empty($nmberkas1)) {
-            $date1 = "";
-          } else {
-            $date1 = date("YmdHis");
+          foreach ($nmberkas1 as $i => $a){
+            if (empty($nmberkas1[$i])) {
+              $date1 = "";
+            } else {
+              $date1 = date("YmdHis");
+            }
+            $nmfoto1 = $date1 . $nmberkas1[$i];
+            if (!empty($lokberkas1[$i])) {
+              move_uploaded_file($lokberkas1[$i], "../img/produk_detail/$nmfoto1");
+            }
+            mysqli_query($con,"INSERT INTO `tbl_detail_foto`(`kd_produk`, `foto`) 
+              VALUES ('$_POST[kd_produk]','$nmfoto1')");
           }
-          $nmfoto1 = $date1 . $nmberkas1;
-          if (!empty($lokberkas1)) {
-            move_uploaded_file($lokberkas1, "../foto/produk/$nmfoto1");
-          }
-          $nmberkas2  = $_FILES["foto2"]["name"];
-          $lokberkas2 = $_FILES["foto2"]["tmp_name"];
-          if (empty($nmberkas2)) {
-            $date2 = "";
-          } else {
-            $date2 = date("YmdHis");
-          }
-          $nmfoto2 = $date2 . $nmberkas2;
-          if (!empty($lokberkas2)) {
-            move_uploaded_file($lokberkas2, "../foto/produk/$nmfoto2");
-          }
-          $nmberkas3  = $_FILES["foto3"]["name"];
-          $lokberkas3 = $_FILES["foto3"]["tmp_name"];
-          if (empty($nmberkas3)) {
-            $date3 = "";
-          } else {
-            $date3 = date("YmdHis");
-          }
-          $nmfoto3 = $date3 . $nmberkas3;
-          if (!empty($lokberkas3)) {
-            move_uploaded_file($lokberkas3, "../foto/produk/$nmfoto3");
-          }
-          $nmberkas4  = $_FILES["foto4"]["name"];
-          $lokberkas4 = $_FILES["foto4"]["tmp_name"];
-          if (empty($nmberkas4)) {
-            $date4 = "";
-          } else {
-            $date4 = date("YmdHis");
-          }
-          $nmfoto4 = $date4 . $nmberkas4;
-          if (!empty($lokberkas4)) {
-            move_uploaded_file($lokberkas4, "../foto/produk/$nmfoto4");
-          }
+          // batas upload foto
           $cek = mysqli_query($con, "select * from tbl_produk where kd_produk='$_POST[kd_produk]'");
           $jumlah = mysqli_num_rows($cek);
           if ($jumlah) {
             echo "<script>alert('Maaf, Kode sudah ada, silahkan masukan kode yang lain !');window.location.href='index.php?page=produk&aksi=tambahproduk'</script>";
           } else {
-            if (empty($_POST["harga_lama"])) {
              $save = mysqli_query($con, "INSERT INTO `tbl_produk`(
              `kd_produk`, 
              `id_kategori`, 
              `id_merek`, 
-             `ukuran`, 
              `judul`, 
              `berat`, 
              `deskripsi`, 
-             `harga`, 
              `harga_grosir`, 
+             `harga_eceran`, 
              `foto`, 
-             `foto1`, 
-             `foto2`, 
-             `foto3`, 
-             `foto4`, 
              `status`, 
              `jenis`, 
-             `stok`, 
              `judul_seo`, 
              `tglinput`) VALUES
-              
                 ('$_POST[kd_produk]',
                 '$_POST[id_kategori]',
                 '$_POST[id_merek]',
-                '$ukuran',
                 '$_POST[judul]',
 	              '$_POST[berat]',
                 '$_POST[deskripsi]',
-                '$_POST[harga]',
                 '$_POST[harga_grosir]',
+                '$_POST[harga_eceran]',
                 '$nmfoto',
-                '$nmfoto1',
-                '$nmfoto2',
-                '$nmfoto3',
-                '$nmfoto4',
                 '$status',
                 'Baru',
-	              '$_POST[stok]',
                 '$judulseo',
                 '$tglskrg')");
-            } else {
-              $save = mysqli_query($con, "INSERT INTO `tbl_produk`(
-             `kd_produk`, 
-             `id_kategori`, 
-             `id_merek`, 
-             `ukuran`, 
-             `judul`, 
-             `berat`, 
-             `deskripsi`, 
-             `harga_lama`, 
-             `harga`, 
-             `harga_grosir`, 
-             `foto`, 
-             `foto1`, 
-             `foto2`, 
-             `foto3`, 
-             `foto4`, 
-             `status`, 
-             `jenis`, 
-             `stok`,
-             `judul_seo`, 
-             `tglinput`) VALUES
-              ( 
-                '$_POST[kd_produk]',
-                '$_POST[id_kategori]',
-                '$_POST[id_merek]',
-                '$ukuran',
-                '$_POST[judul]',
-	              '$_POST[berat]',
-                '$_POST[deskripsi]',
-                '$_POST[harga_lama]',
-                '$_POST[harga]',
-                '$_POST[harga_grosir]',
-                '$nmfoto',
-                '$nmfoto1',
-                '$nmfoto2',
-                '$nmfoto3',
-                '$nmfoto4',
-                '$status',
-                'Baru',
-	            '$_POST[stok]',
-                '$judulseo',
-                '$tglskrg')");
-            }
+                // simpan foto
           }
           if ($save) {
             echo "<script>
@@ -262,17 +182,44 @@ if (isset($_GET['aksi'])) {
                         </select>
                       </div>
                     </div>
-
+                    
                     <div class="form-group">
-                      <label for="ukuran" class="col-sm-2 control-label">Ukuran</label>
+                      <label class="col-sm-2 control-label">Ukuran</label>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                      <label for="judul" class="col-sm-2 control-label">S</label>
                       <div class="col-sm-4">
-                        <input type="radio" name="ukuran" value="S" id="ukuran">&nbsp;&nbsp;&nbsp; S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="ukuran" value="M" id="ukuran">&nbsp;&nbsp;&nbsp; M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="ukuran" value="L" id="ukuran">&nbsp;&nbsp;&nbsp; L&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="ukuran" value="XL" id="ukuran">&nbsp;&nbsp;&nbsp; XL
+                        <input type="hidden" name="ukuran[]" value="S">
+                        <input type="number" name="stok[]" id="stok[]" class="form-control" placeholder="Stok">
                       </div>
                     </div>
 
+                    <div class="form-group">
+                      <label for="judul" class="col-sm-2 control-label">M</label>
+                      <div class="col-sm-4">
+                        <input type="hidden" name="ukuran[]" value="M">
+                        <input type="number" name="stok[]" id="stok[]" class="form-control" placeholder="Stok">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="judul" class="col-sm-2 control-label">L</label>
+                      <div class="col-sm-4">
+                        <input type="hidden" name="ukuran[]" value="L">
+                        <input type="number" name="stok[]" id="stok[]" class="form-control" placeholder="Stok">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="judul" class="col-sm-2 control-label">XL</label>
+                      <div class="col-sm-4">
+                        <input type="hidden" name="ukuran[]" value="XL">
+                        <input type="number" name="stok[]" id="stok[]" class="form-control" placeholder="Stok">
+                      </div>
+                    </div>
+                    <hr>
+                   
                     <div class="form-group">
                       <label for="judul" class="col-sm-2 control-label">Judul / Nama Produk</label>
                       <div class="col-sm-4">
@@ -294,12 +241,12 @@ if (isset($_GET['aksi'])) {
                       </div>
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label for="hrgl" class="col-sm-2 control-label">Harga Lama</label>
                       <div class="col-sm-4">
-                        <input type="number" name="harga_lama" id="hrgl" class="form-control" placeholder="Harga">
+                        <input type="number" name="diskon" id="hrgl" class="form-control" placeholder="Harga">
                       </div>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                       <label for="hrg" class="col-sm-2 control-label">Harga Grosir</label>
@@ -311,7 +258,7 @@ if (isset($_GET['aksi'])) {
                     <div class="form-group">
                       <label for="hrg" class="col-sm-2 control-label">Harga Eceran</label>
                       <div class="col-sm-4">
-                        <input type="number" name="harga" id="hrg_eceran" class="form-control" placeholder="Harga Eceran">
+                        <input type="number" name="harga_eceran" id="harga_eceran" class="form-control" placeholder="Harga Eceran">
                       </div>
                     </div>
 
@@ -326,13 +273,6 @@ if (isset($_GET['aksi'])) {
                     </div> -->
 
                     <div class="form-group">
-                      <label for="stok" class="col-sm-2 control-label">Stok</label>
-                      <div class="col-sm-4">
-                        <input type="text" name="stok" id="stok" class="form-control" placeholder="Stok">
-                      </div>
-                    </div>
-
-                    <div class="form-group">
                       <label for="hrg" class="col-sm-2 control-label">Foto</label>
                       <div class="col-sm-4">
                         <input type="file" name="foto" id="hrg" class="form-control">
@@ -341,33 +281,9 @@ if (isset($_GET['aksi'])) {
                     </div>
 
                     <div class="form-group">
-                      <label for="hrg" class="col-sm-2 control-label">Foto 1</label>
+                      <label for="hrg" class="col-sm-2 control-label">Foto Lainya</label>
                       <div class="col-sm-4">
-                        <input type="file" name="foto1" id="hrg" class="form-control">
-                        <font color="red">*</font> <span></span>Ukuran Foto Maximal 1 MB</span>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="hrg" class="col-sm-2 control-label">Foto 2</label>
-                      <div class="col-sm-4">
-                        <input type="file" name="foto2" id="hrg" class="form-control">
-                        <font color="red">*</font> <span></span>Ukuran Foto Maximal 1 MB</span>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="hrg" class="col-sm-2 control-label">Foto 3</label>
-                      <div class="col-sm-4">
-                        <input type="file" name="foto3" id="hrg" class="form-control">
-                        <font color="red">*</font> <span></span>Ukuran Foto Maximal 1 MB</span>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="hrg" class="col-sm-2 control-label">Foto 4</label>
-                      <div class="col-sm-4">
-                        <input type="file" name="foto4" id="hrg" class="form-control">
+                        <input type="file" name="foto1[]" id="hrg" class="form-control" multiple>
                         <font color="red">*</font> <span></span>Ukuran Foto Maximal 1 MB</span>
                       </div>
                     </div>
@@ -528,15 +444,42 @@ if (isset($_GET['aksi'])) {
                     </div>
 
                     <div class="form-group">
-                      <label for="ukuran" class="col-sm-2 control-label">Ukuran</label>
+                      <label class="col-sm-2 control-label">Ukuran</label>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                      <label for="judul" class="col-sm-2 control-label">S</label>
                       <div class="col-sm-4">
-                        <input type="radio" name="ukuran" value="S" id="ukuran">&nbsp;&nbsp;&nbsp; S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="ukuran" value="M" id="ukuran">&nbsp;&nbsp;&nbsp; M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="ukuran" value="L" id="ukuran">&nbsp;&nbsp;&nbsp; L&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" name="ukuran" value="XL" id="ukuran">&nbsp;&nbsp;&nbsp; XL
+                        <input type="hidden" name="ukuran[]" value="S">
+                        <input type="number" name="stok[]" id="stok[]" class="form-control" placeholder="Stok">
                       </div>
                     </div>
 
+                    <div class="form-group">
+                      <label for="judul" class="col-sm-2 control-label">M</label>
+                      <div class="col-sm-4">
+                        <input type="hidden" name="ukuran[]" value="M">
+                        <input type="number" name="stok[]" id="stok[]" class="form-control" placeholder="Stok">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="judul" class="col-sm-2 control-label">L</label>
+                      <div class="col-sm-4">
+                        <input type="hidden" name="ukuran[]" value="L">
+                        <input type="number" name="stok[]" id="stok[]" class="form-control" placeholder="Stok">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="judul" class="col-sm-2 control-label">XL</label>
+                      <div class="col-sm-4">
+                        <input type="hidden" name="ukuran[]" value="XL">
+                        <input type="number" name="stok[]" id="stok[]" class="form-control" placeholder="Stok">
+                      </div>
+                    </div>
+                    <hr>
+                    
                     <div class="form-group">
                       <label for="judul" class="col-sm-2 control-label">Judul</label>
                       <div class="col-sm-4">
@@ -559,13 +502,6 @@ if (isset($_GET['aksi'])) {
                     </div>
 
                     <div class="form-group">
-                      <label for="hrgl" class="col-sm-2 control-label">Harga Lama</label>
-                      <div class="col-sm-6">
-                        <input type="number" name="harga_lama" id="hrgl" class="form-control" value="<?= $data['harga_lama']; ?>">
-                      </div>
-                    </div>
-
-                    <div class="form-group">
                       <label for="hrg" class="col-sm-2 control-label">Harga Grosir</label>
                       <div class="col-sm-6">
                         <input type="number" name="harga_grosir" id="hrg" class="form-control" value="<?= $data['harga_grosir']; ?>">
@@ -575,7 +511,7 @@ if (isset($_GET['aksi'])) {
                     <div class="form-group">
                       <label for="hrg" class="col-sm-2 control-label">Harga Eceran</label>
                       <div class="col-sm-6">
-                        <input type="number" name="harga" id="hrg" class="form-control" value="<?= $data['harga']; ?>">
+                        <input type="number" name="harga_eceran" id="hrg" class="form-control" value="<?= $data['harga']; ?>">
                       </div>
                     </div>
 
@@ -588,12 +524,6 @@ if (isset($_GET['aksi'])) {
                     </div> -->
 
                     <div class="form-group">
-                      <label for="stok" class="col-sm-2 control-label">Stok</label>
-                      <div class="col-sm-6">
-                        <input type="text" name="stok" id="stok" class="form-control" value="<?= $data['stok']; ?>">
-                      </div>
-                    </div>
-                    <div class="form-group">
                       <label for="foto" class="col-sm-2 control-label">Foto</label>
                       <div class="col-sm-4">
                         <input type="file" name="foto" id="foto" class="form-control">
@@ -604,69 +534,24 @@ if (isset($_GET['aksi'])) {
                     <div class="form-group">
                       <label for="hrg" class="col-sm-2 control-label">&nbsp;</label>
                       <div class="col-sm-4">
-                        <img src="../foto/produk/<?= $data['foto']; ?>" width="150px">
+                        <img src="../img/produk/<?= $data['foto']; ?>" width="150px">
                       </div>
                     </div>
 
                     <div class="form-group">
-                      <label for="foto" class="col-sm-2 control-label">Foto1</label>
+                      <label for="foto" class="col-sm-2 control-label">Foto Lainya</label>
                       <div class="col-sm-4">
                         <input type="file" name="foto1" id="foto" class="form-control">
                         <input type="hidden" name="fotolama1" id="foto" class="form-control" value="<?= $data["foto1"]; ?>">
                         <font color="red">*</font> <span></span>Ukuran Foto Maximal 1 MB</span>
                       </div>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label for="hrg" class="col-sm-2 control-label">&nbsp;</label>
                       <div class="col-sm-4">
-                        <img src="../foto/produk/<?= $data['foto1']; ?>" width="150px">
+                        <img src="../img/produk/<?= $data['foto1']; ?>" width="150px">
                       </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="foto" class="col-sm-2 control-label">Foto2</label>
-                      <div class="col-sm-4">
-                        <input type="file" name="foto2" id="foto" class="form-control">
-                        <input type="hidden" name="fotolama2" id="foto" class="form-control" value="<?= $data["foto2"]; ?>">
-                        <font color="red">*</font> <span></span>Ukuran Foto Maximal 1 MB</span>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="hrg" class="col-sm-2 control-label">&nbsp;</label>
-                      <div class="col-sm-4">
-                        <img src="../foto/produk/<?= $data['foto2']; ?>" width="150px">
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="foto" class="col-sm-2 control-label">Foto3</label>
-                      <div class="col-sm-4">
-                        <input type="file" name="foto3" id="foto" class="form-control">
-                        <input type="hidden" name="fotolama3" id="foto" class="form-control" value="<?= $data["foto3"]; ?>">
-                        <font color="red">*</font> <span></span>Ukuran Foto Maximal 1 MB</span>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="hrg" class="col-sm-2 control-label">&nbsp;</label>
-                      <div class="col-sm-4">
-                        <img src="../foto/produk/<?= $data['foto3']; ?>" width="150px">
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="foto" class="col-sm-2 control-label">Foto4</label>
-                      <div class="col-sm-4">
-                        <input type="file" name="foto4" id="foto" class="form-control">
-                        <input type="hidden" name="fotolama4" id="foto" class="form-control" value="<?= $data["foto4"]; ?>">
-                        <font color="red">*</font> <span></span>Ukuran Foto Maximal 1 MB</span>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="hrg" class="col-sm-2 control-label">&nbsp;</label>
-                      <div class="col-sm-4">
-                        <img src="../foto/produk/<?= $data['foto4']; ?>" width="150px">
-                      </div>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                       <div class="col-sm-4 col-md-offset-2">
@@ -815,7 +700,6 @@ if (isset($_GET['aksi'])) {
                     <th>Kode Produk</th>
                     <th>Kategori</th>
                     <th>Merek</th>
-                    <th>Ukuran</th>
                     <th>Judul</th>
                     <th>Harga Eceran</th>
                     <th>Harga Grosir</th>
@@ -843,13 +727,12 @@ if (isset($_GET['aksi'])) {
                       <td><?php echo  $r["kd_produk"]; ?></td>
                       <td><?php echo  $r["nama_kategori"]; ?></td>
                       <td><?php echo  $r["nama_merek"]; ?></td>
-                      <td><?php echo  $r["ukuran"]; ?></td>
                       <td><?php echo  $r["judul"]; ?></td>
                       <td><?php echo  "Rp. " . number_format($r["harga"]); ?></td>
                       <td><?php echo  "Rp. " . number_format($r["harga_grosir"]); ?></td>
 
                       <td><?php echo  $status ?></td>
-                      <td><img src="../foto/produk/<?= $r['foto']; ?>" width="150px"></td>
+                      <td><img src="../img/produk/<?= $r['foto']; ?>" width="150px"></td>
                       <td>
                         <a class='btn btn-success btn-xs' title='Edit Produk' href='?page=produk&aksi=editproduk&id_produk=<?php echo $r['id_produk']; ?>' onclick="return confirm('ANDA YAKIN AKAN EDIT DATA INI ... ?')"><span class='glyphicon glyphicon-edit'></span></a>
                         <a class='btn btn-danger btn-xs' title='Hapus Produk' href='?page=produk&aksi=hapusproduk&id_produk=<?php echo $r['id_produk']; ?>' onclick="return confirm('ANDA YAKIN AKAN MENGHAPUS DATA INI ... ?')"><span class='glyphicon glyphicon-remove'></span></a>
