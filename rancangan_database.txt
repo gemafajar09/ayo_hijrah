@@ -4,7 +4,6 @@ tbl_produk
 - kd_produk
 - id_kategori
 - id_merek
-
 - judul
 - berat
 - deskripsi

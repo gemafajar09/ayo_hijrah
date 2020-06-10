@@ -23,7 +23,7 @@
     <h3 class="text-center mb-30">View Produk</h3>
     <div class="row">
       <?php
-      $sql = mysqli_query($con, "SELECT * FROM tbl_produk where id_produk='$_GET[id_produk]'");
+      $sql = mysqli_query($con, "SELECT * FROM tb_produk where id_produk='$_GET[id_produk]'");
       $r = mysqli_fetch_assoc($sql);
       $harga_eceran = "Rp. " . number_format($r['harga_eceran'], 0, ',', '.');
       $harga_grosir = "Rp. " . number_format($r['harga_grosir'], 0, ',', '.');
@@ -43,20 +43,23 @@
             <div class="col-md-6">
               <div class="product-gallery"><span class="product-badge text-danger"><?php echo "Rp. " . number_format($total, 0, ',', '.') ?> Off</span>
                 <div class="gallery-wrapper">
-                  <div class="gallery-item active"><a href="foto/produk/<?= $r['foto'] ?>" data-hash="one" data-size="1000x667"></a></div>
-                  <div class="gallery-item"><a href="foto/produk/<?= $r['foto1'] ?>.jpg" data-hash="two" data-size="1000x667"></a></div>
-                  <div class="gallery-item"><a href="foto/produk/<?= $r['foto2'] ?>" data-hash="three" data-size="1000x667"></a></div>
-                  <div class="gallery-item"><a href="foto/produk/<?= $r['foto3'] ?>" data-hash="four" data-size="1000x667"></a></div>
-                  <div class="gallery-item"><a href="foto/produk/<?= $r['foto4'] ?>" data-hash="five" data-size="1000x667"></a></div>
+                  <div class="gallery-item active"><a href="img/produk/<?= $r['foto'] ?>" data-hash="one" data-size="1000x667"></a></div>
+                  <?php 
+                    $no = 2;
+                    $data = mysqli_query($con,"SELECT * FROM tb_gambar WHERE kd_produk='$r[kd_produk]'");
+                    foreach($data as $a){
+                  ?>
+                  <div class="gallery-item"><a href="img/produk_detail/<?= $a['gambar_produk'] ?>.jpg" data-hash="<?= $no++ ?>" data-size="1000x667"></a></div>
+                  <?php } ?>
                 </div>
                 <div class="product-carousel owl-carousel">
                   <div data-hash="one"><img src="img/produk/<?= $r['foto'] ?>" alt="Product"></div>
                   <?php 
                     $no = 2;
-                    $data = mysqli_query($con,"SELECT * FROM tbl_detail_foto WHERE kd_produk='$r[kd_produk]'");
+                    $data = mysqli_query($con,"SELECT * FROM tb_gambar WHERE kd_produk='$r[kd_produk]'");
                     foreach($data as $a){
                   ?>
-                    <div data-hash="<?= $no++ ?>"><img src="img/produk_detail/<?= $a['foto'] ?>" alt="Product"></div>
+                    <div data-hash="<?= $no++ ?>"><img src="img/produk_detail/<?= $a['gambar_produk'] ?>" alt="Product"></div>
                   <?php } ?>
                 </div>
                 <ul class="product-thumbnails">
@@ -67,10 +70,10 @@
 
                   <?php 
                   $no = 2;
-                  $data = mysqli_query($con,"SELECT * FROM tbl_detail_foto WHERE kd_produk='$r[kd_produk]'");
+                  $data = mysqli_query($con,"SELECT * FROM tb_gambar WHERE kd_produk='$r[kd_produk]'");
                   foreach($data as $a){
                   ?>
-                    <li><a href="#<?= $no++ ?>"><img src="img/produk_detail/<?= $a['foto'] ?>"></a></li>
+                    <li><a href="#<?= $no++ ?>"><img src="img/produk_detail/<?= $a['gambar_produk'] ?>"></a></li>
                   <?php } ?>
                 </ul>
               </div>
@@ -98,16 +101,16 @@
                     <input id="quantity_input" type="text" pattern="[0-9]*" name="jml" value="1" class="form-control">
                   </div>
                   <div class="form-group">
-                    <input type="radio" name="ukuran" onclick="cekStok('S')" value="S"><label>S</label>&nbsp;&nbsp;
-                    <input type="radio" name="ukuran" onclick="cekStok('M')" value="M"><label>M</label>&nbsp;&nbsp;
-                    <input type="radio" name="ukuran" onclick="cekStok('L')" value="L"><label>L</label>&nbsp;&nbsp;
-                    <input type="radio" name="ukuran" onclick="cekStok('XL')" value="XL"><label>XL</label>&nbsp;&nbsp;
+                    <input type="radio" name="ukuran" class="ukuran" onclick="cekStok('S')" value="S"><label>S</label>&nbsp;&nbsp;
+                    <input type="radio" name="ukuran" class="ukuran" onclick="cekStok('M')" value="M"><label>M</label>&nbsp;&nbsp;
+                    <input type="radio" name="ukuran" class="ukuran" onclick="cekStok('L')" value="L"><label>L</label>&nbsp;&nbsp;
+                    <input type="radio" name="ukuran" class="ukuran" onclick="cekStok('XL')" value="XL"><label>XL</label>&nbsp;&nbsp;
                   </div>
                 </div>
                 <div class="col-sm-3">
                   <div class="form-group">
                     <label for="quantity">Stok</label>
-                    <input type="text" pattern="[0-9]*" name="stok" id="stok" readonly value="" class="form-control">
+                    <input type="text" pattern="[0-9]*" name="stok" id="stok" readonly value="0" class="form-control">
                   </div>
                 </div>
               </div>
@@ -123,7 +126,7 @@
                    <?php
                     if ($r['status'] != 'T') {
 
-                      echo "<button class='btn btn-primary' name='pesan' type='submit'><i class='icon-bag'></i> Beli</button>";
+                      echo "<button class='btn btn-primary' id='klik' name='pesan' type='submit'><i class='icon-bag'></i> Beli</button>";
                     } else {
                       echo "<a class='btn btn-outline-danger btn-sm'>SOLD OUT</a>";
                     }
@@ -136,7 +139,7 @@
                       if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
                         echo "Silahkan Tunggu Sampai Waktu Berakhir";
                       } else {
-                        echo "<button class='btn btn-primary'><i class='icon-bag'></i> <a href='login' onclick='return confirm('ANDA BELUM LOGIN. SILAHKAN LOGIN TERLEBIH DAHULU ... ?')' style='color:#fff;'>Beli</a></button>";
+                        echo "<button class='btn btn-primary' id='klik'><i class='icon-bag'></i> <a href='login' onclick='return confirm('ANDA BELUM LOGIN. SILAHKAN LOGIN TERLEBIH DAHULU ... ?')' style='color:#fff;'>Beli</a></button>";
                       }
                     } else {
                       echo "<a class='btn btn-outline-danger btn-sm'>SOLD OUT</a>";
@@ -186,25 +189,32 @@
           $posisi = ($pg - 1) * $batas;
         }
 
-        $jml_data = mysqli_query($con, "SELECT * FROM tbl_produk");
+        $jml_data = mysqli_query($con, "SELECT * FROM tb_produk");
         $total = mysqli_num_rows($jml_data);
         $pages = ceil($total / $batas);
 
-        $sql = mysqli_query($con, "SELECT * FROM tbl_produk LIMIT $posisi, $batas");
+        $sql = mysqli_query($con, "SELECT * FROM tb_produk LIMIT $posisi, $batas");
         while ($r = mysqli_fetch_assoc($sql)) {
-          $harga = "Rp. " . number_format($r['harga'], 0, ',', '.');
+          $harga_eceran = "Rp. " . number_format($r['harga_eceran'], 0, ',', '.');
+          $harga_grosir = "Rp. " . number_format($r['harga_grosir'], 0, ',', '.');
           $judul = substr($r['judul'], 0, 20) . "...";
         ?>
           <!-- Product-->
           <div class="grid-item">
             <div class="product-card">
               <a class="product-thumb" href="view-produk-<?= $r['id_produk']; ?>">
-                <center><img src="foto/produk/<?= $r['foto'] ?>" alt="Product" style="height: 185px; width: 75%;"></center>
+                <center><img src="img/produk/<?= $r['foto'] ?>" alt="Product" style="height: 185px; width: 75%;"></center>
               </a>
               <h3 class="product-title"><a href="view-produk-<?= $r['id_produk']; ?>"><?= $judul; ?></a></h3>
+              <?php if($_SESSION['jenis_toko'] == 'Grosir'){ ?>
               <h4 class="product-price">
-                <?= $harga; ?>
+                <?= $harga_grosir; ?>
               </h4>
+              <?php }else{ ?>
+              <h4 class="product-price">
+                <?= $harga_eceran; ?>
+              </h4>
+              <?php } ?>
               <div class="product-buttons">
                 <button class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="Whishlist"><i class="icon-heart"></i></button>
                 
@@ -289,6 +299,7 @@ if (isset($_POST["pesan"])) {
         if(data != null)
         {
           $('#stok').val(data.stok)
+          document.getElementById('klik').style.visibility = 'visible';
         }
         else
         {
@@ -296,5 +307,12 @@ if (isset($_POST["pesan"])) {
         }
       }
     })
+  }
+
+
+  var cekstok = $('#stok').val()
+  if(cekstok == 0)
+  {
+    document.getElementById('klik').style.visibility = 'hidden';
   }
 </script>

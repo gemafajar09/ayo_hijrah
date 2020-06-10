@@ -104,6 +104,7 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
 
 <body>
 
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
   <!-- Google Tag Manager (noscript)-->
   <noscript>
     <iframe src="http://www.googletagmanager.com/ns.html?id=GTM-T4DJFPZ" height="0" width="0" style="display: none; visibility: hidden;"></iframe>
@@ -309,13 +310,6 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
   </script>
   <!-- /WhatsHelp.io widget -->
 
-</body>
-
-<!-- Mirrored from themes.rokaux.com/unishop/v2.2/template-1/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Apr 2018 05:49:04 GMT -->
-
-</html>
-
-<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
   function hitung() {
     var kurir = $('[name="kurir"]:checked').val();
@@ -458,5 +452,11 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1" && !empty($_SESSION['peng
 }
 
 ?>
+</body>
+
+<!-- Mirrored from themes.rokaux.com/unishop/v2.2/template-1/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Apr 2018 05:49:04 GMT -->
+
+</html>
+
 <!--Start of Tawk.to Script-->
 <!--End of Tawk.to Script-->

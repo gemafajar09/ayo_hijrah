@@ -63,50 +63,43 @@
 						$posisi = ($pg - 1) * $batas;
 					}
 
-					$jml_data = mysqli_query($con, "SELECT * FROM tbl_produk");
+					$jml_data = mysqli_query($con, "SELECT * FROM tb_produk");
 					$total = mysqli_num_rows($jml_data);
 					$pages = ceil($total / $batas);
 
 					if (isset($_POST["cari2"])) {
 						$cari = $_POST['cari'];
 						$q = $_POST['q'];
-						$sql = mysqli_query($con, "SELECT * FROM tbl_produk,tbl_merek where tbl_produk.id_merek=tbl_merek.id_merek AND tbl_merek.id_merek like '%$cari%' and tbl_produk.judul like '%$q%' and tbl_produk.stok > 0 LIMIT $posisi, $batas");
+						$sql = mysqli_query($con, "SELECT * FROM tb_produk,tb_brand where tb_produk.id_merek=tb_brand.id_merek AND tb_brand.id_merek like '%$cari%' and tb_produk.judul like '%$q%' and tb_produk.stok > 0 LIMIT $posisi, $batas");
 					} else {
-						$sql = mysqli_query($con, "SELECT * FROM tbl_produk LIMIT $posisi, $batas");
+						$sql = mysqli_query($con, "SELECT * FROM tb_produk LIMIT $posisi, $batas");
 					}
 					while ($r = mysqli_fetch_assoc($sql)) {
 						$harga_grosir = "Rp. " . number_format($r['harga_grosir'], 0, ',', '.');
-						$harga = "Rp. " . number_format($r['harga'], 0, ',', '.');
-						$harga_lama = "Rp. " . number_format($r['harga_lama'], 0, ',', '.');
+						$harga_eceran = "Rp. " . number_format($r['harga_eceran'], 0, ',', '.');
 						$judul = substr($r['judul'], 0, 25) . "...";
+						$status = $r['status'];
 					?>
 
 						<div class="grid-item">
 							<div class="product-card ">
 								<a class="product-thumb" href="view-produk-<?= $r['id_produk']; ?>">
-									<center><img src="foto/produk/<?= $r['foto'] ?>" alt="Product" style="height: 185px;"></center>
+									<center><img src="img/produk/<?= $r['foto'] ?>" alt="Product" style="height: 185px;"></center>
 								</a>
 								<h3 class="product-title"><a href="view-produk-<?= $r['id_produk']; ?>"><?= $judul; ?></a></h3>
 								<h4 class="product-price">
-									<?php
-									if (!empty($r["harga_lama"])) { ?>
-										<del><?= $harga_lama; ?></del>
+								
 								<?php 
 				                    if($_SESSION['jenis_toko'] == 'Grosir'){
 				                          echo $harga_grosir;
 				                      }else{
-				                        echo $harga;
+				                        echo $harga_eceran;
 				                } ?>
-									<?php } ?>
-									<?php
-									if (empty($r["harga_lama"])) { ?>
-										<?= $harga; ?>
-									<?php } ?>
 								</h4>
 								<div class="product-buttons">
 									<button class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="Whishlist"><i class="icon-heart"></i></button>
 								<?php
-									if ($r['stok'] > 0) {
+									if ($status != 'T') {
 
 										echo "<a class='btn btn-outline-primary btn-sm' href='view-produk-$r[id_produk]'>View Products</a>";
 									} else {
@@ -130,25 +123,22 @@
 								echo "<a class='page-link' href='shop-" . ($pg - 1) . "'>
 										<span aria-hidden='true'>&laquo;</span></a>";
 							} ?>
-								</a>
 								</li>
-								<?php for ($i = 1; $i <= $pages; $i++) { ?>
-									<li class="page-item">
-										<a class="page-link" href="shop-<?php echo $i; ?>"><?php echo $i; ?></a>
-									</li>
-								<?php } ?>
-								<?php
-								if ($pg < $pages) { ?>
-									<li class="page-item">
-									<?php
+							<?php for ($i = 1; $i <= $pages; $i++) { ?>
+								<li class="page-item">
+									<a class="page-link" href="shop-<?php echo $i; ?>"><?php echo $i; ?></a>
+								</li>
+							<?php } ?>
+							<?php
+							if ($pg < $pages) { ?>
+								<li class="page-item">
+							<?php
 									echo "<a class='page-link' href='shop-" . ($pg + 1) . "'>
 									<span aria-hidden='true'>&raquo;</span></a>";
-								} ?>
-									</a>
-									</li>
+							} ?>
+								</li>
 						</ul>
 					</div>
-
 				</nav>
 			</div>
 			<!-- Sidebar          -->

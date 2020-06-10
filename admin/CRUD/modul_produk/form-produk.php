@@ -69,8 +69,8 @@ if (isset($_GET['aksi'])) {
             if (!empty($lokberkas1[$i])) {
               move_uploaded_file($lokberkas1[$i], "../img/produk_detail/$nmfoto1");
             }
-            mysqli_query($con,"INSERT INTO `tbl_detail_foto`(`kd_produk`, `foto`) 
-              VALUES ('$_POST[kd_produk]','$nmfoto1')");
+            mysqli_query($con,"INSERT INTO `tb_gambar`(`gambar_produk`, `kd_produk`) VALUES 
+              VALUES ('$nmfoto1', '$_POST[kd_produk]')");
           }
           // batas upload foto
           $cek = mysqli_query($con, "select * from tbl_produk where kd_produk='$_POST[kd_produk]'");
@@ -78,10 +78,10 @@ if (isset($_GET['aksi'])) {
           if ($jumlah) {
             echo "<script>alert('Maaf, Kode sudah ada, silahkan masukan kode yang lain !');window.location.href='index.php?page=produk&aksi=tambahproduk'</script>";
           } else {
-             $save = mysqli_query($con, "INSERT INTO `tbl_produk`(
+             $save = mysqli_query($con, "INSERT INTO `tb_produk`(
              `kd_produk`, 
              `id_kategori`, 
-             `id_merek`, 
+             `id_brand`, 
              `judul`, 
              `berat`, 
              `deskripsi`, 
@@ -91,10 +91,10 @@ if (isset($_GET['aksi'])) {
              `status`, 
              `jenis`, 
              `judul_seo`, 
-             `tglinput`) VALUES
+             `tgl_input`) VALUES
                 ('$_POST[kd_produk]',
                 '$_POST[id_kategori]',
-                '$_POST[id_merek]',
+                '$_POST[id_brand]',
                 '$_POST[judul]',
 	              '$_POST[berat]',
                 '$_POST[deskripsi]',
@@ -158,7 +158,7 @@ if (isset($_GET['aksi'])) {
                         <select type="text" name="id_kategori" class="form-control">
                           <option value="">--Pilih Jenis--</option>
                           <?php
-                          $result = mysqli_query($con, "select * from tbl_kategori");
+                          $result = mysqli_query($con, "select * from tb_kategori");
                           $jsArray = "var dtind = new Array();\n";
                           while ($row = mysqli_fetch_array($result)) {
                             echo '<option value="' . $row['id_kategori'] . '">' . $row['nama_kategori'] . '</option>';
@@ -168,15 +168,15 @@ if (isset($_GET['aksi'])) {
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="nmkat" class="col-sm-2 control-label">Merek</label>
+                      <label for="nmkat" class="col-sm-2 control-label">Brand</label>
                       <div class="col-sm-4">
-                        <select type="text" name="id_merek" class="form-control" id="subkat">
-                          <option value="">--Pilih Merek--</option>
+                        <select type="text" name="id_brand" class="form-control" id="subkat">
+                          <option value="">--Pilih Brand--</option>
                           <?php
-                          $result = mysqli_query($con, "select * from tbl_merek");
+                          $result = mysqli_query($con, "select * from tb_brand");
                           $jsArray = "var dtind = new Array();\n";
                           while ($row = mysqli_fetch_array($result)) {
-                            echo '<option value="' . $row['id_merek'] . '">' . $row['nama_merek'] . '</option>';
+                            echo '<option value="' . $row['id_brand'] . '">' . $row['nama_brand'] . '</option>';
                           }
                           ?>
                         </select>
@@ -307,8 +307,8 @@ if (isset($_GET['aksi'])) {
       break;
     case "editproduk":
       if (isset($_GET['id_produk'])) {
-        $sql = mysqli_query($con, "SELECT * FROM tbl_produk,tbl_kategori,tbl_merek
- where tbl_produk.id_kategori=tbl_kategori.id_kategori AND tbl_produk.id_merek=tbl_merek.id_merek AND id_produk='$_GET[id_produk]'");
+        $sql = mysqli_query($con, "SELECT * FROM tb_produk,tb_kategori,tb_brand
+ where tb_produk.id_kategori=tb_kategori.id_kategori AND tb_produk.id_merek=tb_brand.id_brand AND id_produk='$_GET[id_produk]'");
         $data = mysqli_fetch_assoc($sql);
       }
       if (isset($_POST['save'])) {
@@ -326,7 +326,7 @@ if (isset($_GET['aksi'])) {
         $lokberkas = $_FILES["foto"]["tmp_name"];
         if (!empty($lokberkas)) {
           $nmfoto = date("YmdHis") . $nmberkas;
-          move_uploaded_file($lokberkas, "../foto/produk/$nmfoto");
+          move_uploaded_file($lokberkas, "../img/produk/$nmfoto");
         } else {
           $nmfoto = $_POST["fotolama"];
         }
@@ -335,7 +335,7 @@ if (isset($_GET['aksi'])) {
         $lokberkas1 = $_FILES["foto1"]["tmp_name"];
         if (!empty($lokberkas1)) {
           $nmfoto1 = date("YmdHis") . $nmberkas;
-          move_uploaded_file($lokberkas1, "../foto/produk/$nmfoto1");
+          move_uploaded_file($lokberkas1, "../img/produk/$nmfoto1");
           unlink("../foto/produk/" . $lihat['foto1']);
         } else {
           $nmfoto1 = $_POST["fotolama1"];
@@ -373,16 +373,16 @@ if (isset($_GET['aksi'])) {
 
 
 
-        $lihat = mysqli_fetch_assoc(mysqli_query($con, "SELECT * FROM tbl_produk where id_produk='$_GET[id_produk]'"));
+        $lihat = mysqli_fetch_assoc(mysqli_query($con, "SELECT * FROM tb_produk where id_produk='$_GET[id_produk]'"));
         $kd_produk = $lihat["kd_produk"];
         if($ukuran == NULL)
         {
-          $save = mysqli_query($con, "UPDATE tbl_produk set judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]',harga_lama='$_POST[harga_lama]',
+          $save = mysqli_query($con, "UPDATE tb_produk set judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]',harga_lama='$_POST[harga_lama]',
     harga='$_POST[harga]', harga_grosir='$_POST[harga_grosir]', stok='$_POST[stok]', foto='$nmfoto', foto1='$nmfoto1',foto2='$nmfoto2',foto3='$nmfoto3',foto4='$nmfoto4', judul_seo='$judulseo', status='$status' where id_produk='$_GET[id_produk]'");
 
         mysqli_query($con, "UPDATE tb_barang set nama_barang='$_POST[judul]', harga_jual='$_POST[harga]' where kode_barang='$kd_produk'");  
         }else{
-          $save = mysqli_query($con, "UPDATE tbl_produk set ukuran='$ukuran', judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]',harga_lama='$_POST[harga_lama]',
+          $save = mysqli_query($con, "UPDATE tb_produk set ukuran='$ukuran', judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]',harga_lama='$_POST[harga_lama]',
     harga='$_POST[harga]', harga_grosir='$_POST[harga_grosir]', stok='$_POST[stok]', foto='$nmfoto', foto1='$nmfoto1',foto2='$nmfoto2',foto3='$nmfoto3',foto4='$nmfoto4', judul_seo='$judulseo', status='$status' where id_produk='$_GET[id_produk]'");
 
         mysqli_query($con, "UPDATE tb_barang set nama_barang='$_POST[judul]', harga_jual='$_POST[harga]' where kode_barang='$kd_produk'");
@@ -711,8 +711,8 @@ if (isset($_GET['aksi'])) {
                 <tbody>
 
                   <?php
-                  $q = mysqli_query($con, "SELECT * from tbl_produk,tbl_kategori,tbl_merek where
-						tbl_produk.id_kategori=tbl_kategori.id_kategori AND tbl_produk.id_merek=tbl_merek.id_merek");
+                  $q = mysqli_query($con, "SELECT * from tb_produk,tb_kategori,tb_brand where
+						tb_produk.id_kategori=tb_kategori.id_kategori AND tb_produk.id_brand=tb_brand.id_brand");
                   $no = 1;
                   while ($r = mysqli_fetch_array($q)) {
                     if ($r['status'] == "Y") {
@@ -726,9 +726,9 @@ if (isset($_GET['aksi'])) {
                       <td width='0' class='center'><?php echo $no; ?></td>
                       <td><?php echo  $r["kd_produk"]; ?></td>
                       <td><?php echo  $r["nama_kategori"]; ?></td>
-                      <td><?php echo  $r["nama_merek"]; ?></td>
+                      <td><?php echo  $r["nama_brand"]; ?></td>
                       <td><?php echo  $r["judul"]; ?></td>
-                      <td><?php echo  "Rp. " . number_format($r["harga"]); ?></td>
+                      <td><?php echo  "Rp. " . number_format($r["harga_eceran"]); ?></td>
                       <td><?php echo  "Rp. " . number_format($r["harga_grosir"]); ?></td>
 
                       <td><?php echo  $status ?></td>

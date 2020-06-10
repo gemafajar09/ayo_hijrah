@@ -38,6 +38,7 @@ if (empty($_SESSION['useradmn']) and empty($_SESSION['passadmn'])) {
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
+  <script src="./plugins/jQuery/jquery-3.1.1.min.js"></script>
   <div class="wrapper">
 
     <header class="main-header">
@@ -149,7 +150,7 @@ if (empty($_SESSION['useradmn']) and empty($_SESSION['passadmn'])) {
               <li><a href="?page=kategori"><i class="fa fa-circle-o"></i><span>Kategori</span></a></li>
             </ul>
           </li>
-          <li><a href="?page=merek"><i class="fa fa-cart-plus"></i>Merek</a></li>
+          <li><a href="?page=merek"><i class="fa fa-cart-plus"></i>Brand</a></li>
           <li class="treeview">
             <a href="#">
               <i class="fa fa-th"></i>
@@ -238,7 +239,6 @@ if (empty($_SESSION['useradmn']) and empty($_SESSION['passadmn'])) {
   </div>
 
 
-  <script src="./plugins/jQuery/jquery-3.1.1.min.js"></script>
   <script src="./bootstrap/js/bootstrap.min.js"></script>
   <script src="./plugins/fastclick/fastclick.js"></script>
   <script src="./dist/js/adminlte.min.js"></script>

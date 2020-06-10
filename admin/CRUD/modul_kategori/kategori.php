@@ -16,8 +16,8 @@ if (isset($_GET['aksi'])) {
         $nama_file_foto = str_replace(" ", "-", $file_name[0]) . "-" . substr(uniqid('', true), -5) . "." . $file_ext;
 
         
-        move_uploaded_file($lokasi_foto, "../foto/kategori/" . $nama_file_foto);
-        $save = mysqli_query($con, "INSERT INTO `tbl_kategori`(`nama_kategori`, `seo_kategori`, `foto_kategori`) VALUES('$_POST[nama_kategori]','$judulseo','$nama_file_foto')");
+        move_uploaded_file($lokasi_foto, "../img/kategori/" . $nama_file_foto);
+        $save = mysqli_query($con, "INSERT INTO `tb_kategori`(`nama_kategori`, `seo_kategori`, `gambar_kategori`) VALUES('$_POST[nama_kategori]','$judulseo','$nama_file_foto')");
         if ($save) {
           echo "<script>
             window.location='?page=kategori';
@@ -78,7 +78,7 @@ if (isset($_GET['aksi'])) {
       break;
     case "editkategori":
       if (isset($_GET['id_kategori'])) {
-        $sql = mysqli_query($con, "SELECT * FROM tbl_kategori where id_kategori='$_GET[id_kategori]'");
+        $sql = mysqli_query($con, "SELECT * FROM tb_kategori where id_kategori='$_GET[id_kategori]'");
         $data = mysqli_fetch_assoc($sql);
       }
       if (isset($_POST['save'])) {
@@ -95,12 +95,12 @@ if (isset($_GET['aksi'])) {
 
         if ($ukuran_foto != '0') {
 
-          unlink('../foto/kategori/' . $data['foto_kategori']);
+          unlink('../img/kategori/' . $data['foto_kategori']);
 
-          move_uploaded_file($lokasi_foto, "../foto/kategori/" . $nama_file_foto);
-          $save = mysqli_query($con, "UPDATE tbl_kategori set nama_kategori='$_POST[nama_kategori]',seo_kategori='$judulseo', foto_kategori='$nama_file_foto' where  id_kategori='$_GET[id_kategori]'");
+          move_uploaded_file($lokasi_foto, "../img/kategori/" . $nama_file_foto);
+          $save = mysqli_query($con, "UPDATE tb_kategori set nama_kategori='$_POST[nama_kategori]',seo_kategori='$judulseo', foto_kategori='$nama_file_foto' where  id_kategori='$_GET[id_kategori]'");
         } else {
-          $save = mysqli_query($con, "UPDATE tbl_kategori set nama_kategori='$_POST[nama_kategori]',seo_kategori='$judulseo' where  id_kategori='$_GET[id_kategori]'");
+          $save = mysqli_query($con, "UPDATE tb_kategori set nama_kategori='$_POST[nama_kategori]',seo_kategori='$judulseo' where  id_kategori='$_GET[id_kategori]'");
         }
         if ($save) {
           echo "<script>
@@ -143,7 +143,7 @@ if (isset($_GET['aksi'])) {
                     <label for="fotokat" class="col-sm-2 control-label">Foto Kategori</label>
                     <div class="col-sm-4">
                       <center>
-                        <img src="../foto/kategori/<?php echo $data['foto_kategori'] ?>" alt="" width="150px">
+                        <img src="../img/kategori/<?php echo $data['gambar_kategori'] ?>" alt="" width="150px">
                       </center>
                       <input type="file" name="foto_kategori" id="foto_kategori" class="form-control" placeholder="Foto Kategori">
                     </div>
@@ -165,11 +165,11 @@ if (isset($_GET['aksi'])) {
     case "hapuskategori":
 
       if (isset($_GET['id_kategori'])) {
-        $sql = mysqli_query($con, "SELECT * FROM tbl_kategori where id_kategori='$_GET[id_kategori]'");
+        $sql = mysqli_query($con, "SELECT * FROM tb_kategori where id_kategori='$_GET[id_kategori]'");
         $data = mysqli_fetch_assoc($sql);
-        unlink('../foto/kategori/' . $data['foto_kategori']);
+        unlink('../img/kategori/' . $data['gambar_kategori']);
 
-        mysqli_query($con, "DELETE FROM tbl_kategori where id_kategori='$_GET[id_kategori]'");
+        mysqli_query($con, "DELETE FROM tb_kategori where id_kategori='$_GET[id_kategori]'");
         echo "<script>
               window.location='index.php?page=kategori';
             </script>";
@@ -212,7 +212,7 @@ if (isset($_GET['aksi'])) {
 
                 <tbody>
                   <?php
-                  $q = mysqli_query($con, "SELECT * from tbl_kategori");
+                  $q = mysqli_query($con, "SELECT * from tb_kategori");
                   $no = 1;
                   while ($r = mysqli_fetch_array($q)) {
                   ?>
@@ -221,7 +221,7 @@ if (isset($_GET['aksi'])) {
                       <td width='0' class='center'><?php echo $no; ?></td>
                       <td><?php echo  $r["nama_kategori"]; ?></td>
                       <td>
-                        <img src="../foto/kategori/<?php echo  $r["foto_kategori"]; ?>" alt="<?php echo  $r["foto_kategori"]; ?>" width="150px">
+                        <img src="../img/kategori/<?php echo  $r["gambar_kategori"]; ?>" alt="<?php echo  $r["gambar_kategori"]; ?>" width="150px">
                       </td>
                       <td>
                         <a class='btn btn-success btn-xs' title='Edit Data' href='?page=kategori&aksi=editkategori&id_kategori=<?php echo $r['id_kategori']; ?>'><span class='glyphicon glyphicon-edit'></span></a>

@@ -55,7 +55,7 @@ $r = mysqli_fetch_assoc($sql);
                 </center>
                 <div class="owl-carousel-2 owl-carousel dots-inside owl-loaded owl-drag" data-owl-carousel="{ &quot;loop&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 1000, &quot;items&quot;: 4, &quot;nav&quot;: true }">
                   <?php
-                  $ambil = mysqli_query($con, "SELECT * FROM `tbl_kategori`");
+                  $ambil = mysqli_query($con, "SELECT * FROM `tb_kategori`");
                   //$no = 0;
                   while ($pecah = $ambil->fetch_object()) {
                   ?>
@@ -63,7 +63,7 @@ $r = mysqli_fetch_assoc($sql);
                       <center>
                         <table border="0">
                           <tr height="200px" align="center">
-                            <td><img src="<?= $base_url; ?>foto/kategori/<?php echo $pecah->foto_kategori ?>" style="width: 150px;"></td>
+                            <td><img src="<?= $base_url; ?>img/kategori/<?php echo $pecah->gambar_kategori ?>" style="width: 150px;"></td>
                           </tr>
                           <tr height="" align="center">
                             <td>
@@ -107,11 +107,11 @@ $r = mysqli_fetch_assoc($sql);
         $posisi = ($pg - 1) * $batas;
       }
 
-      $jml_data = mysqli_query($con, "SELECT * FROM tbl_produk");
+      $jml_data = mysqli_query($con, "SELECT * FROM tb_produk");
       $total = mysqli_num_rows($jml_data);
       $pages = ceil($total / $batas);
 
-      $sql = mysqli_query($con, "SELECT * FROM tbl_produk ORDER BY id_produk desc LIMIT 8");
+      $sql = mysqli_query($con, "SELECT * FROM tb_produk ORDER BY id_produk desc LIMIT 8");
       while ($r = mysqli_fetch_assoc($sql)) {
         $harga_grosir = "Rp. " . number_format($r['harga_grosir'], 0, ',', '.');
         $harga_eceran = "Rp. " . number_format($r['harga_eceran'], 0, ',', '.');
@@ -158,14 +158,14 @@ $r = mysqli_fetch_assoc($sql);
   <div class="container">
     <h3 class="text-center mb-30">Brand</h3>
 <?php
-$data = mysqli_query($con,"SELECT logo, nama_merek FROM `tbl_merek`");
+$data = mysqli_query($con,"SELECT logo, nama_merek FROM `tb_brand`");
 ?>
     <div class="row">
 <?php foreach($data as $a){ ?>
       <div class="col-md-3">
         <div class="card">
           <div class="card-body">
-            <img src="<?= $base_url ?>foto/merek/<?= $a['logo'] ?>" alt="Category" class="img-responsive" style="height: 200px; ">
+            <img src="<?= $base_url ?>img/brand/<?= $a['gambar_brand'] ?>" alt="Category" class="img-responsive" style="height: 200px; ">
           </div>
         </div>
       </div>
