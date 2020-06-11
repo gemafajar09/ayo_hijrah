@@ -165,7 +165,7 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
             <section class="widget widget-light-skin">
               <h3 class="widget-title" style="color: black">Contact Information</h3>
               <p class="" style="color: black">
-                <h5>Alamat : Jl. Bandar Purus No.45, Padang Pasir, Kec. Padang Barat., Kota Padang, Sumatera Barat</h5>
+                <h5>Alamat : Jl. Batang Antokan No.8, Rimbo Kaluang, Kec. Padang Bar., Kota Padang, Sumatera Barat 25114</h5>
               </p>
               <ul class="list-unstyled text-sm text-white">
                 <table>
@@ -176,10 +176,10 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
                   </tr>
                   <tr>
                     <td style="color: black">
-                      <h5>Chat Only</h5>
+                      <h5>Call Only</h5>
                     </td>
                     <td style="color: black">
-                      <h5>: 0811-665-273</h5>
+                      <h5>: 0821-7006-5191</h5>
                     </td>
                   </tr>
                 </table>
@@ -187,8 +187,8 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
             </section>
             <p style="color: black">
                <h5>Claim / Reject / Refund (Retur) : <br> <br>
-                Admin 1 : 0822-8384-8752 <br>
-                Admin 2 : 0813-7276-0284</h5>
+                Admin 1 : 0821-7006-5191 <br>
+                Admin 2 : 0821-7006-5191</h5>
               </<p>
           </div>
           <div class="col-lg-4 col-md-6">

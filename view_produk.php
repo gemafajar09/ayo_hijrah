@@ -203,7 +203,7 @@
           <div class="grid-item">
             <div class="product-card">
               <a class="product-thumb" href="view-produk-<?= $r['id_produk']; ?>">
-                <center><img src="img/produk/<?= $r['foto'] ?>" alt="Product" style="height: 185px; width: 75%;"></center>
+                <center><img src="img/produk/<?= $r['foto'] ?>" style="height: 185px; width: 75%;"></center>
               </a>
               <h3 class="product-title"><a href="view-produk-<?= $r['id_produk']; ?>"><?= $judul; ?></a></h3>
               <?php if($_SESSION['jenis_toko'] == 'Grosir'){ ?>

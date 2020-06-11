@@ -25,9 +25,9 @@ $r = mysqli_fetch_assoc($sql);
   <div class="container padding-bottom-2x mb-2">
     <h3 class="margin-top-3x text-center mb-30">Location</h3>
     <div class="row">
-      <div class="col-md-10 col-md-offset-1">
+      <div class="col-md-12 col-md-offset-1">
         <div class="card mb-30">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.2825100277!2d100.35463891475365!3d-0.9390126993150075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2fd4b9cd98f7c6bb%3A0x713977c9e4d5ebed!2sRafika%20stores%20by%20FIKA!5e0!3m2!1sid!2sid!4v1580950473833!5m2!1sid!2sid" width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3989.293454344063!2d100.36694704722018!3d-0.9293729999999947!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x57a1533e41e3760e!2sAYO%20HIJRAH%20Boutique!5e0!3m2!1sid!2sid!4v1591858998922!5m2!1sid!2sid" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
           <div class="card-body">
           </div>
         </div>

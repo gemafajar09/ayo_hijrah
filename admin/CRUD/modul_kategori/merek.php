@@ -95,7 +95,7 @@
         {
           $save=mysqli_query($con, "UPDATE tb_brand set nama_brand='$_POST[nama_brand]' where id_brand='$_GET[id_brand]'");
         }else{
-          $save=mysqli_query($con, "UPDATE tb_brand set nama_brand='$_POST[nama_brand]', logo='$namaFile' where id_brand='$_GET[id_brand]'");
+          $save=mysqli_query($con, "UPDATE tb_brand set nama_brand='$_POST[nama_brand]', gambar_brand='$namaFile' where id_brand='$_GET[id_brand]'");
         }
         if($save) {
         echo"<script language=javascript>

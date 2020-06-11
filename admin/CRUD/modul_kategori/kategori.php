@@ -98,7 +98,7 @@ if (isset($_GET['aksi'])) {
           unlink('../img/kategori/' . $data['foto_kategori']);
 
           move_uploaded_file($lokasi_foto, "../img/kategori/" . $nama_file_foto);
-          $save = mysqli_query($con, "UPDATE tb_kategori set nama_kategori='$_POST[nama_kategori]',seo_kategori='$judulseo', foto_kategori='$nama_file_foto' where  id_kategori='$_GET[id_kategori]'");
+          $save = mysqli_query($con, "UPDATE tb_kategori set nama_kategori='$_POST[nama_kategori]',seo_kategori='$judulseo', gambar_kategori='$nama_file_foto' where  id_kategori='$_GET[id_kategori]'");
         } else {
           $save = mysqli_query($con, "UPDATE tb_kategori set nama_kategori='$_POST[nama_kategori]',seo_kategori='$judulseo' where  id_kategori='$_GET[id_kategori]'");
         }
