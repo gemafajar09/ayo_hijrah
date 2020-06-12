@@ -38,13 +38,13 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
   <!-- Mobile Specific Meta Tag-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <!-- Favicon and Apple Icons-->
-  <!-- <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
   <link rel="icon" type="image/x-icon" href="foto/logo.png">
   <link rel="icon" type="image/png" href="foto/logo.png">
   <link rel="apple-touch-icon" href="rafika.ico">
   <link rel="apple-touch-icon" sizes="152x152" href="rafika.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="rafika.ico">
-  <link rel="apple-touch-icon" sizes="167x167" href="rafika.ico"> -->
+  <link rel="apple-touch-icon" sizes="167x167" href="rafika.ico">
   <!-- Vendor Styles including: Bootstrap, Font Icons, Plugins, etc.-->
   <link rel="stylesheet" media="screen" href="css/vendor.min.css">
   <!-- Main Template Styles-->
