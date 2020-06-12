@@ -22,10 +22,14 @@ RewriteRule ^simpantrans$ index.php?module=simpantrans [L]
 RewriteRule ^histori-pesanan$ index.php?module=histori_pesanan [L]
 
 RewriteRule ^view-produk-(.*)$ index.php?module=view_produk&id_produk=$1 [L]
+RewriteRule ^view-kategori-(.*)$ index.php?module=view_kategori&id_kategori=$1 [L]
+
 RewriteRule ^del-keranjang-(.*)$ index.php?module=del_keranjang&id_keranjang=$1 [L]
 RewriteRule ^transaksi-(.*)$ index.php?module=transaksi&id=$1 [L]
 RewriteRule ^konfirmasi-(.*)$ index.php?module=konfirmasi_pembayaran&id_order=$1 [L]
 RewriteRule ^update-keranjang-(.*)$ index.php?module=update_keranjang&id_keranjang=$1 [L]
+
 RewriteRule ^shop-(.*)$ index.php?module=shop&pg=$1 [L]
+RewriteRule ^kategori-(.*)-page-(.*)$ index.php?module=view_kategori&id_kategori=$1&pg=$2 [L]
 
 Options All -Indexes

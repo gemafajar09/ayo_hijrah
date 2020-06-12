@@ -1,17 +1,35 @@
+<?php
+
+$id = $_GET['id_kategori'];
+// var_dump($id);
+// exit;
+
+// $sql = mysqli_query($con, "SELECT id_produk,kd_produk,tb_kategori.id_kategori,id_brand,judul,berat,
+//                             deskripsi, harga_grosir, harga_eceran, diskon, foto, status, jenis, judul_seo
+//                             tgl_input, nama_kategori, seo_kategori
+//                             FROM tb_produk 
+//                             JOIN tb_kategori
+//                             ON tb_kategori.id_kategori = tb_produk.id_kategori
+//                             where tb_kategori.id_kategori='$id'");
+$sql = mysqli_query($con, "SELECT * FROM tb_kategori WHERE id_kategori = '$id'");
+$r = mysqli_fetch_assoc($sql);
+// var_dump($r);
+
+?>
 <!-- Off-Canvas Wrapper-->
 <div class="offcanvas-wrapper" style="background:url(foto/background/sft.jpg)">
 	<!-- Page Title-->
 	<div class="page-title">
 		<div class="container">
 			<div class="column">
-				<h1>Shop All Kategori</h1>
+				<h1>Shop Kategori <?= $r['nama_kategori'] ?> </h1>
 			</div>
 			<div class="column">
 				<ul class="breadcrumbs">
 					<li><a href="index.php">Home</a>
 					</li>
 					<li class="separator">&nbsp;</li>
-					<li>Shop All Kategori</li>
+					<li>Shop Kategori <?= $r['nama_kategori'] ?></li>
 				</ul>
 			</div>
 		</div>
@@ -53,7 +71,8 @@
 					<div class="gutter-sizer"></div>
 					<div class="grid-sizer"></div>
 					<!-- Product-->
-					<?php
+                    <?php
+
 					$batas = 16; //jumlah data per halaman
 					$pg = isset($_GET['pg']) ? $_GET['pg'] : "";
 					if (empty($pg)) {
@@ -63,16 +82,20 @@
 						$posisi = ($pg - 1) * $batas;
 					}
 
-					$jml_data = mysqli_query($con, "SELECT * FROM tb_produk");
-					$total = mysqli_num_rows($jml_data);
-					$pages = ceil($total / $batas);
+					$jml_data = mysqli_query($con, "SELECT * FROM tb_produk where id_kategori ='$id'");
+                    $total = mysqli_num_rows($jml_data);
+                    $pages = ceil($total / $batas);
+
+                    if($total == 0){
+                        echo "<h1>Data Barang Sedang Kosong...</h1>";
+                    }
 
 					if (isset($_POST["cari2"])) {
 						$cari = $_POST['cari'];
 						$q = $_POST['q'];
 						$sql = mysqli_query($con, "SELECT * FROM tb_produk,tb_brand where tb_produk.id_merek=tb_brand.id_merek AND tb_brand.id_merek like '%$cari%' and tb_produk.judul like '%$q%' and tb_produk.stok > 0 LIMIT $posisi, $batas");
 					} else {
-						$sql = mysqli_query($con, "SELECT * FROM tb_produk LIMIT $posisi, $batas");
+						$sql = mysqli_query($con, "SELECT * FROM tb_produk WHERE id_kategori = $id LIMIT $posisi, $batas");
 					}
 					while ($r = mysqli_fetch_assoc($sql)) {
 						$harga_grosir = "Rp. " . number_format($r['harga_grosir'], 0, ',', '.');
@@ -109,7 +132,8 @@
 								</div>
 							</div>
 						</div>
-					<?php } ?>
+                    <?php }
+                    ?>
 
 				</div>
 				<!-- Pagination-->
@@ -120,20 +144,20 @@
 							if ($pg > 1) { ?>
 								<li class="page-item">
 								<?php
-								echo "<a class='page-link' href='shop-" . ($pg - 1) . "'>
+								echo "<a class='page-link' href='kategori-<?= $id?>-page" . ($pg - 1) . "'>
 										<span aria-hidden='true'>&laquo;</span></a>";
 							} ?>
 								</li>
 							<?php for ($i = 1; $i <= $pages; $i++) { ?>
 								<li class="page-item">
-									<a class="page-link" href="shop-<?php echo $i; ?>"><?php echo $i; ?></a>
+									<a class="page-link" href="kategori-<?= $id?>-page-<?php echo $i; ?>"><?php echo $i; ?></a>
 								</li>
 							<?php } ?>
 							<?php
 							if ($pg < $pages) { ?>
 								<li class="page-item">
 							<?php
-									echo "<a class='page-link' href='shop-" . ($pg + 1) . "'>
+									echo "<a class='page-link' href='kategori-<?= $id?>-page-" . ($pg + 1) . "'>
 									<span aria-hidden='true'>&raquo;</span></a>";
 							} ?>
 								</li>

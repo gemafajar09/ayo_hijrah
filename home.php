@@ -41,7 +41,7 @@ $r = mysqli_fetch_assoc($sql);
   <!-- banner -->
 <section class="">
   <!-- <img style="width: 100%" src="foto/banner.png"> -->
-  <div class="container-fluid">
+  <div class="">
     <!-- Small boxes (Stat box) -->
     <div class="row">
       <!-- Left col -->
@@ -53,22 +53,22 @@ $r = mysqli_fetch_assoc($sql);
                 <center>
                   <h3>KATEGORI</h3>
                 </center>
-                <div class="owl-carousel-2 owl-carousel dots-inside owl-loaded owl-drag" data-owl-carousel="{ &quot;loop&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 1000, &quot;items&quot;: 4, &quot;nav&quot;: true }">
+                <div class="owl-carousel-2 owl-carousel dots-inside owl-loaded owl-drag" data-owl-carousel="{ &quot;loop&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 2000, &quot;items&quot;: 4, &quot;nav&quot;: true }">
                   <?php
                   $ambil = mysqli_query($con, "SELECT * FROM `tb_kategori`");
-                  //$no = 0;
+                  
                   while ($pecah = $ambil->fetch_object()) {
                   ?>
-                    <div class="thumbnail">
+                    <div class="">
                       <center>
                         <table border="0">
                           <tr height="200px" align="center">
-                            <td><img src="<?= $base_url; ?>img/kategori/<?php echo $pecah->gambar_kategori ?>" style="width: 150px;"></td>
+                            <td><a href="view-kategori-<?=$pecah->id_kategori?>"><img src="<?= $base_url; ?>img/kategori/<?php echo $pecah->gambar_kategori ?>" style="width: 150px; height: 180px;"></a></td>
                           </tr>
                           <tr height="" align="center">
                             <td>
                               <hr>
-                              <b><?php echo $pecah->nama_kategori; ?></b>
+                              <b><a href='view-kategori-<?=$pecah->id_kategori?>'><?php echo $pecah->nama_kategori; ?></a></b>
                             </td>
                           </tr>
                         </table>
@@ -92,8 +92,9 @@ $r = mysqli_fetch_assoc($sql);
   </div><!-- /.container-fluid -->
 </section>
 
-<section class="padding-top-3x" style="background:url(foto/background/sft.jpg)">
 
+<!-- produk -->
+<section class="padding-top-2x padding-bottom-2x" style="background:url(foto/background/sft.jpg)">
   <div class="container">
     <h3 class="text-center mb-30">Produk</h3>
     <div class="row">
@@ -115,22 +116,21 @@ $r = mysqli_fetch_assoc($sql);
       while ($r = mysqli_fetch_assoc($sql)) {
         $harga_grosir = "Rp. " . number_format($r['harga_grosir'], 0, ',', '.');
         $harga_eceran = "Rp. " . number_format($r['harga_eceran'], 0, ',', '.');
-        $judul = substr($r['judul'], 0, 20) . "...";
+        $judul = substr($r['judul'], 0, 20) . " ....";
       ?>
         <div class="col-sm-3">
           <div class="card mb-30"><a class="card-img-tiles" href="view-produk-<?= $r['id_produk']; ?>">
               <div class="inner">
                 <div class="text-center" style="padding:10px">
                   <center>
-                    <img src="img/produk/<?= $r['foto'] ?>" alt="Category" class="img-responsive" style="height: 200px; ">
+                    <img src="<?= $base_url?>img/produk/<?= $r['foto'] ?>" class="img-responsive" style="height: 200px; width:200px">
                   </center>
                 </div>
               </div>
             </a>
-            <div class="card-body text-center">
+            <div class="card-body text-center" height="100px">
               <h4 class="card-title"><?= $judul; ?></h4>
               <p class="text-muted">
-                
                 <?php 
                     if($_SESSION['jenis_toko'] == 'Grosir'){
                         echo $harga_grosir;
@@ -139,7 +139,6 @@ $r = mysqli_fetch_assoc($sql);
                 } ?>
                 <?php
                 if ($r['status'] == 'Y') {
-
                   echo "<a class='btn btn-outline-primary' href='view-produk-$r[id_produk]'>View Products</a>";
                 } else {
                   echo "<a class='btn btn-outline-danger'>SOLD OUT</a>";
@@ -151,25 +150,27 @@ $r = mysqli_fetch_assoc($sql);
       <?php } ?>
     </div>
   </div>
-  <div>
 </section>
 
-<section class="padding-top-3x">
+
+
+<!-- brand -->
+<section class="padding-top-2x padding-bottom-2x">
   <div class="container">
     <h3 class="text-center mb-30">Brand</h3>
-<?php
-$data = mysqli_query($con,"SELECT logo, nama_merek FROM `tb_brand`");
-?>
+      <?php
+      $data = mysqli_query($con,"SELECT * FROM `tb_brand`");
+      ?>
     <div class="row">
-<?php foreach($data as $a){ ?>
-      <div class="col-md-3">
+    <?php foreach($data as $a){ ?>
+      <div class="col-md-3 padding-top-1x">
         <div class="card">
           <div class="card-body">
             <img src="<?= $base_url ?>img/brand/<?= $a['gambar_brand'] ?>" alt="Category" class="img-responsive" style="height: 200px; ">
           </div>
         </div>
       </div>
-<?php } ?>
+    <?php } ?>
     </div>
   </div>
 </section>
