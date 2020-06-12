@@ -26,13 +26,14 @@
           <tr>
             <th>Nama Produk</th>
             <th class="text-center">Jumlah</th>
+            <th class="text-center">Ukuran</th>
             <th class="text-center">Subtotal</th>
             <th class="text-center"><a class="btn btn-sm btn-outline-danger">Hapus</a></th>
           </tr>
         </thead>
         <?php
         error_reporting(0);
-        $sql = mysqli_query($con, "SELECT * FROM tbl_keranjang,tbl_produk,tbl_customer where tbl_keranjang.id_produk=tbl_produk.id_produk AND tbl_keranjang.id_customer=tbl_customer.id_customer AND tbl_keranjang.id_customer='$_SESSION[idcs]'");
+        $sql = mysqli_query($con, "SELECT * FROM tb_transaksi_tmp,tb_produk,tbl_customer where tb_transaksi_tmp.kd_produk=tb_produk.kd_produk AND tb_transaksi_tmp.id_customer=tbl_customer.id_customer AND tb_transaksi_tmp.id_customer='$_SESSION[idcs]'");
         $cek = mysqli_num_rows($sql);
         if ($cek == 0) { ?>
           <tr>
@@ -48,12 +49,12 @@
             if($r['jenis_toko'] == 'Grosir')
             {
               $harga = "Rp. " . number_format($r['harga_grosir']);
-              $total = "Rp. " . number_format($r['harga_grosir'] * $r['jml']);
-              $sub = $r['harga_grosir'] * $r['jml'];
+              $total = "Rp. " . number_format($r['harga_grosir'] * $r['jumlah_beli']);
+              $sub = $r['harga_grosir'] * $r['jumlah_beli'];
             }else{
-              $harga = "Rp. " . number_format($r['harga']);
-              $total = "Rp. " . number_format($r['harga'] * $r['jml']);
-              $sub = $r['harga'] * $r['jml'];
+              $harga = "Rp. " . number_format($r['harga_eceran']);
+              $total = "Rp. " . number_format($r['harga_eceran'] * $r['jumlah_beli']);
+              $sub = $r['harga_eceran'] * $r['jumlah_beli'];
             }
             $subtot += $sub;
             $arr[] = $r;
@@ -61,7 +62,7 @@
             <tbody>
               <tr>
                 <td>
-                  <div class="product-item"><a class="product-thumb" href="#"><img src="foto/produk/<?= $r['foto'] ?>" alt="Product" style="width : 110px; height: 130px;"></a>
+                  <div class="product-item"><a class="product-thumb" href="#"><img src="img/produk/<?= $r['foto'] ?>" alt="Product" style="width : 110px; height: 130px;"></a>
                     <div class="product-info">
                       <h4 class="product-title"><a href="#"><?= $r["judul"]; ?></a></h4><span><em>Harga:</em> <?= $harga; ?></span>
                     </div>
@@ -70,12 +71,13 @@
                 <td class="text-center">
                   <div class="count-input">
                     <form action="update-keranjang-<?= $r['id_keranjang'] ?>" method="POST">
-                      <input class="form-control col-sm-7" name="jml" value="<?= $r['jml']; ?>">
+                      <input class="form-control col-sm-7" name="jml" value="<?= $r['jumlah_beli']; ?>">
                       <button type="submit" name="simpanP" class="btn-success col-sm-4 text-center" style="height:45px"><span class='glyphicon glyphicon-plus' style="margin-left:-5px;"></button>
                     </form>
                   </div>
 
                 </td>
+                <td class="text-center text-lg text-medium"><?= $r['size']; ?></td>
                 <td class="text-center text-lg text-medium"><?= $sub; ?></td>
                 <td class="text-center"><a class="remove-from-cart" href="del-keranjang-<?= $r['id_keranjang']; ?>" data-toggle="tooltip" title="Remove item">
                     <i class="icon-cross"></i></a></td>
@@ -129,11 +131,11 @@
         $posisi = ($pg - 1) * $batas;
       }
 
-      $jml_data = mysqli_query($con, "SELECT * FROM tbl_produk");
+      $jml_data = mysqli_query($con, "SELECT * FROM tb_produk");
       $total = mysqli_num_rows($jml_data);
       $pages = ceil($total / $batas);
 
-      $sql = mysqli_query($con, "SELECT * FROM tbl_produk LIMIT $posisi, $batas");
+      $sql = mysqli_query($con, "SELECT * FROM tb_produk LIMIT $posisi, $batas");
       while ($r = mysqli_fetch_assoc($sql)) {
         $harga_grosir = "Rp. " . number_format($r['harga_grosir'], 0, ',', '.');
         $harga = "Rp. " . number_format($r['harga'], 0, ',', '.');
@@ -143,7 +145,7 @@
         <div class="grid-item">
           <div class="product-card">
             <a class="product-thumb" href="view-produk-<?= $r['id_produk']; ?>">
-              <center><img src="foto/produk/<?= $r['foto'] ?>" alt="Product" style="height: 185px; width: 75%;"></center>
+              <center><img src="img/produk/<?= $r['foto'] ?>" alt="Product" style="height: 185px; width: 75%;"></center>
             </a>
             <h3 class="product-title"><a href="view-produk-<?= $r['id_produk']; ?>"><?= $judul; ?></a></h3>
             <h4 class="product-price">
