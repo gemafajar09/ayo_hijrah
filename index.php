@@ -39,7 +39,7 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <!-- Favicon and Apple Icons-->
 
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> -->
   <!-- <link rel="icon" type="image/x-icon" href="foto/logo.png">
 
   <link rel="icon" type="image/png" href="foto/logo.png">
@@ -81,6 +81,15 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
       padding-left: 0;
       padding-right: 0;
     }
+    @font-face {
+        font-family: 'bradley';
+        src: url(css/bradhitc.ttf);
+    }
+    /* body{
+      font-family: 'bradley';
+      font-size: 70pt;
+      font-variant: inherit;
+    } */
   </style>
   <!-- Google Tag Manager-->
   <script>
@@ -166,9 +175,9 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
           <div class="col-lg-4 col-md-6">
             <!-- Contact Info-->
             <section class="widget widget-light-skin">
-              <h3 class="widget-title" style="color: black">Contact Information</h3>
+              <h5 class="" style="color: black">Contact Information</h5>
               <p class="" style="color: black">
-                <h5>Alamat : Jl. Batang Antokan No.8, Rimbo Kaluang, Kec. Padang Bar., Kota Padang, Sumatera Barat 25114</h5>
+                <h6>Alamat : Jl. Batang Antokan No.8, Rimbo Kaluang, Kec. Padang Bar., Kota Padang, Sumatera Barat 25114</h6>
               </p>
               <ul class="list-unstyled text-sm text-white">
                 <table>
@@ -179,25 +188,25 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
                   </tr>
                   <tr>
                     <td style="color: black">
-                      <h5>Call Only</h5>
+                      <h6>Call Only</h6>
                     </td>
                     <td style="color: black">
-                      <h5>: 0821-7006-5191</h5>
+                      <h6>: 0821-7006-5191</h6>
                     </td>
                   </tr>
                 </table>
               </ul>
             </section>
             <p style="color: black">
-               <h5>Claim / Reject / Refund (Retur) : <br> <br>
-                Admin 1 : 0821-7006-5191 <br>
-                Admin 2 : 0821-7006-5191</h5>
+               <h5>Claim / Reject / Refund (Retur) : <br></h5>
+                <h6>Admin 1 : 0821-7006-5191 <br>
+                Admin 2 : 0821-7006-5191</h6>
               </<p>
           </div>
           <div class="col-lg-4 col-md-6">
             <!-- About Us-->
             <section class="widget widget-links widget-light-skin">
-              <h3 class="widget-title" style="color: black">Navigation</h3>
+              <h5 class="" style="color: black">Navigation</h5>
               <ul>
                 <li><a style="color: black" href="./">Home</a></li>
                 <li><a style="color: black" href="shop">Shop</a></li>
@@ -214,7 +223,7 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
           <div class="col-lg-4 col-md-6">
             <!-- Account / Shipping Info-->
             <section class="widget widget-light-skin">
-              <h3 class="widget-title" style="color: black">Rekening Support</h3>
+              <h5 class="" style="color: black">Rekening Support</h5>
               <!-- <ul class="list-unstyled text-sm text-white">
 				<li><span class=" text-white"><img src="foto/bank/bni.png" style="width:50px;"></span> </li>
                   <li><span class="opacity-50">No Rekening : </span>0301679206</li>

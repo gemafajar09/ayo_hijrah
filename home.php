@@ -1,35 +1,24 @@
 <!-- Slide -->
 <?php
 include "config/koneksi.php";
-$sql = mysqli_query($con, "SELECT * FROM tbl_slide");
-$r = mysqli_fetch_assoc($sql);
+
 ?>
 <section class="hero-slider" style="background-image: url(img/hero-slider/main-bg.jpg);height: auto;">
   <div align="center" class="owl-carousel large-controls dots-inside" data-owl-carousel="{ &quot;nav&quot;: true, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 7000 }">
+    <?php
+    $sql = mysqli_query($con, "SELECT * FROM tb_slider");
+    foreach($sql as $r){ ?>
+    
     <div class="item">
       <div class="">
         <div class="row justify-content-center align-items-center">
           <div class="col-md-12">
-            <img class="img-fluid" alt="Responsive image" style="width: 100%; height: 650px;" src="foto/slide/<?php echo $r['gambar_1'] ?>" alt="Puma Backpack"></div>
+            <img class="img-fluid" alt="Responsive image" style="width: 100%; height: 650px;" src="img/slide/<?php echo $r['gambar_slider'] ?>" alt="Puma Backpack">
+          </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="item">
-      <div class="">
-        <div class="row justify-content-center align-items-center">
-          <div class="col-md-12">
-            <img class="img-fluid" alt="Responsive image" style="width: 100%; height: 650px;" src="foto/slide/<?php echo $r['gambar_2'] ?>" alt="Puma Backpack"></div>
-        </div>
-      </div>
-    </div>
-    <div class="item">
-      <div class="">
-        <div class="row justify-content-center align-items-center">
-          <div class="col-md-12">
-            <img class="img-fluid" alt="Responsive image" style="width: 100%; height: 650px;" src="foto/slide/<?php echo $r['gambar_3'] ?>" alt="Puma Backpack"></div>
-        </div>
-      </div>
-    </div>
+    <?php } ?>
   </div>
 </section>
 <!-- Top Categories-->
@@ -39,14 +28,16 @@ $r = mysqli_fetch_assoc($sql);
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <!-- banner -->
-<section class="">
+
+  <!-- kategori -->
+<section class="padding-top-2x padding-bottom-2x">
   <!-- <img style="width: 100%" src="foto/banner.png"> -->
-  <div class="">
+  <div class="container">
     <!-- Small boxes (Stat box) -->
     <div class="row">
       <!-- Left col -->
-      <div class="col-lg-12">
-        <div class="card" style="background-color: transparent;">
+      <div class="img-fluid">
+        <!-- <div class="card" style="background-color: transparent;">
           <div class="card-body">
             <div id="wrapper">
               <div class="container mb-end">
@@ -81,20 +72,97 @@ $r = mysqli_fetch_assoc($sql);
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
+        <center>
+          <h3 class="padding-bottom-1x">KATEGORI</h3>
+        </center>
+        <div class="owl-carousel dots-outside owl-loaded owl-drag owl-theme" data-owl-carousel="{ &quot;loop&quot;: true,&quot;center&quot;: true,&quot;margin&quot;:10, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 2000, &quot;items&quot;: 4, &quot;nav&quot;: true }">
+                  <?php
+                  $ambil = mysqli_query($con, "SELECT * FROM `tb_kategori`");
+              
+                  while ($pecah = $ambil->fetch_object()) {
+                  ?>
+                    <!-- <div class="">
+                      <center>
+                        <table border="0">
+                          <tr height="200px" align="center">
+                            <td><a href="view-kategori-<?=$pecah->id_kategori?>"><img src="<?= $base_url; ?>img/kategori/<?php echo $pecah->gambar_kategori ?>" style="width: 150px; height: 180px;"></a></td>
+                          </tr>
+                          <tr height="" align="center">
+                            <td>
+                              
+                              <h4><a href='view-kategori-<?=$pecah->id_kategori?>'><?php echo $pecah->nama_kategori; ?></a></h4>
+                            </td>
+                          </tr>
+                        </table>
+                      </center>
+                    </div> -->
+                    <div class="img-thumbnail"> 
+                      <span style="padding: 0px; margin: 0px; color:white; background: white; border-radius: 5px;">
+                        <a href="view-kategori-<?=$pecah->id_kategori?>">
+                          <img src="<?= $base_url ?>img/kategori/<?= $pecah->gambar_kategori ?>" alt="Category" class="img-responsive" style="height: 250px; width:90%; border-radius: 5px; display: block; margin-left: auto; margin-right: auto; margin-top:12px">
+                        </a>
+                        <br>
+                        
+                        <h4 class="text-center" style="font-family: 'bradley'"><a href='view-kategori-<?=$pecah->id_kategori?>'><?php echo $pecah->nama_kategori; ?></a></h4>
+                      </span>
+                    </div>
+                      
+                  <?php
+                  }
+                  ?>
+                </div>
       </div>
-
-
       <!-- /.Left col -->
-
     </div>
     <!-- /.row (main row) -->
   </div><!-- /.container-fluid -->
 </section>
 
 
-<!-- produk -->
+<!-- brand -->
+<!-- <section class="padding-top-2x padding-bottom-2x">
+  <div class="container">
+    <h3 class="text-center mb-30">Brand</h3>
+    <?php
+      $data = mysqli_query($con,"SELECT * FROM `tb_brand`");
+      ?>
+    <div class="row">
+    <?php foreach($data as $a){ ?>
+      <div class="col-sm-2 padding-top-1x">
+        <div class="card">
+          <div class="card-body">
+            <center>
+            <img src="<?= $base_url ?>img/brand/<?= $a['gambar_brand'] ?>" alt="Category" class="img-responsive" style="height: 100px; ">
+            </center>
+          </div>
+        </div>
+      </div>
+    <?php } ?>
+    </div>
+  </div>
+</section> -->
+
 <section class="padding-top-2x padding-bottom-2x" style="background:url(foto/background/sft.jpg)">
+  <div class="container">
+    <h3 class="text-center mb-30">Brand</h3>
+      <?php
+      $data = mysqli_query($con,"SELECT * FROM `tb_brand`");
+      ?>
+    <div class="row">
+    <?php foreach($data as $a){ ?>
+      <span style="padding: 10px; margin: 10px; color:white; background: white; border-radius: 5px;">
+        <center>
+          <img src="<?= $base_url ?>img/brand/<?= $a['gambar_brand'] ?>" alt="Category" class="img-responsive" style="height: 100px; width:150px">
+        </center>
+      </span>
+        <?php } ?>
+    </div>
+  </div>
+</section>
+
+<!-- produk -->
+<section class="padding-top-2x padding-bottom-2x" >
   <div class="container">
     <h3 class="text-center mb-30">Produk</h3>
     <div class="row">
@@ -129,7 +197,7 @@ $r = mysqli_fetch_assoc($sql);
               </div>
             </a>
             <div class="card-body text-center" height="100px">
-              <h4 class="card-title"><?= $judul; ?></h4>
+              <h4 class="card-title" style="font-family: 'bradley'"><?= $judul; ?></h4>
               <p class="text-muted">
                 <?php 
                     if($_SESSION['jenis_toko'] == 'Grosir'){
@@ -154,23 +222,3 @@ $r = mysqli_fetch_assoc($sql);
 
 
 
-<!-- brand -->
-<section class="padding-top-2x padding-bottom-2x">
-  <div class="container">
-    <h3 class="text-center mb-30">Brand</h3>
-      <?php
-      $data = mysqli_query($con,"SELECT * FROM `tb_brand`");
-      ?>
-    <div class="row">
-    <?php foreach($data as $a){ ?>
-      <div class="col-md-3 padding-top-1x">
-        <div class="card">
-          <div class="card-body">
-            <img src="<?= $base_url ?>img/brand/<?= $a['gambar_brand'] ?>" alt="Category" class="img-responsive" style="height: 200px; ">
-          </div>
-        </div>
-      </div>
-    <?php } ?>
-    </div>
-  </div>
-</section>

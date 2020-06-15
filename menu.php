@@ -169,7 +169,7 @@ $r = mysqli_fetch_assoc($sql);
       <!-- Site Logo-->
       <a class="site-logo" href="index.php">
         <!-- <img src="foto/logo.png" alt="Unishop" style="width:100%"> -->
-        <h3>Ayo Hijrah</h3>
+        <h3 style="font-family: 'bradley'; font-size: '25px';">Ayo Hijrah</h3>
       </a>
     </div>
   </div>
