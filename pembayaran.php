@@ -13,7 +13,7 @@ if (@$_SESSION['idcs'] == '') {
 			global $con;
 			$isikeranjang = array();
 			$sid = $_SESSION['idcs'];
-			$sql = mysqli_query($con, "SELECT * FROM tbl_keranjang WHERE id_customer='$sid'");
+			$sql = mysqli_query($con, "SELECT * FROM tb_transaksi_tmp WHERE id_customer='$sid'");
 			while ($r = mysqli_fetch_array($sql)) {
 				$isikeranjang[] = $r;
 			}
@@ -24,7 +24,7 @@ if (@$_SESSION['idcs'] == '') {
 		$jml          = count($isikeranjang);
 		// Merubah stok di tabel produk
 		for ($i = 0; $i < $jml; $i++) {
-			$sqlpr = mysqli_query($con, "SELECT * FROM tbl_produk WHERE id_produk={$isikeranjang[$i]['id_produk']}");
+			$sqlpr = mysqli_query($con, "SELECT * FROM tb_produk WHERE id_produk={$isikeranjang[$i]['id_produk']}");
 			$rpr = mysqli_fetch_array($sqlpr);
 			$stok = $rpr["stok"];
 			if ($stok < $isikeranjang[$i]['jml']) { ?>
@@ -57,11 +57,12 @@ if (@$_SESSION['idcs'] == '') {
 										<th class="putih">Foto</th>
 										<th class="putih">Judul</th>
 										<th class="text-center putih">Jumlah</th>
+										<th class="text-center putih">Ukuran</th>
 										<th class="text-right putih">Harga</th>
 										<th class="text-right putih">Total</th>
 									</tr>
 									<?php
-									$sql = mysqli_query($con, "SELECT k.*,p.* FROM tbl_keranjang k LEFT JOIN tbl_produk p ON k.id_produk=p.id_produk WHERE k.id_customer='$_SESSION[idcs]'");
+									$sql = mysqli_query($con, "SELECT k.*,p.* FROM tb_transaksi_tmp k LEFT JOIN tb_produk p ON k.kd_produk=p.kd_produk WHERE k.id_customer='$_SESSION[idcs]'");
 
 									$cek = mysqli_num_rows($sql);
 									if ($cek == 0) { ?>
@@ -73,24 +74,31 @@ if (@$_SESSION['idcs'] == '') {
 										$no = 0;
 										while ($r = mysqli_fetch_assoc($sql)) {
 											$no++;
-											$harga = "Rp. " . number_format($r['harga']);
-											$total = "Rp. " . number_format($r['harga'] * $r['jml']);
-											$sub = $r['harga'] * $r['jml'];
+											if($_SESSION['jenis_toko'] == 'Grosir'){
+												$harga = "Rp. " . number_format($r['harga_grosir']);
+												$total = $r['harga_grosir'] * $r['jumlah_beli'];
+											}else{
+												$harga = "Rp. " . number_format($r['harga_eceran']);
+												$total = $r['harga_eceran'] * $r['jumlah_beli'];
+											}
+
+											$sub = $harga * $r['jumlah_beli'];
 											$rand = rand(2, 100);
 											@$subtot += $sub + $rand;
 
 											$totalakhir = $subtot;
-											$berat = $r['berat'] * $r['jml'];
+											$berat = $r['berat'] * $r['jumlah_beli'];
 											@$subberat += $berat;
 
 										?>
 											<tr>
 												<td class="text-center"><?php echo $no; ?></td>
-												<td><img src="foto/produk/<?= $r['foto'] ?>" alt="" style="width : 70px; height: 90px;"></td>
+												<td><img src="img/produk/<?= $r['foto'] ?>" alt="" style="width : 70px; height: 90px;"></td>
 												<td><?= $r['judul'] ?></td>
-												<td class="text-center"><?= $r['jml'] ?></td>
+												<td class="text-center"><?= $r['jumlah_beli'] ?></td>
+												<td class="text-center"><?= $r['size'] ?></td>
 												<td class="text-right"><?= $harga ?></td>
-												<td class="text-right"><?= $total ?></td>
+												<td class="text-right">Rp.<?= number_format($total) ?></td>
 											</tr>
 									<?php }
 									} ?>
@@ -152,7 +160,7 @@ if (@$_SESSION['idcs'] == '') {
 								</div>
 								<div class="form-group col-md-12">
 									<label for="kodepos"></label>
-									<input type="hidden" value"99" name="kodepos" id="kodepos" class="form-control" onkeypress="return hanyaAngka(event)" required>
+									<input type="hidden" value="99" name="kodepos" id="kodepos" class="form-control" onkeypress="return hanyaAngka(event)" required>
 								</div>
 								<div class="form-group col-md-12">
 									<label for="alamat">Alamat *</label>
