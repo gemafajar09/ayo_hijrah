@@ -62,7 +62,11 @@ if (@$_SESSION['idcs'] == '') {
 										<th class="text-right putih">Total</th>
 									</tr>
 									<?php
-									$sql = mysqli_query($con, "SELECT k.*,p.* FROM tb_transaksi_tmp k LEFT JOIN tb_produk p ON k.kd_produk=p.kd_produk WHERE k.id_customer='$_SESSION[idcs]'");
+									// $sql = mysqli_query($con, "SELECT k.*,p.* FROM tb_transaksi_tmp k LEFT JOIN tb_produk p ON k.kd_produk=p.kd_produk WHERE k.id_customer='$_SESSION[idcs]'");
+									$sql = mysqli_query($con, "SELECT *,
+									(SELECT group_concat(tmp.size order by tmp.size asc) from tb_transaksi_tmp tmp where tb_transaksi_tmp.id_customer = ".$_SESSION['idcs']." and tmp.kd_produk = tb_transaksi_tmp.kd_produk) as size_dibeli,
+									(SELECT group_concat(size_tersedia.ukuran order by size_tersedia.ukuran asc) from tb_produk produk join tbl_detail_size size_tersedia on produk.kd_produk = size_tersedia.kd_produk where produk.kd_produk = tb_transaksi_tmp.kd_produk) as size_tersedia 
+									FROM tb_transaksi_tmp,tb_produk,tbl_customer where tb_transaksi_tmp.kd_produk=tb_produk.kd_produk AND tb_transaksi_tmp.id_customer=tbl_customer.id_customer AND tb_transaksi_tmp.id_customer ='$_SESSION[idcs]'");
 
 									$cek = mysqli_num_rows($sql);
 									if ($cek == 0) { ?>
@@ -74,13 +78,21 @@ if (@$_SESSION['idcs'] == '') {
 										$no = 0;
 										while ($r = mysqli_fetch_assoc($sql)) {
 											$no++;
-											if($_SESSION['jenis_toko'] == 'Grosir'){
+											// var_dump($r['size']);
+											// exit;
+											// if($r['size'] != 'S' && 'M' && 'L' && 'XL'){
+											// 	echo 'harga eceran';
+											// }else{
+											// 	echo 'harga gorsir';
+											// }
+											if($_SESSION['jenis_toko'] == 'Grosir' && $r['size_dibeli'] == $r['size_tersedia']){
 												$harga = "Rp. " . number_format($r['harga_grosir']);
 												$total = $r['harga_grosir'] * $r['jumlah_beli'];
 											}else{
 												$harga = "Rp. " . number_format($r['harga_eceran']);
 												$total = $r['harga_eceran'] * $r['jumlah_beli'];
 											}
+
 
 											$sub = $harga * $r['jumlah_beli'];
 											$rand = rand(2, 100);
