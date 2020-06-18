@@ -3,16 +3,38 @@ if (isset($_GET['aksi'])) {
   $aksi = $_GET['aksi'];
 
   switch ($aksi) {
-    case "editrekening":
+    case "editbank":
       if (isset($_GET['id'])) {
-        $sql = mysqli_query($con, "SELECT * FROM tb_bank_detail where id_bank_detail='$_GET[id]'");
+        $sql = mysqli_query($con, "SELECT * FROM tb_bank where id_bank='$_GET[id]'");
         $data = mysqli_fetch_assoc($sql);
       }
       if (isset($_POST['save'])) {
-        $save = mysqli_query($con, "UPDATE tb_bank_detail set id_bank='$_POST[id_bank]', no_rek='$_POST[no_rek]',atas_nama='$_POST[atas_nama]'  where  id_bank_detail='$_GET[id]'");
+
+        $namaFile = $_FILES['logo_bank']['name'];
+        $namaSementara = $_FILES['logo_bank']['tmp_name'];
+        $ukuran_foto  = $_FILES['logo_bank']['size'];
+        // var_dump($namaFile);
+        // exit;
+        // tentukan lokasi file akan dipindahkan
+        $dirUpload = "../img/bank/";
+
+        // var_dump($namaFile);
+        // var_dump($_POST['nama_bank']);
+        // exit;
+        // pindahkan file
+
+        if ($ukuran_foto != '0') {
+
+          unlink('../img/bank/' . $data['logo_bank']);
+          $terupload = move_uploaded_file($namaSementara, $dirUpload . $namaFile);
+          $save = mysqli_query($con, "UPDATE tb_bank set nama_bank='$_POST[nama_bank]', logo_bank = '$namaFile' where id_bank='$_GET[id]'");
+        } else {
+          $save = mysqli_query($con, "UPDATE tb_bank set nama_bank='$_POST[nama_bank]' where id_bank='$_GET[id]'");
+        }
+
         if ($save) {
           echo "<script>
-               window.location='?page=rekening';
+               window.location='?page=bank';
               </script>";
         } else {
           echo "<script>alert('Gagal');
@@ -22,11 +44,11 @@ if (isset($_GET['aksi'])) {
 ?>
       <section class="content-header">
         <h1>
-          Informasi No Rekening
+          Informasi Bank
         </h1>
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-          <li class="active">Informasi No Rekening</li>
+          <li class="active">Informasi Bank</li>
         </ol>
       </section>
 
@@ -38,33 +60,20 @@ if (isset($_GET['aksi'])) {
 
               </div>
               <!-- form start -->
-              <form action="" method="POST" class="form-horizontal">
+              <form action="" method="POST" class="form-horizontal" enctype="multipart/form-data">
                 <div class="box-body ">
                   <div class="form-group">
                     <label for="nm_bank" class="col-sm-2 control-label">Nama Bank</label>
                     <div class="col-sm-8">
-                      <select name="id_bank" id="" class="form-control">
-                        <option value="">--Pilih Bank--</option>
-                        <?php
-                        $result = mysqli_query($con, "select * from tb_bank");
-                        $jsArray = "var dtind = new Array();\n";
-                        while ($row = mysqli_fetch_array($result)) {
-                          echo '<option value="' . $row['id_bank'] . '">' . $row['nama_bank'] . '</option>';
-                        }
-                        ?>
-                      </select>
+                      <input type="text" id="nama_bank" name="nama_bank" class="form-control" value="<?= $data['nama_bank'] ?>">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="no_rek" class="col-sm-2 control-label">No Rekening</label>
+                    <label for="no_rek" class="col-sm-2 control-label">Logo Bank</label>
                     <div class="col-sm-8">
-                      <input type="text" id="no_rek" name="no_rek" class="form-control" value="<?= $data['no_rek'] ?>">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="atas_nama" class="col-sm-2 control-label">Atas Nama</label>
-                    <div class="col-sm-8">
-                      <input type="text" id="atas_nama" name="atas_nama" class="form-control" value="<?= $data['atas_nama'] ?>">
+                      <input type="hidden" name="foto_lama" value="<?= $data['logo_bank'] ?>">
+                      <img src="../img/bank/<?= $data['logo_bank'] ?>" alt="" width="150px" height="150px">
+                      <input type="file" name="logo_bank" class="form-control">
                     </div>
                   </div>
 
@@ -81,12 +90,24 @@ if (isset($_GET['aksi'])) {
       </section>
     <?php
       break;
-    case "tambahrekening":
+    case "tambahbank":
       if (isset($_POST['save'])) {
-        $save = mysqli_query($con, "INSERT INTO `tb_bank_detail`(`id_bank`, `no_rek`, `atas_nama`) VALUES( '$_POST[id_bank]','$_POST[no_rek]','$_POST[atas_nama]')");
+        $namaFile = $_FILES['logo_bank']['name'];
+        $namaSementara = $_FILES['logo_bank']['tmp_name'];
+
+        // tentukan lokasi file akan dipindahkan
+        $dirUpload = "../img/bank/";
+
+        // var_dump($namaFile);
+        // var_dump($_POST['nama_bank']);
+        // exit;
+        // pindahkan file
+        $terupload = move_uploaded_file($namaSementara, $dirUpload . $namaFile);
+        $save = mysqli_query($con, "INSERT INTO tb_bank (nama_bank, logo_bank) VALUES('$_POST[nama_bank]','$namaFile')");
+
         if ($save) {
           echo "<script>alert('Tambah Data Berhasil');
-          window.location='?page=rekening';
+          window.location='?page=bank';
           </script>";
           exit;
         } else {
@@ -97,11 +118,11 @@ if (isset($_GET['aksi'])) {
     ?>
       <section class="content-header">
         <h1>
-          Informasi No Rekening
+          Informasi Bank
         </h1>
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-          <li class="active">Informasi No Rekening</li>
+          <li class="active">Informasi Bank</li>
         </ol>
       </section>
 
@@ -113,36 +134,20 @@ if (isset($_GET['aksi'])) {
 
               </div>
               <!-- form start -->
-              <form action="" method="POST" class="form-horizontal">
+              <form action="" method="POST" class="form-horizontal" enctype="multipart/form-data">
                 <div class="box-body ">
                   <div class="form-group">
-                    <label for="nm_bank" class="col-sm-2 control-label">Nama Bank</label>
+                    <label for="" class="col-sm-2 control-label">Nama Bank</label>
                     <div class="col-sm-8">
-                      <select name="id_bank" id="" class="form-control">
-                        <option value="">--Pilih Bank--</option>
-                        <?php
-                        $result = mysqli_query($con, "select * from tb_bank");
-                        $jsArray = "var dtind = new Array();\n";
-                        while ($row = mysqli_fetch_array($result)) {
-                          echo '<option value="' . $row['id_bank'] . '">' . $row['nama_bank'] . '</option>';
-                        }
-                        ?>
-                      </select>
+                      <input type="text" id="nama_bank" name="nama_bank" class="form-control">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="no_rek" class="col-sm-2 control-label">No Rekening</label>
+                    <label for="" class="col-sm-2 control-label">Logo</label>
                     <div class="col-sm-8">
-                      <input type="text" id="no_rek" name="no_rek" class="form-control">
+                      <input type="file" id="logo_bank" name="logo_bank" class="form-control">
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label for="atas_nama" class="col-sm-2 control-label">Atas Nama</label>
-                    <div class="col-sm-8">
-                      <input type="text" id="atas_nama" name="atas_nama" class="form-control">
-                    </div>
-                  </div>
-
                   <div class="form-group">
                     <div class="col-sm-4 col-md-offset-2">
                       <button type="submit" name="save" class="btn btn-primary btn-flat">Simpan</button>
@@ -156,12 +161,15 @@ if (isset($_GET['aksi'])) {
       </section>
     <?php
       break;
-    case "hapusrekening":
+    case "hapusbank":
 
       if (isset($_GET['id'])) {
-        mysqli_query($con, "DELETE FROM tb_bank_detail where id_bank_detail='$_GET[id]'");
+        $sql = mysqli_query($con, "SELECT * FROM tb_bank where id_bank='$_GET[id]'");
+        $data = mysqli_fetch_assoc($sql);
+        unlink('../img/bank/' . $data['logo_bank']);
+        mysqli_query($con, "DELETE FROM tb_bank where id_bank='$_GET[id]'");
         echo "<script>
-    					window.location='index.php?page=rekening';
+    					window.location='index.php?page=bank';
     				</script>";
       }
     ?>
@@ -173,11 +181,11 @@ if (isset($_GET['aksi'])) {
 
   <section class="content-header">
     <h1>
-      Informasi No Rekening
+      Informasi Bank
     </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active">Informasi No Rekening</li>
+      <li class="active">Informasi Bank</li>
     </ol>
   </section>
   <section class="content">
@@ -185,7 +193,7 @@ if (isset($_GET['aksi'])) {
       <div class="col-md-12">
         <div class="box box-info">
           <div class="box-header with-border">
-            <a href="?page=rekening&aksi=tambahrekening" class="btn btn-flat btn-primary">Tambah Rekening</a>
+            <a href="?page=bank&aksi=tambahbank" class="btn btn-flat btn-primary">Tambah Bank</a>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -195,15 +203,14 @@ if (isset($_GET['aksi'])) {
                   <tr>
                     <th>No</th>
                     <th>Nama Bank</th>
-                    <th>No Rekening</th>
-                    <th>Atas Nama</th>
+                    <th>Logo Bank</th>
                     <th>Action</th>
                   </tr>
                 </thead>
 
                 <tbody>
                   <?php
-                  $q = mysqli_query($con, "SELECT * from tb_bank_detail, tb_bank WHERE tb_bank.id_bank = tb_bank_detail.id_bank");
+                  $q = mysqli_query($con, "SELECT * from tb_bank");
                   $no = 0;
                   while ($r = mysqli_fetch_array($q)) {
                     $no++;
@@ -212,11 +219,11 @@ if (isset($_GET['aksi'])) {
                     <tr>
                       <td><?= $no; ?></td>
                       <td><?= $r['nama_bank']; ?></td>
-                      <td><?= $r['no_rek'] ?></td>
-                      <td><?= $r['atas_nama']; ?></td>
+                      <td><img src="../img/bank/<?= $r['logo_bank'] ?>" alt="" width="150px" height="150px">
+                      </td>
                       <td>
-                        <a class='btn btn-success btn-xs' title='Edit Data' href='?page=rekening&aksi=editrekening&id=<?php echo $r['id_bank_detail']; ?>' onclick="return confirm('ANDA YAKIN AKAN EDIT DATA INI ... ?')"><span class='glyphicon glyphicon-edit'></span></a>
-                        <a class='btn btn-danger btn-xs' title='Hapus Produk' href='?page=rekening&aksi=hapusrekening&id=<?php echo $r['id_bank_detail']; ?>' onclick="return confirm('ANDA YAKIN AKAN MENGHAPUS DATA INI ... ?')"><span class='glyphicon glyphicon-remove'></span></a>
+                        <a class='btn btn-success btn-xs' title='Edit Data' href='?page=bank&aksi=editbank&id=<?php echo $r['id_bank']; ?>' onclick="return confirm('ANDA YAKIN AKAN EDIT DATA INI ... ?')"><span class='glyphicon glyphicon-edit'></span></a>
+                        <a class='btn btn-danger btn-xs' title='Hapus Produk' href='?page=bank&aksi=hapusbank&id=<?php echo $r['id_bank']; ?>' onclick="return confirm('ANDA YAKIN AKAN MENGHAPUS DATA INI ... ?')"><span class='glyphicon glyphicon-remove'></span></a>
                       </td>
                     </tr>
                   <?php } ?>
