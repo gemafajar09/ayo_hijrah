@@ -47,9 +47,8 @@ if (isset($_GET['aksi'])) {
         // insert size
         $ukuran = $_POST['ukuran'];
         $stok = $_POST['stok'];
-        foreach($stok as $i => $a)
-        {
-          mysqli_query($con,"INSERT INTO `tbl_detail_size`(`kd_produk`, `ukuran`, `stok`) VALUES ('$_POST[kd_produk]','$ukuran[$i]','$stok[$i]')");
+        foreach ($stok as $i => $a) {
+          mysqli_query($con, "INSERT INTO `tbl_detail_size`(`kd_produk`, `ukuran`, `stok`) VALUES ('$_POST[kd_produk]','$ukuran[$i]','$stok[$i]')");
         }
 
 
@@ -62,7 +61,7 @@ if (isset($_GET['aksi'])) {
           }
           $nmberkas1  = $_FILES["foto1"]["name"];
           $lokberkas1 = $_FILES["foto1"]["tmp_name"];
-          foreach ($nmberkas1 as $i => $a){
+          foreach ($nmberkas1 as $i => $a) {
             if (empty($nmberkas1[$i])) {
               $date1 = "";
             } else {
@@ -74,8 +73,7 @@ if (isset($_GET['aksi'])) {
             }
             // var_dump($nmfoto1);
             // var_dump($_POST['kd_produk']);
-            mysqli_query($con,"INSERT INTO tb_gambar(gambar_produk, kd_produk) VALUES ('$nmfoto1', '$_POST[kd_produk]')");
-            
+            mysqli_query($con, "INSERT INTO tb_gambar(gambar_produk, kd_produk) VALUES ('$nmfoto1', '$_POST[kd_produk]')");
           }
           // exit;
           // batas upload foto
@@ -84,7 +82,7 @@ if (isset($_GET['aksi'])) {
           if ($jumlah) {
             echo "<script>alert('Maaf, Kode sudah ada, silahkan masukan kode yang lain !');window.location.href='index.php?page=produk&aksi=tambahproduk'</script>";
           } else {
-             $save = mysqli_query($con, "INSERT INTO `tb_produk`(
+            $save = mysqli_query($con, "INSERT INTO `tb_produk`(
              `kd_produk`, 
              `id_kategori`, 
              `id_brand`, 
@@ -111,7 +109,7 @@ if (isset($_GET['aksi'])) {
                 'Baru',
                 '$judulseo',
                 '$tglskrg')");
-                // simpan foto
+            // simpan foto
           }
           if ($save) {
             echo "<script>
@@ -189,7 +187,7 @@ if (isset($_GET['aksi'])) {
                       </div>
                     </div>
                     <hr>
-                    
+
                     <div class="form-group">
                       <label class="col-sm-2 control-label">Ukuran</label>
                     </div>
@@ -225,7 +223,7 @@ if (isset($_GET['aksi'])) {
                       </div>
                     </div>
                     <hr>
-                   
+
                     <div class="form-group">
                       <label for="judul" class="col-sm-2 control-label">Judul / Nama Produk</label>
                       <div class="col-sm-4">
@@ -339,46 +337,45 @@ if (isset($_GET['aksi'])) {
           $nmfoto = $_POST["fotolama"];
         }
 
-        
+
         // edit ukuran
         // $ukuran = $_POST['ukuran'];
         $id_detail = $_POST['id_detail'];
         $stok = $_POST['stok'];
-        foreach($stok as $i => $a)
-        {
-          mysqli_query($con,"UPDATE `tbl_detail_size` SET `stok`= '$stok[$i]' WHERE id_detail='$id_detail[$i]'");
+        foreach ($stok as $i => $a) {
+          mysqli_query($con, "UPDATE `tbl_detail_size` SET `stok`= '$stok[$i]' WHERE id_detail='$id_detail[$i]'");
         }
         // exit;
 
         //penambahan gambar produk 
-          $nmberkas1  = $_FILES["foto1"]["name"];
-          $lokberkas1 = $_FILES["foto1"]["tmp_name"];
-          foreach ($nmberkas1 as $i => $a){
-            if (empty($nmberkas1[$i])) {
-              $date1 = "";
-            } else {
-              $date1 = date("YmdHis");
-            }
-            $nmfoto1 = $date1 . $nmberkas1[$i];
-            if (!empty($lokberkas1[$i])) {
-              move_uploaded_file($lokberkas1[$i], "../img/produk_detail/$nmfoto1");
-            }
-            // var_dump($nmfoto1);
-            // var_dump($data['kd_produk']);
-            $kd_produk1 = $data['kd_produk'];
-            // exit;
-            mysqli_query($con,"INSERT INTO tb_gambar(gambar_produk, kd_produk) 
-                                VALUES ('$nmfoto1', '$kd_produk1')");
+        $nmberkas1  = $_FILES["foto1"]["name"];
+        $lokberkas1 = $_FILES["foto1"]["tmp_name"];
+        foreach ($nmberkas1 as $i => $a) {
+          if (empty($nmberkas1[$i])) {
+            $date1 = "";
+          } else {
+            $date1 = date("YmdHis");
           }
+          $nmfoto1 = $date1 . $nmberkas1[$i];
+          if (!empty($lokberkas1[$i])) {
+            move_uploaded_file($lokberkas1[$i], "../img/produk_detail/$nmfoto1");
+          }
+          // var_dump($nmfoto1);
+          // var_dump($data['kd_produk']);
+          $kd_produk1 = $data['kd_produk'];
+          // exit;
+          mysqli_query($con, "INSERT INTO tb_gambar(gambar_produk, kd_produk) 
+                                VALUES ('$nmfoto1', '$kd_produk1')");
+        }
 
-          
+
 
 
         // $lihat = mysqli_fetch_assoc(mysqli_query($con, "SELECT * FROM tb_produk where id_produk='$_GET[id_produk]'"));
         // $kd_produk = $lihat["kd_produk"];
         // if($ukuran == NULL)
         // {
-          $save = mysqli_query($con, "UPDATE tb_produk set judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]', harga_grosir='$_POST[harga_grosir]',harga_eceran='$_POST[harga_eceran]', foto='$nmfoto', judul_seo='$judulseo', status='$status' where id_produk='$_GET[id_produk]'");
+        $save = mysqli_query($con, "UPDATE tb_produk set judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]', harga_grosir='$_POST[harga_grosir]',harga_eceran='$_POST[harga_eceran]', foto='$nmfoto', judul_seo='$judulseo', status='$status' where id_produk='$_GET[id_produk]'");
 
         // mysqli_query($con, "UPDATE tb_barang set nama_barang='$_POST[judul]', harga_jual='$_POST[harga]' where kode_barang='$kd_produk'");  
         // }else{
@@ -387,7 +384,7 @@ if (isset($_GET['aksi'])) {
 
         // mysqli_query($con, "UPDATE tb_barang set nama_barang='$_POST[judul]', harga_jual='$_POST[harga]' where kode_barang='$kd_produk'");
         // }
-        
+
 
 
         if ($save) {
@@ -450,23 +447,23 @@ if (isset($_GET['aksi'])) {
                     </div>
                     <!-- buek foreach berdasarikan kd_produk -->
                     <?php
-                      $data_kategori = mysqli_query($con, "SELECT * FROM tbl_detail_size WHERE kd_produk = '$data[kd_produk]'");
-                      // echo "SELECT * FROM tbl_detail_size WHERE kd_produk = $data[kd_produk]";
-                      while($r = mysqli_fetch_array($data_kategori)){
-                        ?>
-                      
-                    <div class="form-group">
-                      <label for="judul" class="col-sm-2 control-label"><?php echo $r['ukuran']?></label>
-                      <div class="col-sm-4">
-                        <input type="hidden" name="id_detail[]" value="<?php echo $r['id_detail']?>">
-                        <input type="number" name="stok[]" id="stok[]" class="form-control" value="<?php echo $r['stok']?>" placeholder="Stok">
+                    $data_kategori = mysqli_query($con, "SELECT * FROM tbl_detail_size WHERE kd_produk = '$data[kd_produk]'");
+                    // echo "SELECT * FROM tbl_detail_size WHERE kd_produk = $data[kd_produk]";
+                    while ($r = mysqli_fetch_array($data_kategori)) {
+                    ?>
+
+                      <div class="form-group">
+                        <label for="judul" class="col-sm-2 control-label"><?php echo $r['ukuran'] ?></label>
+                        <div class="col-sm-4">
+                          <input type="hidden" name="id_detail[]" value="<?php echo $r['id_detail'] ?>">
+                          <input type="number" name="stok[]" id="stok[]" class="form-control" value="<?php echo $r['stok'] ?>" placeholder="Stok">
+                        </div>
                       </div>
-                    </div>
                     <?php
-                      }
+                    }
                     ?>
                     <hr>
-                    
+
                     <div class="form-group">
                       <label for="judul" class="col-sm-2 control-label">Judul</label>
                       <div class="col-sm-4">
@@ -532,10 +529,10 @@ if (isset($_GET['aksi'])) {
                         <input type="file" name="foto1[]" id="foto" class="form-control" multiple>
                         <font color="red">*</font> <span>Ukuran Foto Maximal 1 MB</span>
                       </div>
-                    </div>  
-                    
-                    
-                    
+                    </div>
+
+
+
                     <hr>
 
                     <div class="form-group">
@@ -543,41 +540,41 @@ if (isset($_GET['aksi'])) {
                         <button type="submit" name="save" class="btn btn-primary btn-flat">Simpan</button>
                       </div>
                     </div>
-                  </form> 
-                  <hr>  
-                    <h5><b>Perbarui/hapus foto lama</b></h5>
-                    <!-- looping tb_gambarberdasrkankd_produk -->
-                    <?php
-                      $data_kategori = mysqli_query($con, "SELECT tb_gambar.*, tb_produk.id_produk FROM tb_gambar JOIN tb_produk ON tb_gambar.kd_produk = tb_produk.kd_produk WHERE tb_produk.id_produk = '$_GET[id_produk]'");
-                      while($r = mysqli_fetch_array($data_kategori)){
-                        ?>
-                    <form method="POST" action="CRUD/modul_produk/aksi_edit_foto_produk.php?id_gambar=<?php echo $r['id_gambar']?>&id_produk=<?php echo $r['id_produk']?>" enctype="multipart/form-data">    
-                    
-                    <div class="form-group">
-                      <label for="foto" class="col-sm-2 control-label">Foto Lainnya</label>
-                      <div class="col-sm-4">
-                        <input type="file" name="fotoupdate1" id="foto" class="form-control">
-                        <input type="hidden" name="fotolama1" id="foto" class="form-control" value="<?= $data["gambar_produk"]; ?>">
-                        <font color="red">*</font> <span>Ukuran Foto Maximal 1 MB</span>
-                      </div>
+              </form>
+              <hr>
+              <h5><b>Perbarui/hapus foto lama</b></h5>
+              <!-- looping tb_gambarberdasrkankd_produk -->
+              <?php
+              $data_kategori = mysqli_query($con, "SELECT tb_gambar.*, tb_produk.id_produk FROM tb_gambar JOIN tb_produk ON tb_gambar.kd_produk = tb_produk.kd_produk WHERE tb_produk.id_produk = '$_GET[id_produk]'");
+              while ($r = mysqli_fetch_array($data_kategori)) {
+              ?>
+                <form method="POST" action="CRUD/modul_produk/aksi_edit_foto_produk.php?id_gambar=<?php echo $r['id_gambar'] ?>&id_produk=<?php echo $r['id_produk'] ?>" enctype="multipart/form-data">
+
+                  <div class="form-group">
+                    <label for="foto" class="col-sm-2 control-label">Foto Lainnya</label>
+                    <div class="col-sm-4">
+                      <input type="file" name="fotoupdate1" id="foto" class="form-control">
+                      <input type="hidden" name="fotolama1" id="foto" class="form-control" value="<?= $data["gambar_produk"]; ?>">
+                      <font color="red">*</font> <span>Ukuran Foto Maximal 1 MB</span>
                     </div>
-                    <div class="form-group">
-                      <label for="hrg" class="col-sm-2 control-label">&nbsp;</label>
-                      <div class="col-sm-4">
-                        <img src="../img/produk_detail/<?= $r['gambar_produk']; ?>" width="150px" height="100px">
-                        <button  type="submit" class="btn btn-success"><i class="fa fa-pencil"></i></button>
-                        <a href="?page=produk&aksi=hapusgambar&id_gambar=<?php echo $r['id_gambar']?>&id_produk=<?php echo $r['id_produk']?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                      </div>
-                        
+                  </div>
+                  <div class="form-group">
+                    <label for="hrg" class="col-sm-2 control-label">&nbsp;</label>
+                    <div class="col-sm-4">
+                      <img src="../img/produk_detail/<?= $r['gambar_produk']; ?>" width="150px" height="100px">
+                      <button type="submit" class="btn btn-success"><i class="fa fa-pencil"></i></button>
+                      <a href="?page=produk&aksi=hapusgambar&id_gambar=<?php echo $r['id_gambar'] ?>&id_produk=<?php echo $r['id_produk'] ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
                     </div>
 
-                    </form>
-                      <?php }  ?>    
-                    
                   </div>
-                </div>  
+
+                </form>
+              <?php }  ?>
+
             </div>
           </div>
+        </div>
+        </div>
         </div>
       </section>
     <?php
@@ -590,15 +587,15 @@ if (isset($_GET['aksi'])) {
         $data_ukuran = mysqli_fetch_assoc(mysqli_query($con, "SELECT * FROM tbl_detail_size where kd_produk='$lihat[kd_produk]'"));
 
         $data_gambar = mysqli_query($con, "SELECT gambar_produk FROM tb_gambar where kd_produk='$lihat[kd_produk]'");
-      
-          while ($row = mysqli_fetch_array($data_gambar)){
-            $gambar_produk = $row['gambar_produk'];
-            // var_dump($gambar_produk);
-            unlink("../img/produk_detail/" . $gambar_produk);
-          } 
-          unlink("../img/produk/" . $lihat['foto']);
 
-        mysqli_query($con, "DELETE FROM tb_gambar where kd_produk= '$lihat[kd_produk]' ");        
+        while ($row = mysqli_fetch_array($data_gambar)) {
+          $gambar_produk = $row['gambar_produk'];
+          // var_dump($gambar_produk);
+          unlink("../img/produk_detail/" . $gambar_produk);
+        }
+        unlink("../img/produk/" . $lihat['foto']);
+
+        mysqli_query($con, "DELETE FROM tb_gambar where kd_produk= '$lihat[kd_produk]' ");
         mysqli_query($con, "DELETE FROM tbl_detail_size where kd_produk='$lihat[kd_produk]'");
         $del = mysqli_query($con, "DELETE FROM tb_produk where id_produk='$_GET[id_produk]'");
         // var_dump($del);
@@ -696,36 +693,35 @@ if (isset($_GET['aksi'])) {
       </section>
   <?php
       break;
-      case "hapusgambar":
-        if (isset($_GET['id_gambar'])) {
-          $sql = mysqli_query($con, "SELECT * FROM tb_gambar
+    case "hapusgambar":
+      if (isset($_GET['id_gambar'])) {
+        $sql = mysqli_query($con, "SELECT * FROM tb_gambar
         where id_gambar='$_GET[id_gambar]'");
-          $rr = mysqli_fetch_assoc($sql);
-          
-          // $nmberkas  = $_FILES["foto"]["name"];
-          // $lokberkas = $_FILES["foto"]["tmp_name"];
-          // if (!empty($lokberkas)) {
-          //   $nmfoto = date("YmdHis") . $nmberkas;
-          //   move_uploaded_file($lokberkas, "../img/produk_detail/$nmfoto");
-          // } else {
-          //   $nmfoto = $_POST["fotolama"];
-          // }
-          unlink("../img/produk_detail/" . $rr['gambar_produk']);
-          
-          $del= mysqli_query($con, "DELETE FROM tb_gambar where id_gambar='$_GET[id_gambar]'");
+        $rr = mysqli_fetch_assoc($sql);
+
+        // $nmberkas  = $_FILES["foto"]["name"];
+        // $lokberkas = $_FILES["foto"]["tmp_name"];
+        // if (!empty($lokberkas)) {
+        //   $nmfoto = date("YmdHis") . $nmberkas;
+        //   move_uploaded_file($lokberkas, "../img/produk_detail/$nmfoto");
+        // } else {
+        //   $nmfoto = $_POST["fotolama"];
+        // }
+        unlink("../img/produk_detail/" . $rr['gambar_produk']);
+
+        $del = mysqli_query($con, "DELETE FROM tb_gambar where id_gambar='$_GET[id_gambar]'");
         if ($del) {
           echo "<script>
           alert('Data Berhasil Dihapus');
-    			window.location='index.php?page=produk&aksi=editproduk&id_produk=".$_GET['id_produk']."';
+    			window.location='index.php?page=produk&aksi=editproduk&id_produk=" . $_GET['id_produk'] . "';
     				  </script>";
         }
-          // $kat = $data['nama_kategori'] . " - " . $data['nama_merek'];
-          // $penulis = $data['penulis'];
-          // $harga = "Rp. " . number_format($data['harga'], '0', '.', ',');
-          // $desk = $data['deskripsi'];
-        }
+        // $kat = $data['nama_kategori'] . " - " . $data['nama_merek'];
+        // $penulis = $data['penulis'];
+        // $harga = "Rp. " . number_format($data['harga'], '0', '.', ',');
+        // $desk = $data['deskripsi'];
+      }
       break;
-       
   }
 } else {
   ?>
@@ -806,6 +802,5 @@ if (isset($_GET['aksi'])) {
       </div>
     </div>
   </section>
-  
-<?php } ?>
 
+<?php } ?>

@@ -28,8 +28,9 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
 
 <!-- Mirrored from themes.rokaux.com/unishop/v2.2/template-1/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Apr 2018 05:47:23 GMT -->
 
-<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
   <title>Ayo Hijrah</title>
   <!-- SEO Meta Tags-->
   <meta name="description" content="Ayo Hijrah">
@@ -55,7 +56,116 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
   <!-- Customizer Styles-->
   <link rel="stylesheet" media="screen" href="customizer/customizer.min.css">
   <style>
-    .pagination{display:inline-block;padding-left:0;margin:20px 0;border-radius:4px}.pagination>li{display:inline}.pagination>li>a,.pagination>li>span{position:relative;float:left;padding:6px 12px;margin-left:-1px;line-height:1.42857143;color:#337ab7;text-decoration:none;background-color:#fff;border:1px solid #ddd}.pagination>li:first-child>a,.pagination>li:first-child>span{margin-left:0;border-top-left-radius:4px;border-bottom-left-radius:4px}.pagination>li:last-child>a,.pagination>li:last-child>span{border-top-right-radius:4px;border-bottom-right-radius:4px}.pagination>li>a:focus,.pagination>li>a:hover,.pagination>li>span:focus,.pagination>li>span:hover{z-index:2;color:#23527c;background-color:#eee;border-color:#ddd}.pagination>.active>a,.pagination>.active>a:focus,.pagination>.active>a:hover,.pagination>.active>span,.pagination>.active>span:focus,.pagination>.active>span:hover{z-index:3;color:#fff;cursor:default;background-color:#337ab7;border-color:#337ab7}.pagination>.disabled>a,.pagination>.disabled>a:focus,.pagination>.disabled>a:hover,.pagination>.disabled>span,.pagination>.disabled>span:focus,.pagination>.disabled>span:hover{color:#777;cursor:not-allowed;background-color:#fff;border-color:#ddd}.pagination-lg>li>a,.pagination-lg>li>span{padding:10px 16px;font-size:18px;line-height:1.3333333}.pagination-lg>li:first-child>a,.pagination-lg>li:first-child>span{border-top-left-radius:6px;border-bottom-left-radius:6px}.pagination-lg>li:last-child>a,.pagination-lg>li:last-child>span{border-top-right-radius:6px;border-bottom-right-radius:6px}.pagination-sm>li>a,.pagination-sm>li>span{padding:5px 10px;font-size:12px;line-height:1.5}.pagination-sm>li:first-child>a,.pagination-sm>li:first-child>span{border-top-left-radius:3px;border-bottom-left-radius:3px}.pagination-sm>li:last-child>a,.pagination-sm>li:last-child>span{border-top-right-radius:3px;border-bottom-right-radius:3px}
+    .pagination {
+      display: inline-block;
+      padding-left: 0;
+      margin: 20px 0;
+      border-radius: 4px
+    }
+
+    .pagination>li {
+      display: inline
+    }
+
+    .pagination>li>a,
+    .pagination>li>span {
+      position: relative;
+      float: left;
+      padding: 6px 12px;
+      margin-left: -1px;
+      line-height: 1.42857143;
+      color: #337ab7;
+      text-decoration: none;
+      background-color: #fff;
+      border: 1px solid #ddd
+    }
+
+    .pagination>li:first-child>a,
+    .pagination>li:first-child>span {
+      margin-left: 0;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px
+    }
+
+    .pagination>li:last-child>a,
+    .pagination>li:last-child>span {
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px
+    }
+
+    .pagination>li>a:focus,
+    .pagination>li>a:hover,
+    .pagination>li>span:focus,
+    .pagination>li>span:hover {
+      z-index: 2;
+      color: #23527c;
+      background-color: #eee;
+      border-color: #ddd
+    }
+
+    .pagination>.active>a,
+    .pagination>.active>a:focus,
+    .pagination>.active>a:hover,
+    .pagination>.active>span,
+    .pagination>.active>span:focus,
+    .pagination>.active>span:hover {
+      z-index: 3;
+      color: #fff;
+      cursor: default;
+      background-color: #337ab7;
+      border-color: #337ab7
+    }
+
+    .pagination>.disabled>a,
+    .pagination>.disabled>a:focus,
+    .pagination>.disabled>a:hover,
+    .pagination>.disabled>span,
+    .pagination>.disabled>span:focus,
+    .pagination>.disabled>span:hover {
+      color: #777;
+      cursor: not-allowed;
+      background-color: #fff;
+      border-color: #ddd
+    }
+
+    .pagination-lg>li>a,
+    .pagination-lg>li>span {
+      padding: 10px 16px;
+      font-size: 18px;
+      line-height: 1.3333333
+    }
+
+    .pagination-lg>li:first-child>a,
+    .pagination-lg>li:first-child>span {
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px
+    }
+
+    .pagination-lg>li:last-child>a,
+    .pagination-lg>li:last-child>span {
+      border-top-right-radius: 6px;
+      border-bottom-right-radius: 6px
+    }
+
+    .pagination-sm>li>a,
+    .pagination-sm>li>span {
+      padding: 5px 10px;
+      font-size: 12px;
+      line-height: 1.5
+    }
+
+    .pagination-sm>li:first-child>a,
+    .pagination-sm>li:first-child>span {
+      border-top-left-radius: 3px;
+      border-bottom-left-radius: 3px
+    }
+
+    .pagination-sm>li:last-child>a,
+    .pagination-sm>li:last-child>span {
+      border-top-right-radius: 3px;
+      border-bottom-right-radius: 3px
+    }
+
     .col-md-3 {
       display: inline-block;
 
@@ -81,10 +191,12 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
       padding-left: 0;
       padding-right: 0;
     }
+
     @font-face {
-        font-family: 'bradley';
-        src: url(css/bradhitc.ttf);
+      font-family: 'bradley';
+      src: url(css/bradhitc.ttf);
     }
+
     /* body{
       font-family: 'bradley';
       font-size: 70pt;
@@ -116,7 +228,7 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
 
 <body>
 
-<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
   <!-- Google Tag Manager (noscript)-->
   <noscript>
     <iframe src="http://www.googletagmanager.com/ns.html?id=GTM-T4DJFPZ" height="0" width="0" style="display: none; visibility: hidden;"></iframe>
@@ -150,7 +262,7 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
   <div style="background-color: #F2E9D8" class="offcanvas-wrapper">
     <!-- Page Content-->
     <!-- Main Slider-->
-<?php
+    <?php
     // cek mode maintenis
     if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
     ?>
@@ -198,8 +310,8 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
               </ul>
             </section>
             <p style="color: black">
-               <h5>Claim / Reject / Refund (Retur) : <br></h5>
-                <h6>Admin 1 : 0821-7006-5191 <br>
+              <h5>Claim / Reject / Refund (Retur) : <br></h5>
+              <h6>Admin 1 : 0821-7006-5191 <br>
                 Admin 2 : 0821-7006-5191</h6>
               </<p>
           </div>
@@ -229,48 +341,22 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
                   <li><span class="opacity-50">No Rekening : </span>0301679206</li>
                   <li><span class="opacity-50">Atas Nama :</span>Delvi Trianto</li>
                 </ul>-->
+
               <?php
               $no = 1;
-              $ambil = $con->query("SELECT * FROM `tbl_bank` WHERE id_bank='1'");
+              $ambil = $con->query("SELECT * FROM tb_bank, tb_bank_detail WHERE tb_bank.id_bank = tb_bank_detail.id_bank");
               while ($pecah = $ambil->fetch_object()) {
               ?>
                 <!-- <li><span class=" text-white"><img src="foto/bank/bca.png" style="width:50px;"></span></li> -->
                 <ul class="list-unstyled text-sm text-white">
-                  <img src="foto/bank/mandiri.png" alt="" width="50%" height="50%">
+                  <img src="img/bank/<?= $pecah->logo_bank ?>" alt="" width="50%" height="50%">
                   <!-- <li style="color: black;"><span style=" color: black;" class="opacity-50">Mandiri</span></li> -->
                   <li style="color: black;"><span style=" color: black;" class="opacity-50">No Rekening : </span><?= $pecah->no_rek ?></li>
                   <li style="color: black;"><span style=" color: black;" class="opacity-50">Atas Nama &nbsp;&nbsp; : </span><?= $pecah->atas_nama ?></li>
 
                 </ul>
               <?php } ?>
-              <?php
-              $no = 1;
-              $ambil = $con->query("SELECT * FROM `tbl_bank` WHERE id_bank='2'");
-              while ($pecah = $ambil->fetch_object()) {
-              ?>
-                <!-- <li><span class=" text-white"><img src="foto/bank/bca.png" style="width:50px;"></span></li> -->
-                <ul class="list-unstyled text-sm text-white">
-                  <img src="foto/bank/bni.png" alt="" width="30%" height="30%">
-                  <!-- <li style="color: black;"><span style=" color: black;" class="opacity-50">Mandiri</span></li> -->
-                  <li style="color: black;"><span style=" color: black;" class="opacity-50">No Rekening : </span><?= $pecah->no_rek ?></li>
-                  <li style="color: black;"><span style=" color: black;" class="opacity-50">Atas Nama &nbsp;&nbsp; : </span><?= $pecah->atas_nama ?></li>
 
-                </ul>
-              <?php } ?>
-              <?php
-              $no = 1;
-              $ambil = $con->query("SELECT * FROM `tbl_bank` WHERE id_bank='3'");
-              while ($pecah = $ambil->fetch_object()) {
-              ?>
-                <!-- <li><span class=" text-white"><img src="foto/bank/bca.png" style="width:50px;"></span></li> -->
-                <ul class="list-unstyled text-sm text-white">
-                  <img src="foto/bank/bca.png" alt="" width="30%" height="30%">
-                  <!-- <li style="color: black;"><span style=" color: black;" class="opacity-50">Mandiri</span></li> -->
-                  <li style="color: black;"><span style=" color: black;" class="opacity-50">No Rekening : </span><?= $pecah->no_rek ?></li>
-                  <li style="color: black;"><span style=" color: black;" class="opacity-50">Atas Nama &nbsp;&nbsp; : </span><?= $pecah->atas_nama ?></li>
-
-                </ul>
-              <?php } ?>
               <ul class="list-unstyled text-sm text-white">
                 <li><span style="color: black" class="opacity-50">Keamanan </span></li>
                 <li><span style="color: black" class=" text-white"><img src="foto/lisensi.png" style="width:100px;"></span></li>
@@ -322,148 +408,148 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
   </script>
   <!-- /WhatsHelp.io widget -->
 
-<script type="text/javascript">
-  function hitung() {
-    var kurir = $('[name="kurir"]:checked').val();
-    var total = $('#total').val();
-    var ongkir = $("#ongkir").val();
-    if (kurir == "gojek" || kurir == "Jemput Toko") {
-      ongkir = 0;
+  <script type="text/javascript">
+    function hitung() {
+      var kurir = $('[name="kurir"]:checked').val();
+      var total = $('#total').val();
+      var ongkir = $("#ongkir").val();
+      if (kurir == "gojek" || kurir == "Jemput Toko") {
+        ongkir = 0;
+      }
+      var bayar = (parseFloat(total) + parseFloat(ongkir));
+
+
+      if (parseFloat(ongkir) > 0) {
+        $("#oksimpan").show();
+      } else {
+        $("#oksimpan").hide();
+      }
+      if (kurir == "gojek" || kurir == "Jemput Toko") {
+        ongkir = 0;
+      }
+      $("#totalbayar").val(bayar);
+      $("#testotal").html(toDuit(bayar));
+      $("#jmlongkir").html(toDuit(ongkir));
+      if (kurir == "gojek" || kurir == "Jemput Toko") {
+        $("#biayap").hide();
+        $("#oksimpan").show();
+      } else {
+        $("#biayap").show();
+      }
+
+      $("#jmlongkir").show();
     }
-    var bayar = (parseFloat(total) + parseFloat(ongkir));
 
-
-    if (parseFloat(ongkir) > 0) {
-      $("#oksimpan").show();
-    } else {
-      $("#oksimpan").hide();
+    function toDuit(number) {
+      var number = number.toString(),
+        duit = number.split('.')[0],
+        duit = duit.split('').reverse().join('')
+        .replace(/(\d{3}(?!$))/g, '$1,')
+        .split('').reverse().join('');
+      return 'Rp. ' + duit;
     }
-    if (kurir == "gojek" || kurir == "Jemput Toko") {
-      ongkir = 0;
-    }
-    $("#totalbayar").val(bayar);
-    $("#testotal").html(toDuit(bayar));
-    $("#jmlongkir").html(toDuit(ongkir));
-    if (kurir == "gojek" || kurir == "Jemput Toko") {
-      $("#biayap").hide();
-      $("#oksimpan").show();
-    } else {
-      $("#biayap").show();
-    }
+    $(function() {
 
-    $("#jmlongkir").show();
-  }
+      $('#provinsi').change(function() {
+        //Mengambil value dari option select provinsi kemudian parameternya dikirim menggunakan ajax
+        var prov = $('#provinsi').val();
 
-  function toDuit(number) {
-    var number = number.toString(),
-      duit = number.split('.')[0],
-      duit = duit.split('').reverse().join('')
-      .replace(/(\d{3}(?!$))/g, '$1,')
-      .split('').reverse().join('');
-    return 'Rp. ' + duit;
-  }
-  $(function() {
+        $.ajax({
+          type: 'GET',
+          url: 'cek_kabupaten.php',
+          data: 'prov_id=' + prov,
+          success: function(data) {
 
-    $('#provinsi').change(function() {
-      //Mengambil value dari option select provinsi kemudian parameternya dikirim menggunakan ajax
-      var prov = $('#provinsi').val();
-
-      $.ajax({
-        type: 'GET',
-        url: 'cek_kabupaten.php',
-        data: 'prov_id=' + prov,
-        success: function(data) {
-
-          //jika data berhasil didapatkan, tampilkan ke dalam option select kabupaten
-          $("#kabupaten").html(data);
-        }
+            //jika data berhasil didapatkan, tampilkan ke dalam option select kabupaten
+            $("#kabupaten").html(data);
+          }
+        });
       });
-    });
 
-    $(".kurir").each(function(o_index, o_val) {
-      $(this).on("change", function() {
-        var did = $(this).val();
-        var kab = $('#kabupaten').val();
-        var berat = $('#berat').val();
-        var kurir = $('[name="kurir"]:checked').val();
-        if (kurir == "gojek" || kurir == "Jemput Toko") {
-          $("#kurirserviceinfo").html("");
-          $("#kuririnfo").hide();
-          $("#oksimpan").show();
-          hitung();
-        } else {
-          $.ajax({
-              type: 'POST',
-              dataType: "html",
-              url: 'cek_ongkir.php',
-              data: {
-                'tujuan': kab,
-                'kurir': did,
-                'berat': berat
-              },
-              beforeSend: function() {
-                $("#oksimpan").hide();
-              }
-            })
-            .done(function(x) {
-              $("#kurirserviceinfo").html(x);
-              $("#kuririnfo").show();
-            })
-            .fail(function() {
-              $("#kurirserviceinfo").html("");
-              $("#kuririnfo").hide();
-            });
-        }
+      $(".kurir").each(function(o_index, o_val) {
+        $(this).on("change", function() {
+          var did = $(this).val();
+          var kab = $('#kabupaten').val();
+          var berat = $('#berat').val();
+          var kurir = $('[name="kurir"]:checked').val();
+          if (kurir == "gojek" || kurir == "Jemput Toko") {
+            $("#kurirserviceinfo").html("");
+            $("#kuririnfo").hide();
+            $("#oksimpan").show();
+            hitung();
+          } else {
+            $.ajax({
+                type: 'POST',
+                dataType: "html",
+                url: 'cek_ongkir.php',
+                data: {
+                  'tujuan': kab,
+                  'kurir': did,
+                  'berat': berat
+                },
+                beforeSend: function() {
+                  $("#oksimpan").hide();
+                }
+              })
+              .done(function(x) {
+                $("#kurirserviceinfo").html(x);
+                $("#kuririnfo").show();
+              })
+              .fail(function() {
+                $("#kurirserviceinfo").html("");
+                $("#kuririnfo").hide();
+              });
+          }
 
 
+        });
       });
-    });
 
-  });
-</script>
-<!--Start of Tawk.to Script-->
-<!-- skrip js untuk menampilkan hitung mundur -->
-<?php
-// cek mode maintenis
-if ($_SESSION['pengaturan']['mode_maintenance'] == "1" && !empty($_SESSION['pengaturan']['tgl_mulai_maintenance']) && !empty($_SESSION['pengaturan']['tgl_akhir_maintenance'])) {
-?>
-  <script>
-    /*
+    });
+  </script>
+  <!--Start of Tawk.to Script-->
+  <!-- skrip js untuk menampilkan hitung mundur -->
+  <?php
+  // cek mode maintenis
+  if ($_SESSION['pengaturan']['mode_maintenance'] == "1" && !empty($_SESSION['pengaturan']['tgl_mulai_maintenance']) && !empty($_SESSION['pengaturan']['tgl_akhir_maintenance'])) {
+  ?>
+    <script>
+      /*
     contoh :
     timer(54000000) 
     hasilnya object {hours: 1, minutes: 30, seconds: 0}
     */
 
-    function tampilkanWaktu() {
-      var waktu_mulai = new Date('<?= $_SESSION['pengaturan']['tgl_mulai_maintenance'] ?>').getTime();
-      var waktu_selesai = new Date('<?= $_SESSION['pengaturan']['tgl_akhir_maintenance'] ?>').getTime();
-      var waktu_sekarang = new Date().getTime();
-      var selisih_waktu = waktu_selesai - waktu_sekarang;
-      var hours = Math.floor(selisih_waktu / 3600000) // 1 Hour = 36000 Milliseconds
-      var minutes = Math.floor((selisih_waktu % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
-      var seconds = Math.floor(((selisih_waktu % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+      function tampilkanWaktu() {
+        var waktu_mulai = new Date('<?= $_SESSION['pengaturan']['tgl_mulai_maintenance'] ?>').getTime();
+        var waktu_selesai = new Date('<?= $_SESSION['pengaturan']['tgl_akhir_maintenance'] ?>').getTime();
+        var waktu_sekarang = new Date().getTime();
+        var selisih_waktu = waktu_selesai - waktu_sekarang;
+        var hours = Math.floor(selisih_waktu / 3600000) // 1 Hour = 36000 Milliseconds
+        var minutes = Math.floor((selisih_waktu % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
+        var seconds = Math.floor(((selisih_waktu % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
 
 
-      // jikam masih dalam waktu maintenis, tampilkan jam nya ke html
-      if (waktu_sekarang >= waktu_mulai && waktu_sekarang <= waktu_selesai) {
-        // menampilkan jam, menit dan detik ke HTML
-        document.getElementById("timer").innerHTML = hours + " : " + minutes + " : " + seconds;
-      } else // jika waktu sekarang sudah melewati waktu awal dan akhir maintenace, maka reload halaman
-      {
-        document.getElementById("timer").innerHTML = "";
-        clearInterval(hitung_mundur); // hentikan proses hitung mundur
-        window.location.reload();
+        // jikam masih dalam waktu maintenis, tampilkan jam nya ke html
+        if (waktu_sekarang >= waktu_mulai && waktu_sekarang <= waktu_selesai) {
+          // menampilkan jam, menit dan detik ke HTML
+          document.getElementById("timer").innerHTML = hours + " : " + minutes + " : " + seconds;
+        } else // jika waktu sekarang sudah melewati waktu awal dan akhir maintenace, maka reload halaman
+        {
+          document.getElementById("timer").innerHTML = "";
+          clearInterval(hitung_mundur); // hentikan proses hitung mundur
+          window.location.reload();
+        }
+
+
       }
 
+      var hitung_mundur = setInterval(tampilkanWaktu, 1000); // proses hitung mundur dimulai
+    </script>
+  <?php
+  }
 
-    }
-
-    var hitung_mundur = setInterval(tampilkanWaktu, 1000); // proses hitung mundur dimulai
-  </script>
-<?php
-}
-
-?>
+  ?>
 </body>
 
 <!-- Mirrored from themes.rokaux.com/unishop/v2.2/template-1/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Apr 2018 05:49:04 GMT -->
