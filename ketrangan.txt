@@ -1,0 +1,9 @@
+alur transaksi
+1. tampilan user dengan tipe eceran dan grosir pada halaman awal masih tampilkan harga eceran.
+2. setelah masuk ke dalam keranjang tetap tampilkan harga barang dengan harga eceran
+3. setelah sampai di halaman checkout perikasa status user apakah tergolong eceran atau grosir.
+4. untuk user dengan status grosir
+	- jika status grosir -> cek kode barang -> cek size (s,m,l,xl)
+																1. -> jika all size dengan kode produk sama maka harga dirubah ke harga grosir
+																2. -> jika salah satu produk tersebut ada ukuran barang yang kosong maka bisa membeli barang yang dengan ukuran yang sama
+																3. -> jika tidak maka kembali ke harga eceran

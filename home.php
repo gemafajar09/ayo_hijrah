@@ -200,11 +200,13 @@ include "config/koneksi.php";
               <h4 class="card-title" style="font-family: 'bradley'"><?= $judul; ?></h4>
               <p class="text-muted">
                 <?php 
-                    if($_SESSION['jenis_toko'] == 'Grosir'){
-                        echo $harga_grosir;
-                      }else{
-                        echo $harga_eceran;
-                } ?>
+                    // if($_SESSION['jenis_toko'] == 'Grosir'){
+                    //     echo $harga_grosir;
+                    //   }else{
+                    //     echo $harga_eceran;
+                    // }
+                    echo $harga_eceran; 
+                ?>
                 <?php
                 if ($r['status'] == 'Y') {
                   echo "<a class='btn btn-outline-primary' href='view-produk-$r[id_produk]'>View Products</a>";

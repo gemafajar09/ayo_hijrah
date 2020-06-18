@@ -88,11 +88,13 @@
               </div><span class="text-muted align-middle">&nbsp;&nbsp;4.2 | 3 customer reviews</span>
               <h2 class="padding-top-1x text-normal"><?= $r["judul"]; ?></h2>
               <!-- cek grosir atau tidak -->
-              <?php if($_SESSION['jenis_toko'] == 'Grosir'){ ?>
+             <!--  <?php 
+              if($_SESSION['jenis_toko'] == 'Grosir'){ ?>
                 <span class="h2 d-block"><?= $harga_grosir; ?></span>
               <?php }else{ ?>
                 <span class="h2 d-block"><?= $harga_eceran; ?></span>
-              <?php } ?>
+              <?php } ?> -->
+              <span class="h2 d-block"><?= $harga_eceran; ?></span>
               <p><?= $r["deskripsi"]; ?></p>
               <div class="row margin-top-1x">
                 <div class="col-sm-3">
@@ -300,6 +302,7 @@ if (isset($_POST["pesan"])) {
         {
           $('#stok').val(data.stok)
           document.getElementById('klik').style.visibility = 'visible';
+          cekRead()
         }
         else
         {
@@ -309,8 +312,20 @@ if (isset($_POST["pesan"])) {
     })
   }
 
+  function cekRead()
+  {
+    var cekstok = $('#stok').val()
+   if(cekstok == 0)
+    {
+      document.getElementById('klik').style.visibility = 'hidden';
+      document.getElementById('quantity_input').readOnly = true;
+    }else{
+      document.getElementById('quantity_input').readOnly = false;
+    } 
+  }
 
   var cekstok = $('#stok').val()
+
   if(cekstok == 0)
   {
     document.getElementById('klik').style.visibility = 'hidden';
