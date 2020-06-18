@@ -63,10 +63,24 @@ if (@$_SESSION['idcs'] == '') {
 									</tr>
 									<?php
 									// $sql = mysqli_query($con, "SELECT k.*,p.* FROM tb_transaksi_tmp k LEFT JOIN tb_produk p ON k.kd_produk=p.kd_produk WHERE k.id_customer='$_SESSION[idcs]'");
-									$sql = mysqli_query($con, "SELECT *,
-									(SELECT group_concat(tmp.size order by tmp.size asc) from tb_transaksi_tmp tmp where tb_transaksi_tmp.id_customer = ".$_SESSION['idcs']." and tmp.kd_produk = tb_transaksi_tmp.kd_produk) as size_dibeli,
-									(SELECT group_concat(size_tersedia.ukuran order by size_tersedia.ukuran asc) from tb_produk produk join tbl_detail_size size_tersedia on produk.kd_produk = size_tersedia.kd_produk where produk.kd_produk = tb_transaksi_tmp.kd_produk) as size_tersedia 
-									FROM tb_transaksi_tmp,tb_produk,tbl_customer where tb_transaksi_tmp.kd_produk=tb_produk.kd_produk AND tb_transaksi_tmp.id_customer=tbl_customer.id_customer AND tb_transaksi_tmp.id_customer ='$_SESSION[idcs]'");
+									$sql = mysqli_query($con, "
+											SELECT *,
+											       (SELECT Group_concat(tmp.size ORDER BY tmp.size ASC)
+											        FROM   tb_transaksi_tmp tmp
+											        WHERE  tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
+											               AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS size_dibeli,
+											       (SELECT Group_concat(size_tersedia.ukuran ORDER BY size_tersedia.ukuran
+											               ASC)
+											        FROM   tb_produk produk
+											               JOIN tbl_detail_size size_tersedia
+											                 ON produk.kd_produk = size_tersedia.kd_produk
+											        WHERE  produk.kd_produk = tb_transaksi_tmp.kd_produk AND size_tersedia.stok != 0)  AS size_tersedia
+											FROM   tb_transaksi_tmp,
+											       tb_produk,
+											       tbl_customer
+											WHERE  tb_transaksi_tmp.kd_produk = tb_produk.kd_produk
+											       AND tb_transaksi_tmp.id_customer = tbl_customer.id_customer
+											       AND tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'");
 
 									$cek = mysqli_num_rows($sql);
 									if ($cek == 0) { ?>

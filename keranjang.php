@@ -83,7 +83,7 @@
 
                 </td>
                 <td class="text-center text-lg text-medium"><?= $r['size']; ?></td>
-                <td class="text-center text-lg text-medium"><?= $sub; ?></td>
+                <td class="text-center text-lg text-medium">Rp.<?= number_format($sub) ?></td>
                 <td class="text-center"><a class="remove-from-cart" href="del-keranjang-<?= $r['id_keranjang']; ?>" data-toggle="tooltip" title="Remove item" onclick="return confirm('Yakin Hapus?')">
                     <i class="icon-cross"></i></a></td>
               </tr>
@@ -94,7 +94,7 @@
       </table>
     </div>
     <div class="shopping-cart-footer">
-      <div class="column text-lg">Subtotal: <span class="text-medium"><?= $subtot; ?></span></div>
+      <div class="column text-lg">Subtotal: <span class="text-medium"><?= number_format($subtot) ?></span></div>
     </div>
     <div class="shopping-cart-footer">
       <div class="column"><a class="btn btn-outline-secondary" href="shop">
@@ -143,7 +143,7 @@
       $sql = mysqli_query($con, "SELECT * FROM tb_produk LIMIT $posisi, $batas");
       while ($r = mysqli_fetch_assoc($sql)) {
         $harga_grosir = "Rp. " . number_format($r['harga_grosir'], 0, ',', '.');
-        $harga = "Rp. " . number_format($r['harga'], 0, ',', '.');
+        $harga_eceran = "Rp. " . number_format($r['harga_eceran'], 0, ',', '.');
         $judul = substr($r['judul'], 0, 20) . "...";
       ?>
         <!-- Product-->
@@ -155,11 +155,13 @@
             <h3 class="product-title"><a href="view-produk-<?= $r['id_produk']; ?>"><?= $judul; ?></a></h3>
             <h4 class="product-price">
               <?php 
-                    if($_SESSION['jenis_toko'] == 'Grosir'){
-                          echo $harga_grosir;
-                      }else{
-                        echo $harga;
-                } ?>
+                // if($_SESSION['jenis_toko'] == 'Grosir'){
+                //       echo $harga_grosir;
+                //   }else{
+                //     echo $harga_eceran;
+                // } 
+              echo $harga_eceran;
+              ?>
             </h4>
             <div class="product-buttons">
               <button class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="Whishlist"><i class="icon-heart"></i></button>

@@ -90,11 +90,13 @@
 								<h4 class="product-price">
 								
 								<?php 
-				                    if($_SESSION['jenis_toko'] == 'Grosir'){
-				                          echo $harga_grosir;
-				                      }else{
-				                        echo $harga_eceran;
-				                } ?>
+				                 //    if($_SESSION['jenis_toko'] == 'Grosir'){
+				                 //          echo $harga_grosir;
+				                 //      }else{
+				                 //        echo $harga_eceran;
+				                	// }
+				                	echo $harga_eceran; 
+				                ?>
 								</h4>
 								<div class="product-buttons">
 									<button class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="Whishlist"><i class="icon-heart"></i></button>
