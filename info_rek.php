@@ -27,14 +27,14 @@
 							<th class="text-center putih">Atas Nama</th>
 						</tr>
 						<?php
-						$sql = mysqli_query($con, "SELECT * FROM tbl_bank");
+						$sql = mysqli_query($con, "SELECT * FROM tb_bank, tb_bank_detail WHERE tb_bank.id_bank = tb_bank_detail.id_bank");
 						$no = 1;
 						while ($r = mysqli_fetch_assoc($sql)) {
 
 						?>
 							<tr>
 								<td class="text-center"><?= $no; ?></td>
-								<td class="text-center"><?= $r['nm_bank'] ?></td>
+								<td class="text-center"><?= $r['nama_bank'] ?></td>
 								<td class="text-center"><?= $r['no_rek'] ?></td>
 								<td class="text-center"><?= $r['atas_nama'] ?></td>
 							</tr>
