@@ -6,6 +6,19 @@ if (@$_SESSION['idcs'] == '') {
 include "config/koneksi.php";
 include "config/fungsi_id.php";
 
+// fungsi untuk mendapatkan isi keranjang belanja
+	function isi_keranjang()
+	{
+		global $con;
+		$isikeranjang = array();
+		$sid = $_SESSION['idcs'];
+		$sql = mysqli_query($con, "SELECT * FROM tb_transaksi_tmp WHERE id_customer='$sid'");
+		while ($r = mysqli_fetch_array($sql)) {
+			$isikeranjang[] = $r;
+		}
+		return $isikeranjang;
+	}
+
 if (isset($_POST['pesan'])) {
 	$kurir      = $_POST['kurir'];
 	$service    = $_POST['service'];
@@ -24,19 +37,6 @@ if (isset($_POST['pesan'])) {
 	$dt = str_replace('-', '', substr($tanggal, 5, 5));
 	$dj = str_replace(':', '', $jam_order);
 	$invoice = $idcust . generateRandomUser(2, 1) . $dt . $dj;
-
-	// fungsi untuk mendapatkan isi keranjang belanja
-	function isi_keranjang()
-	{
-		global $con;
-		$isikeranjang = array();
-		$sid = $_SESSION['idcs'];
-		$sql = mysqli_query($con, "SELECT * FROM tb_transaksi_tmp WHERE id_customer='$sid'");
-		while ($r = mysqli_fetch_array($sql)) {
-			$isikeranjang[] = $r;
-		}
-		return $isikeranjang;
-	}
 
 	$transaksi = mysqli_query($con, "INSERT INTO `tb_transaksi`(
 	`id_transaksi`, 
@@ -71,14 +71,14 @@ if (isset($_POST['pesan'])) {
 	    '')");
 
 	// simpan data status
-	$status = mysqli_query($con, "INSERT INTO `tbl_status_transaksi`(`id_order`, `status_order`, `tgl_status`) VALUES ('$invoice','Menunggu Pembayaran','$tglskrg')");
+	// $status = mysqli_query($con, "INSERT INTO `tbl_status_transaksi`(`id_order`, `status_order`, `tgl_status`) VALUES ('$invoice','Menunggu Pembayaran','$tglskrg')");
 
 	// panggil fungsi isi_keranjang dan hitung jumlah produk yang dipesan
 	$isikeranjang = isi_keranjang();
 	$jml          = count($isikeranjang);
 	// simpan data detail pemesanan
 	for ($i = 0; $i < $jml; $i++) {
-		mysqli_query($con, "INSERT INTO `tb_transaksi_detail`(`id_transaksi`, `kd_produk`, `id_customer`, `size`, `jumlah_beli`) VALUES  ('$invoice',{$isikeranjang[$i]['kd_produk']},{$isikeranjang[$i]['id_customer']},{$isikeranjang[$i]['size']},{$isikeranjang[$i]['jumlah_beli']})");
+		mysqli_query($con, "INSERT INTO `tb_transaksi_detail`(`id_transaksi`, `kd_produk`, `id_customer`, `size`, `jumlah_beli`) VALUES  ('$invoice','{$isikeranjang[$i]['kd_produk']}',{$isikeranjang[$i]['id_customer']},'{$isikeranjang[$i]['size']}',{$isikeranjang[$i]['jumlah_beli']})");
 	}
 
 	// Merubah stok di tabel produk
@@ -133,19 +133,7 @@ if (isset($_POST['pesan'])) {
 	$dj         = str_replace(':', '', $jam_order);
 	$invoice    = $idcust . generateRandomUser(2, 1) . $dt . $dj;
 
-	// fungsi untuk mendapatkan isi keranjang belanja
-	function isi_keranjang()
-	{
-		global $con;
-		$isikeranjang = array();
-		$sid = $_SESSION['idcs'];
-		$sql = mysqli_query($con, "SELECT * FROM tb_transaksi_tmp WHERE id_customer='$sid'");
-		while ($r = mysqli_fetch_array($sql)) {
-			$isikeranjang[] = $r;
-		}
-		return $isikeranjang;
-	}
-
+	
 	// simpan data pemesanan
 	$transaksi = mysqli_query($con, "INSERT INTO `tb_transaksi`(
 	`id_transaksi`, 
@@ -180,14 +168,15 @@ if (isset($_POST['pesan'])) {
 	    '')");
 
 	// simpan data status
-	$status = mysqli_query($con, "INSERT INTO `tbl_status_transaksi`(`id_order`, `status_order`, `tgl_status`) VALUES ('$invoice','Menunggu Pembayaran','$tglskrg')");
+	// $status = mysqli_query($con, "INSERT INTO `tbl_status_transaksi`(`id_order`, `status_order`, `tgl_status`) VALUES ('$invoice','Menunggu Pembayaran','$tglskrg')");
 
 	// panggil fungsi isi_keranjang dan hitung jumlah produk yang dipesan
 	$isikeranjang = isi_keranjang();
 	$jml          = count($isikeranjang);
 	// simpan data detail pemesanan
 	for ($i = 0; $i < $jml; $i++) {
-		mysqli_query($con, "INSERT INTO `tb_transaksi_detail`(`id_transaksi`, `kd_produk`, `id_customer`, `size`, `jumlah_beli`) VALUES  ('$invoice',{$isikeranjang[$i]['kd_produk']},{$isikeranjang[$i]['id_customer']},{$isikeranjang[$i]['size']},{$isikeranjang[$i]['jumlah_beli']})");
+		echo "INSERT INTO `tb_transaksi_detail`(`id_transaksi`, `kd_produk`, `id_customer`, `size`, `jumlah_beli`) VALUES  ('$invoice','{$isikeranjang[$i]['kd_produk']}',{$isikeranjang[$i]['id_customer']},'{$isikeranjang[$i]['size']}',{$isikeranjang[$i]['jumlah_beli']})";
+		// mysqli_query($con, "INSERT INTO `tb_transaksi_detail`(`id_transaksi`, `kd_produk`, `id_customer`, `size`, `jumlah_beli`) VALUES  ('$invoice',{$isikeranjang[$i]['kd_produk']},{$isikeranjang[$i]['id_customer']},{$isikeranjang[$i]['size']},{$isikeranjang[$i]['jumlah_beli']})");
 	}
 
 	// Merubah stok di tabel produk
