@@ -42,7 +42,23 @@ $r = mysqli_fetch_assoc($sql);
         <!-- Account / Shipping Info-->
         <section class="widget widget-light-skin">
           <h4>Silahkan Transfer Ke Rekening Kami Di Bawah Ini</h4>
-          <ul class="list-unstyled text-sm">
+
+          <?php
+          $no = 1;
+          $ambil = $con->query("SELECT * FROM tb_bank, tb_bank_detail WHERE tb_bank.id_bank = tb_bank_detail.id_bank");
+          while ($pecah = $ambil->fetch_object()) {
+          ?>
+            <!-- <li><span class=" text-white"><img src="foto/bank/bca.png" style="width:50px;"></span></li> -->
+            <ul class="list-unstyled text-sm">
+              <li><span><img src="img/bank/<?= $pecah->logo_bank ?>" alt="" style="width:150px;"></span></li>
+              <!-- <li style="color: black;"><span style=" color: black;" class="opacity-50">Mandiri</span></li> -->
+              <li style="color: black;"><span style=" color: black;">No Rekening : </span><?= $pecah->no_rek ?></li>
+              <li style="color: black;"><span style=" color: black;">Atas Nama &nbsp;&nbsp; : </span><?= $pecah->atas_nama ?></li>
+
+            </ul>
+          <?php } ?>
+
+          <!-- <ul class="list-unstyled text-sm">
             <li><span class=" "><img src="foto/bank/bni.png" style="width:50px;"></span> </li>
             <li><b>No Rekening : 0585-811955</b></li>
             <li><b>Atas Nama : Rafika Sary</b></li>
@@ -56,7 +72,7 @@ $r = mysqli_fetch_assoc($sql);
             <li><span class=" text-white"><img src="foto/bank/bca.png" style="width:100px;"></span></li>
             <li><b>No Rekening : 032.221.587.6</b></li>
             <li><b>Atas Nama : Rafika Sary</b></li>
-          </ul>
+          </ul> -->
         </section>
         <div class="padding-top-1x padding-bottom-1x"><a class="btn btn-outline-secondary" href="shop">Go Back Shopping</a><a class="btn btn-outline-primary" href="histori-pesanan"><i class="icon-location"></i>&nbsp;Konfirmasi Pembayaran</a></div>
       </div>
