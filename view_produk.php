@@ -100,7 +100,7 @@
                 <div class="col-sm-3">
                   <div class="form-group">
                     <label for="quantity">Jumlah</label>
-                    <input id="quantity_input" onkeyup="ceksaja(this)" type="text" pattern="[0-9]*" name="jml" value="1" class="form-control">
+                    <input id="quantity_input" type="text" onkeyup="cekSaja(this)" pattern="[0-9]*" name="jml" value="" class="form-control">
                   </div>
                   <div class="form-group">
                     <input type="radio" name="ukuran" class="ukuran" onclick="cekStok('S')" value="S"><label>S</label>&nbsp;&nbsp;
@@ -331,13 +331,17 @@ if (isset($_POST["pesan"])) {
     document.getElementById('klik').style.visibility = 'hidden';
   }
 
-  function ceksaja(beli)
+  function cekSaja(beli)
   {
     var stock = $('#stok').val()
-    if(beli > stock)
+    if(beli.value >= stock)
     {
-      alert('Stok Tidak Mencukupi')
+      // console.log('beli')
       document.getElementById('klik').style.visibility = 'hidden';
+    }else{
+      // console.log('kecil')
+      document.getElementById('klik').style.visibility = 'visible';
     }
   }
+
 </script>

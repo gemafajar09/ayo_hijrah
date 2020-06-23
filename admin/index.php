@@ -134,6 +134,7 @@ if (empty($_SESSION['useradmn']) and empty($_SESSION['passadmn'])) {
             if ($_SESSION['level'] == 'admin') {
             ?>
               <li><a href="?page=home"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+              <li><a href="?page=transaksiOfline"><i class="fa fa-barcode"></i> <span>Kasir Offline</span></a></li>
               <li><a href="?page=admin"><i class="fa fa-user"></i><span>Data Admin</span></a></li>
               <li><a href="?page=customer"><i class="fa fa-user"></i><span>Data Customer</span></a></li>
               <li class="treeview">
@@ -189,6 +190,8 @@ if (empty($_SESSION['useradmn']) and empty($_SESSION['passadmn'])) {
 
         if ($_GET['page'] == "" || $_GET['page'] == "home") {
           include "home.php";
+        } elseif ($_GET['page'] == "transaksiOfline") {
+          include "CRUD/modul_transaksi/form-transaksi.php";
         } elseif ($_GET['page'] == "kategori") {
           include "CRUD/modul_kategori/kategori.php";
         } elseif ($_GET['page'] == "merek") {
