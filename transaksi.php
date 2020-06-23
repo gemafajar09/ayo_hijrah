@@ -5,7 +5,7 @@ if (@$_SESSION['idcs'] == '') {
 include "config/koneksi.php";
 include "config/fungsi_id.php";
 
-$sql = mysqli_query($con, "SELECT * FROM tbl_orders where id_order='$_GET[id]'");
+$sql = mysqli_query($con, "SELECT * FROM tb_transaksi where id_transaksi='$_GET[id]'");
 $r = mysqli_fetch_assoc($sql);
 
 // var_dump($r);
