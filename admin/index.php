@@ -40,6 +40,7 @@ if (empty($_SESSION['useradmn']) and empty($_SESSION['passadmn'])) {
 
   <body class="hold-transition skin-blue sidebar-mini">
     <script src="./plugins/jQuery/jquery-3.1.1.min.js"></script>
+    <script src="./jquery.number.js"></script>
     <div class="wrapper">
 
       <header class="main-header">
