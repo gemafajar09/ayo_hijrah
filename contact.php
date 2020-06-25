@@ -1,5 +1,5 @@
 <?php
-$sql = mysqli_query($con, "SELECT * FROM tbl_customer where id_customer='$_SESSION[idcs]'");
+$sql = mysqli_query($con, "SELECT * FROM tb_customer where id_customer='$_SESSION[idcs]'");
 $r = mysqli_fetch_assoc($sql);
 ?>
 <!-- Off-Canvas Wrapper-->
@@ -27,7 +27,7 @@ $r = mysqli_fetch_assoc($sql);
     <div class="row">
       <div class="col-md-12 col-md-offset-1">
         <div class="card mb-30">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3989.293454344063!2d100.36694704722018!3d-0.9293729999999947!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x57a1533e41e3760e!2sAYO%20HIJRAH%20Boutique!5e0!3m2!1sid!2sid!4v1591858998922!5m2!1sid!2sid" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3989.293454344063!2d100.36694704722018!3d-0.9293729999999947!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x57a1533e41e3760e!2sAYO%20HIJRAH%20Boutique!5e0!3m2!1sid!2sid!4v1591858998922!5m2!1sid!2sid" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
           <div class="card-body">
           </div>
         </div>
@@ -85,7 +85,7 @@ $r = mysqli_fetch_assoc($sql);
   <?php
   $tgl = date("Y-m-d H:i:s");
   if (isset($_POST["kirim"])) {
-     mysqli_query($con, "INSERT INTO `tbl_kontak`(`nama`, `subjek`, `pesan`, `tgl_kontak`) VALUES('$_POST[nama_lengkap]','$_POST[subjek]','$_POST[pesan]','$tgl')");
+    mysqli_query($con, "INSERT INTO `tbl_kontak`(`nama`, `subjek`, `pesan`, `tgl_kontak`) VALUES('$_POST[nama_lengkap]','$_POST[subjek]','$_POST[pesan]','$tgl')");
     echo "<script>window.location='index.php';</script>";
   }
   ?>

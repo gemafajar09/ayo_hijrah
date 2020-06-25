@@ -2,12 +2,13 @@
 $conn = mysqli_connect('localhost', 'root', '', 'ayo_hijrah');
 $bulan = $_POST['bulan'];
 $bln = explode('-', $bulan);
-include_once("../../confiq/fungsi_indotgl.php"); 
+include_once("../../confiq/fungsi_indotgl.php");
 
 ?>
 <!DOCTYPE html>
 
-<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Cetak Laporan Perbulan</title>
 	<style>
 		html,
@@ -53,11 +54,10 @@ include_once("../../confiq/fungsi_indotgl.php");
 		<div class="row">
 			<div>
 				<center>
-					<h1>RAFIKA STORE</h1>
-					<h5>Alamat : Jl. Bandar Purus No.45, Padang Pasir, Kec. Padang Barat.
-					<br>Kota Padang, Sumatera Barat <br> No Tlp. : 0811-665-273</h5>
-					<hr
-						style="display: block; height: 1px;border: 0; border-top: 1px solid #ccc;margin: 1em 0; padding: 0;">
+					<h1>AYO HIJRAH</h1>
+					<h5>Alamat : Jl. Batang Antokan No.8, Rimbo Kaluang, Kec. Padang Bar.,
+						<br>Kota Padang, Sumatera Barat 25114<br> No Tlp. :0821-7006-5191</h5>
+					<hr <hr style="display: block; height: 1px;border: 0; border-top: 1px solid #ccc;margin: 1em 0; padding: 0;">
 				</center>
 				<!-- <table border="0" align="center" class="table-responsive">
 					<tr>
@@ -90,21 +90,21 @@ include_once("../../confiq/fungsi_indotgl.php");
 						</thead>
 						<tbody>
 							<?php
-                            $no = 1;
-                            $bulan = $_POST['bulan'];
-                            $total = 0;
-                            $ambil = $conn->query("SELECT * FROM tbl_orders WHERE status_ord = 'Proses Pengiriman' AND tgl_order LIKE '$bulan%' ");
-                            while ($pecah = $ambil->fetch_object()) {
-                                // var_dump($pecah);
-                                $total += $pecah->total;
-                            ?>
-							<tr>
-								<td><?php echo $no++ ?></td>
-								<td><?= $pecah->nmpenerima ?></td>
-								<td><?= tgl_indo("$pecah->tgl_order")?></td>
-								<td width="500" ><?= $pecah->alamat_o ?></td>
-								<td>Rp. <?= number_format($pecah->total);  ?></td>
-							</tr>
+							$no = 1;
+							$bulan = $_POST['bulan'];
+							$total = 0;
+							$ambil = $conn->query("SELECT * FROM tb_transaksi WHERE status_order = 'Proses Pengiriman' AND tgl_order LIKE '$bulan%' ");
+							while ($pecah = $ambil->fetch_object()) {
+								// var_dump($pecah);
+								$total += $pecah->total;
+							?>
+								<tr>
+									<td><?php echo $no++ ?></td>
+									<td><?= $pecah->penerima ?></td>
+									<td><?= tgl_indo("$pecah->tgl_order") ?></td>
+									<td width="500"><?= $pecah->alamat_pengiriman ?></td>
+									<td>Rp. <?= number_format($pecah->total);  ?></td>
+								</tr>
 							<?php } ?>
 						<tfoot>
 							<tr>

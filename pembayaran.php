@@ -63,24 +63,62 @@ if (@$_SESSION['idcs'] == '') {
 									</tr>
 									<?php
 									// $sql = mysqli_query($con, "SELECT k.*,p.* FROM tb_transaksi_tmp k LEFT JOIN tb_produk p ON k.kd_produk=p.kd_produk WHERE k.id_customer='$_SESSION[idcs]'");
-									$sql = mysqli_query($con, "
-											SELECT *,
-											       (SELECT Group_concat(tmp.size ORDER BY tmp.size ASC)
-											        FROM   tb_transaksi_tmp tmp
-											        WHERE  tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
-											               AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS size_dibeli,
-											       (SELECT Group_concat(size_tersedia.ukuran ORDER BY size_tersedia.ukuran
-											               ASC)
-											        FROM   tb_produk produk
-											               JOIN tbl_detail_size size_tersedia
-											                 ON produk.kd_produk = size_tersedia.kd_produk
-											        WHERE  produk.kd_produk = tb_transaksi_tmp.kd_produk AND size_tersedia.stok != 0)  AS size_tersedia
-											FROM   tb_transaksi_tmp,
-											       tb_produk,
-											       tbl_customer
-											WHERE  tb_transaksi_tmp.kd_produk = tb_produk.kd_produk
-											       AND tb_transaksi_tmp.id_customer = tbl_customer.id_customer
-											       AND tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'");
+									// $sql = mysqli_query($con, "
+									// 		SELECT *,
+									// 		       (SELECT Group_concat(tmp.size ORDER BY tmp.size ASC)
+									// 		        FROM   tb_transaksi_tmp tmp
+									// 		        WHERE  tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
+									// 		               AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS size_dibeli,
+									// 		       (SELECT Group_concat(size_tersedia.ukuran ORDER BY size_tersedia.ukuran
+									// 		               ASC)
+									// 		        FROM   tb_produk produk
+									// 		               JOIN tb_detail_size size_tersedia
+									// 		                 ON produk.kd_produk = size_tersedia.kd_produk
+									// 		        WHERE  produk.kd_produk = tb_transaksi_tmp.kd_produk AND size_tersedia.stok != 0)  AS size_tersedia
+									// 		FROM   tb_transaksi_tmp,
+									// 		       tb_produk,
+									// 		       tb_customer
+									// 		WHERE  tb_transaksi_tmp.kd_produk = tb_produk.kd_produk
+									// 		       AND tb_transaksi_tmp.id_customer = tb_customer.id_customer
+									// 			   AND tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'");
+
+									$sql = mysqli_query($con, "SELECT * FROM (SELECT tb_transaksi_tmp.id_keranjang,
+																tb_transaksi_tmp.id_customer,
+																tb_produk.judul,
+																tb_produk.foto,
+																tb_produk.berat,
+																tb_produk.harga_eceran,
+																tb_produk.harga_grosir,
+														(SELECT Group_concat(tmp.size
+																				ORDER BY tmp.size ASC)
+															FROM tb_transaksi_tmp tmp
+															WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
+															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS size_dibeli,
+														
+														(SELECT Group_concat(tmp.kd_produk
+																				ORDER BY tmp.size ASC)
+															FROM tb_transaksi_tmp tmp
+															WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
+															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS kd_produk,
+														
+														(SELECT Group_concat(tmp.jumlah_beli
+																				ORDER BY tmp.size ASC)
+															FROM tb_transaksi_tmp tmp
+															WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
+															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS jumlah_beli,
+														
+														(SELECT Group_concat(size_tersedia.ukuran
+																				ORDER BY size_tersedia.ukuran ASC)
+															FROM tb_produk produk
+															JOIN tb_detail_size size_tersedia ON produk.kd_produk = size_tersedia.kd_produk
+															WHERE produk.kd_produk = tb_transaksi_tmp.kd_produk
+															AND size_tersedia.stok != 0) AS size_tersedia
+														FROM tb_transaksi_tmp,
+															tb_produk,
+															tb_customer
+														WHERE tb_transaksi_tmp.kd_produk = tb_produk.kd_produk
+														AND tb_transaksi_tmp.id_customer = tb_customer.id_customer
+														AND tb_transaksi_tmp.id_customer = '$_SESSION[idcs]') produk GROUP BY produk.kd_produk");
 
 									$cek = mysqli_num_rows($sql);
 									if ($cek == 0) { ?>
@@ -90,6 +128,8 @@ if (@$_SESSION['idcs'] == '') {
 										<?php
 									} else {
 										$no = 0;
+										$_SESSION['data_detail_transaksi_tmp'] = array();
+										$data_detail_transaksi = array();
 										while ($r = mysqli_fetch_assoc($sql)) {
 											$no++;
 											// var_dump($r['size']);
@@ -99,35 +139,63 @@ if (@$_SESSION['idcs'] == '') {
 											// }else{
 											// 	echo 'harga gorsir';
 											// }
-											if($_SESSION['jenis_toko'] == 'Grosir' && $r['size_dibeli'] == $r['size_tersedia']){
-												$harga = "Rp. " . number_format($r['harga_grosir']);
-												$total = $r['harga_grosir'] * $r['jumlah_beli'];
-											}else{
-												$harga = "Rp. " . number_format($r['harga_eceran']);
-												$total = $r['harga_eceran'] * $r['jumlah_beli'];
-											}
+
+											$size = $r['size_dibeli'];
+											$ukuran = explode(",", $size);
 
 
-											$sub = $harga * $r['jumlah_beli'];
-											$rand = rand(2, 100);
-											@$subtot += $sub + $rand;
+											$jbeli = $r['jumlah_beli'];
+											$jumlah_beli = explode(",", $jbeli);
 
-											$totalakhir = $subtot;
-											$berat = $r['berat'] * $r['jumlah_beli'];
-											@$subberat += $berat;
+											$kdproduk1 = $r['kd_produk'];
+											$kd_produk = explode(",", $kdproduk1);
 
+											foreach ($ukuran as $no => $u) {
+												$harga_asli = 0;
+												if ($_SESSION['jenis_toko'] == 'Grosir' && $r['size_dibeli'] == $r['size_tersedia']) {
+													$harga_asli = $r['harga_grosir'];
+													$harga = "Rp. " . number_format($r['harga_grosir']);
+													$total = $r['harga_grosir'] * $jumlah_beli[$no];
+												} else {
+													$harga_asli = $r['harga_eceran'];
+													$harga = "Rp. " . number_format($r['harga_eceran']);
+													$total = $r['harga_eceran'] * $jumlah_beli[$no];
+												}
+												$sub = $harga_asli * $jumlah_beli[$no];
+												$rand = rand(2, 100);
+												@$subtot += $sub + $rand;
+
+												$totalakhir = $subtot;
+												$berat = $r['berat'] * $jumlah_beli[$no];
+												@$subberat += $berat;
+
+												$data_detail_transaksi[] = array(
+													"kd_produk" => $kd_produk[$no],
+													"id_customer" => $_SESSION['idcs'],
+													"size" => $u,
+													"jumlah_beli" => $jumlah_beli[$no],
+													"total_harga" => $total,
+													"harga" => $harga_asli
+												);
 										?>
-											<tr>
-												<td class="text-center"><?php echo $no; ?></td>
-												<td><img src="img/produk/<?= $r['foto'] ?>" alt="" style="width : 70px; height: 90px;"></td>
-												<td><?= $r['judul'] ?></td>
-												<td class="text-center"><?= $r['jumlah_beli'] ?></td>
-												<td class="text-center"><?= $r['size'] ?></td>
-												<td class="text-right"><?= $harga ?></td>
-												<td class="text-right">Rp.<?= number_format($total) ?></td>
-											</tr>
+												<tr>
+													<td class="text-center"><?php echo $no + 1; ?></td>
+													<td><img src="img/produk/<?= $r['foto'] ?>" alt="" style="width : 70px; height: 90px;"></td>
+													<td><?= $r['judul'] ?></td>
+													<td class="text-center"><?= $jumlah_beli[$no] ?></td>
+													<td class="text-center"><?= $u ?></td>
+													<td class="text-right"><?= $harga ?></td>
+													<td class="text-right">Rp.<?= number_format($total) ?></td>
+												</tr>
+											<?php
+											}
+											?>
+
 									<?php }
-									} ?>
+									}
+									$_SESSION['data_detail_transaksi_tmp'] = $data_detail_transaksi;
+
+									?>
 								</table>
 							</div>
 						</div>
@@ -197,17 +265,17 @@ if (@$_SESSION['idcs'] == '') {
 								<div>
 									<div class="form-group">
 										<div class="col-md-10">
-										    <div class="col-md-auto">
-											<?php
-											$kurir = array('jne', 'jnt', 'gojek','Jemput Toko');
-											foreach ($kurir as $rkurir) {
-											?>
-												<label class="radio-inline" name="pilihan_kurir">
-													<input type="radio" name="kurir" class="kurir" value="<?php echo $rkurir; ?>" /> <?php echo strtoupper($rkurir); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-												</label>
-											<?php
-											}
-											?>
+											<div class="col-md-auto">
+												<?php
+												$kurir = array('jne', 'jnt', 'gojek', 'Jemput Toko');
+												foreach ($kurir as $rkurir) {
+												?>
+													<label class="radio-inline" name="pilihan_kurir">
+														<input type="radio" name="kurir" class="kurir" value="<?php echo $rkurir; ?>" /> <?php echo strtoupper($rkurir); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													</label>
+												<?php
+												}
+												?>
 											</div>
 										</div>
 									</div><br>
@@ -259,7 +327,8 @@ if (@$_SESSION['idcs'] == '') {
 	<?php
 	} else { ?>
 		<script>
-			window.location.href = "?module=keranjang";
+			window.location.href = "keranjang";
+			// window.location.href = "?module=keranjang";
 		</script>
 <?php
 	}
@@ -289,11 +358,12 @@ if (@$_SESSION['idcs'] == '') {
 	document.getElementsByName("id_prov")[0].addEventListener("change", tampilPilihanGojek);
 
 	tampilPilihanGojek();
+
 	function jemputLokasi() {
 		var kota = document.getElementsByName("id_kota")[0].options[document.getElementsByName("id_kota")[0].selectedIndex].text;
-			document.getElementsByName("kurir")[4].disabled = false;
-			document.getElementsByName("pilihan_kurir")[4].style.display = "inline";
-		
+		document.getElementsByName("kurir")[4].disabled = false;
+		document.getElementsByName("pilihan_kurir")[4].style.display = "inline";
+
 	}
 
 	document.getElementsByName("id_kota")[0].addEventListener("change", jemputLokasi);

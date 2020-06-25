@@ -6,8 +6,9 @@ include "config/koneksi.php";;
 
 <!-- Mirrored from themes.rokaux.com/unishop/v2.2/template-1/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Apr 2018 05:47:23 GMT -->
 
-<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
   <title>Ayo Hijrah
   </title>
   <!-- SEO Meta Tags-->
@@ -121,17 +122,17 @@ include "config/koneksi.php";;
 if (isset($_POST["registrasi"])) {
   $password = $_POST['password'];
   $tgl = date("Y-m-d");
-// $fotoregis    =$_FILES['fotoregis']['name'];
-//   $lokasi       = $_FILES['fotoregis']['tmp_name'];
+  // $fotoregis    =$_FILES['fotoregis']['name'];
+  //   $lokasi       = $_FILES['fotoregis']['tmp_name'];
 
-//   move_uploaded_file($lokasi, "foto/customer/$fotoregis");
+  //   move_uploaded_file($lokasi, "foto/customer/$fotoregis");
 
-  $cek = mysqli_query($con, "select * from tbl_customer where email='$_POST[email]'");
+  $cek = mysqli_query($con, "select * from tb_customer where email='$_POST[email]'");
   $jumlah = mysqli_fetch_assoc($cek);
   if ($jumlah) {
     echo "<script>alert('Maaf, Email ini sudah terdaftar,silahkan masukan email yang lain !');window.location.href='registrasi'</script>";
   } else {
-      $sqlpr = mysqli_query($con, "INSERT INTO `tbl_customer`(`email`, `password`, `nama_lengkap`, `nohp`, `tgl_daftar`, `fotoregis`,`nama_toko`,`alamat`) VALUES ('$_POST[email]','$password','$_POST[nama_lengkap]','$_POST[nohp]','$tgl','default.jpg','$_POST[nama_toko]','$_POST[alamat]')");
+    $sqlpr = mysqli_query($con, "INSERT INTO `tb_customer`(`email`, `password`, `nama_lengkap`, `nohp`, `tgl_daftar`, `fotoregis`,`nama_toko`,`alamat`) VALUES ('$_POST[email]','$password','$_POST[nama_lengkap]','$_POST[nohp]','$tgl','default.jpg','$_POST[nama_toko]','$_POST[alamat]')");
     echo "<script>
 			window.alert('Registrasi berhasil');
 			window.location='login';
