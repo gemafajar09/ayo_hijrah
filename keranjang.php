@@ -34,16 +34,21 @@
         <?php
         // error_reporting(0);
         $sql = mysqli_query($con, "SELECT *,
-        (SELECT group_concat(tmp.size order by tmp.size asc) from tb_transaksi_tmp tmp where tb_transaksi_tmp.id_customer = ".$_SESSION['idcs']." and tmp.kd_produk = tb_transaksi_tmp.kd_produk) as size_dibeli,
-        (SELECT group_concat(size_tersedia.ukuran order by size_tersedia.ukuran asc) from tb_produk produk join tbl_detail_size size_tersedia on produk.kd_produk = size_tersedia.kd_produk where produk.kd_produk = tb_transaksi_tmp.kd_produk) as size_tersedia 
-        FROM tb_transaksi_tmp,tb_produk,tbl_customer where tb_transaksi_tmp.kd_produk=tb_produk.kd_produk AND tb_transaksi_tmp.id_customer=tbl_customer.id_customer AND tb_transaksi_tmp.id_customer ='$_SESSION[idcs]'");
+        (SELECT group_concat(tmp.size order by tmp.size asc) from tb_transaksi_tmp tmp where tb_transaksi_tmp.id_customer = " . $_SESSION['idcs'] . " and tmp.kd_produk = tb_transaksi_tmp.kd_produk) as size_dibeli,
+        (SELECT group_concat(size_tersedia.ukuran order by size_tersedia.ukuran asc) from tb_produk produk join tb_detail_size size_tersedia on produk.kd_produk = size_tersedia.kd_produk where produk.kd_produk = tb_transaksi_tmp.kd_produk) as size_tersedia 
+        FROM tb_transaksi_tmp,tb_produk,tb_customer where tb_transaksi_tmp.kd_produk=tb_produk.kd_produk AND tb_transaksi_tmp.id_customer=tb_customer.id_customer AND tb_transaksi_tmp.id_customer ='$_SESSION[idcs]'");
         $cek = mysqli_num_rows($sql);
-        
+
         if ($cek == 0) { ?>
-          <tr>
-            <td colspan=7>Keranjang Belanja Anda Masih Kosong</td>
-          </tr>
-          <?php
+          <tbody>
+            <tr>
+              <td colspan=7>
+                <h3>Keranjang Belanja Anda Masih Kosong</h3>
+              </td>
+            </tr>
+          </tbody>
+      </table>
+      <?php
         } else {
           $no = 0;
           $arr = array();
@@ -51,47 +56,46 @@
           while ($r = mysqli_fetch_assoc($sql)) {
             $no++;
             // var_dump($r);
-            if($r['jenis_toko'] == 'Grosir' && $r['size_dibeli'] == $r['size_tersedia'])
-            {
+            if ($r['jenis_toko'] == 'Grosir' && $r['size_dibeli'] == $r['size_tersedia']) {
               $harga = "Rp. " . number_format($r['harga_grosir']);
               $total = "Rp. " . number_format($r['harga_grosir'] * $r['jumlah_beli']);
               $sub = $r['harga_grosir'] * $r['jumlah_beli'];
-            }else{
+            } else {
               $harga = "Rp. " . number_format($r['harga_eceran']);
               $total = "Rp. " . number_format($r['harga_eceran'] * $r['jumlah_beli']);
               $sub = $r['harga_eceran'] * $r['jumlah_beli'];
             }
             $subtot += $sub;
             $arr[] = $r;
-          ?>
-            <tbody>
-              <tr>
-                <td>
-                  <div class="product-item"><a class="product-thumb" href="#"><img src="img/produk/<?= $r['foto'] ?>" alt="Product" style="width : 110px; height: 130px;"></a>
-                    <div class="product-info">
-                      <h4 class="product-title"><a href="#"><?= $r["judul"]; ?></a></h4><span><em>Harga:</em> <?= $harga; ?></span>
-                    </div>
-                  </div>
-                </td>
-                <td class="text-center">
-                  <div class="count-input">
-                    <form action="update-keranjang-<?= $r['id_keranjang'] ?>" method="POST">
-                      <input class="form-control col-sm-9" name="jml" value="<?= $r['jumlah_beli']; ?>">
-                      <button type="submit" name="simpanP" class="btn-success col-sm-3 text-center" style="height:35px"><span class='icon-plus' style="margin-left:-5px;"></button>
-                    </form>
-                  </div>
+      ?>
+        <tbody>
+          <tr>
+            <td>
+              <div class="product-item"><a class="product-thumb" href="#"><img src="img/produk/<?= $r['foto'] ?>" alt="Product" style="width : 110px; height: 130px;"></a>
+                <div class="product-info">
+                  <h4 class="product-title"><a href="#"><?= $r["judul"]; ?></a></h4><span><em>Harga:</em> <?= $harga; ?></span>
+                </div>
+              </div>
+            </td>
+            <td class="text-center">
+              <div class="count-input">
+                <form action="update-keranjang-<?= $r['id_keranjang'] ?>" method="POST">
+                  <input class="form-control col-sm-9" name="jml" value="<?= $r['jumlah_beli']; ?>">
+                  <button type="submit" name="simpanP" class="btn-success col-sm-3 text-center" style="height:35px"><span class='icon-plus' style="margin-left:-5px;"></button>
+                </form>
+              </div>
 
-                </td>
-                <td class="text-center text-lg text-medium"><?= $r['size']; ?></td>
-                <td class="text-center text-lg text-medium">Rp.<?= number_format($sub) ?></td>
-                <td class="text-center"><a class="remove-from-cart" href="del-keranjang-<?= $r['id_keranjang']; ?>" data-toggle="tooltip" title="Remove item" onclick="return confirm('Yakin Hapus?')">
-                    <i class="icon-cross"></i></a></td>
-              </tr>
-            <?php
+            </td>
+            <td class="text-center text-lg text-medium"><?= $r['size']; ?></td>
+            <td class="text-center text-lg text-medium">Rp.<?= number_format($sub) ?></td>
+            <td class="text-center"><a class="remove-from-cart" href="del-keranjang-<?= $r['id_keranjang']; ?>" data-toggle="tooltip" title="Remove item" onclick="return confirm('Yakin Hapus?')">
+                <i class="icon-cross"></i></a></td>
+          </tr>
+        <?php
           }
-            ?>
-            </tbody>
-      </table>
+        ?>
+        </tbody>
+        </table>
     </div>
     <div class="shopping-cart-footer">
       <div class="column text-lg">Subtotal: <span class="text-medium"><?= number_format($subtot) ?></span></div>
@@ -100,6 +104,10 @@
       <div class="column"><a class="btn btn-outline-secondary" href="shop">
           <i class="icon-arrow-left"></i>&nbsp;Lanjut Belanja</a>
       </div>
+      <form action="pembayaran" method="POST">
+        <div class="column"><button type="submit" class="btn btn-primary " name="next">Lanjut Kepembayaran</button>
+        </div>
+      </form>
       <?php //var_dump($arr); 
       ?>
       <!-- <div class="column"><a class="btn btn-primary" href="https://api.whatsapp.com/send?phone=62819629431&text=Saya ingin membeli produk ini <?php // foreach ($arr as $ar) : 
@@ -114,10 +122,7 @@
       <!-- <div class="column"><button type="submit" class="btn btn-primary " name="next">Lanjut Kepembayaran (Gojek)</button>
       </div> -->
     </form>
-    <form action="pembayaran" method="POST">
-      <div class="column"><button type="submit" class="btn btn-primary " name="next">Lanjut Kepembayaran</button>
-      </div>
-    </form>
+
     </div>
     <br>
     <hr>
@@ -154,12 +159,12 @@
             </a>
             <h3 class="product-title"><a href="view-produk-<?= $r['id_produk']; ?>"><?= $judul; ?></a></h3>
             <h4 class="product-price">
-              <?php 
-                // if($_SESSION['jenis_toko'] == 'Grosir'){
-                //       echo $harga_grosir;
-                //   }else{
-                //     echo $harga_eceran;
-                // } 
+              <?php
+              // if($_SESSION['jenis_toko'] == 'Grosir'){
+              //       echo $harga_grosir;
+              //   }else{
+              //     echo $harga_eceran;
+              // } 
               echo $harga_eceran;
               ?>
             </h4>

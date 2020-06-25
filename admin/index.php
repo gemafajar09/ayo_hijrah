@@ -160,7 +160,7 @@ if (empty($_SESSION['useradmn']) and empty($_SESSION['passadmn'])) {
                 </a>
                 <ul class="treeview-menu">
                   <li><a href="?page=produk"><i class="fa fa-circle-o"></i><span>Produk</span></a></li>
-                  <li><a href="?page=stok"><i class="fa fa-circle-o"></i>Stok Produk</a></li>
+                  <!-- <li><a href="?page=stok"><i class="fa fa-circle-o"></i>Stok Produk</a></li> -->
                 </ul>
               </li>
               <li><a href="?page=penjualan"><i class="fa fa-cart-plus"></i>Data Penjualan</a></li>
@@ -170,7 +170,7 @@ if (empty($_SESSION['useradmn']) and empty($_SESSION['passadmn'])) {
               <li><a href="?page=slide"><i class="fa fa-image"></i>Slide</a></li>
               <li><a href="?page=garansi"><i class="fa fa-info"></i>Ketentuan Garansi</a></li>
               <li><a href="?page=faq"><i class="fa fa-info"></i>Faq</a></li>
-              <li><a href="?page=waktu"><i class="fa fa-cogs"></i>Waktu Pengaturan</a></li>
+              <!-- <li><a href="?page=waktu"><i class="fa fa-cogs"></i>Waktu Pengaturan</a></li> -->
             <?php } ?>
             <?php
             if ($_SESSION['level'] == 'user') {

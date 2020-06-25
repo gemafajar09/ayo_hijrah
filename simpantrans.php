@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 if (@$_SESSION['idcs'] == '') {
 	echo "<script>window.location='login';</script>";
 }
@@ -7,17 +8,17 @@ include "config/koneksi.php";
 include "config/fungsi_id.php";
 
 // fungsi untuk mendapatkan isi keranjang belanja
-	function isi_keranjang()
-	{
-		global $con;
-		$isikeranjang = array();
-		$sid = $_SESSION['idcs'];
-		$sql = mysqli_query($con, "SELECT * FROM tb_transaksi_tmp WHERE id_customer='$sid'");
-		while ($r = mysqli_fetch_array($sql)) {
-			$isikeranjang[] = $r;
-		}
-		return $isikeranjang;
+function isi_keranjang()
+{
+	global $con;
+	$isikeranjang = array();
+	$sid = $_SESSION['idcs'];
+	$sql = mysqli_query($con, "SELECT * FROM tb_transaksi_tmp WHERE id_customer='$sid'");
+	while ($r = mysqli_fetch_array($sql)) {
+		$isikeranjang[] = $r;
 	}
+	return $isikeranjang;
+}
 
 if (isset($_POST['pesan'])) {
 	$kurir      = $_POST['kurir'];
@@ -26,6 +27,8 @@ if (isset($_POST['pesan'])) {
 	$kdpos      = $_POST['kodepos'];
 	$almt       = $_POST['alamat'];
 	$berat      = $_POST['berat'];
+	$id_prov      = $_POST['id_prov'];
+	$id_kota      = $_POST['id_kota'];
 	$ongkir     = $_POST['ongkir'];
 	$total      = $_POST['totalbayar'];
 	$idcust     = $_SESSION['idcs'];
@@ -53,7 +56,9 @@ if (isset($_POST['pesan'])) {
 	`alamat_pengiriman`, 
 	`penerima`, 
 	`jumlah_berat`,
-	`no_resi`) VALUES
+	`no_resi`,
+	`id_prov`,
+	`id_kota`) VALUES
 	    ('$invoice',
 	    'Menunggu Pembayaran',
 	    '$tanggal',
@@ -68,7 +73,9 @@ if (isset($_POST['pesan'])) {
 	    '$almt',
 	    '$nmpenerima',
 	    '$berat',
-	    '')");
+	    '',
+		'$id_prov',
+		'$id_kota')");
 
 	// simpan data status
 	// $status = mysqli_query($con, "INSERT INTO `tbl_status_transaksi`(`id_order`, `status_order`, `tgl_status`) VALUES ('$invoice','Menunggu Pembayaran','$tglskrg')");
@@ -77,20 +84,33 @@ if (isset($_POST['pesan'])) {
 	$isikeranjang = isi_keranjang();
 	$jml          = count($isikeranjang);
 	// simpan data detail pemesanan
-	for ($i = 0; $i < $jml; $i++) {
-		mysqli_query($con, "INSERT INTO `tb_transaksi_detail`(`id_transaksi`, `kd_produk`, `id_customer`, `size`, `jumlah_beli`) VALUES  ('$invoice','{$isikeranjang[$i]['kd_produk']}',{$isikeranjang[$i]['id_customer']},'{$isikeranjang[$i]['size']}',{$isikeranjang[$i]['jumlah_beli']})");
-	}
+	// var_dump($_SESSION['data_detail_transaksi_tmp']);
+	// exit;
+	// simpan data detail pemesanan
+	// for ($i = 0; $i < $jml; $i++) {
+	// 	mysqli_query($con, "INSERT INTO `tb_transaksi_detail`(`id_transaksi`, `kd_produk`, `id_customer`, `size`, `jumlah_beli`) VALUES  ('$invoice','{$isikeranjang[$i]['kd_produk']}',{$isikeranjang[$i]['id_customer']},'{$isikeranjang[$i]['size']}',{$isikeranjang[$i]['jumlah_beli']})");
+	// }	
 
+
+
+	foreach ($_SESSION['data_detail_transaksi_tmp'] as $isikeranjang) {
+
+		mysqli_query($con, "INSERT INTO `tb_transaksi_detail`(`id_transaksi`, `kd_produk`, `id_customer`, `size`, `jumlah_beli`, `harga`, `total_harga`) VALUES ('$invoice','{$isikeranjang['kd_produk']}',{$isikeranjang['id_customer']},'{$isikeranjang['size']}',{$isikeranjang['jumlah_beli']}, {$isikeranjang['harga']}, {$isikeranjang['total_harga']})");
+
+
+		// echo "INSERT INTO `tb_transaksi_detail`(`id_transaksi`, `kd_produk`, `id_customer`, `size`, `jumlah_beli`, `harga`, `total_harga`) VALUES ('$invoice','{$isikeranjang['kd_produk']}',{$isikeranjang['id_customer']},'{$isikeranjang['size']}',{$isikeranjang['jumlah_beli']}, {$isikeranjang['harga']}, {$isikeranjang['total_harga']})";
+	}
+	// exit;
 	// Merubah stok di tabel produk
 	for ($i = 0; $i < $jml; $i++) {
-		$sqlpr = mysqli_query($con, "SELECT * FROM tbl_detail_size WHERE kd_produk={$isikeranjang[$i]['kd_produk']}");
+		$sqlpr = mysqli_query($con, "SELECT * FROM tb_detail_size WHERE kd_produk={$isikeranjang[$i]['kd_produk']}");
 		$rpr = mysqli_fetch_array($sqlpr);
 		$stok = $rpr["stok"];
 		$terjual = $rpr["terjual"];
 		$jumlahbeli = "{$isikeranjang[$i]['jumlah_beli']}";
 		$stokakhir = $stok - $jumlahbeli;
 
-		mysqli_query($con, "UPDATE tbl_detail_size SET stok='$stokakhir' WHERE kd_produk={$isikeranjang[$i]['kd_produk']} AND ukuran = {$isikeranjang[$i]['ukuran']}");
+		mysqli_query($con, "UPDATE tb_detail_size SET stok='$stokakhir' WHERE kd_produk={$isikeranjang[$i]['kd_produk']} AND ukuran = {$isikeranjang[$i]['ukuran']}");
 	}
 
 	// setelah data pemesanan tersimpan, hapus data pemesanan di tabel pemesanan sementara (keranjang)
@@ -98,8 +118,8 @@ if (isset($_POST['pesan'])) {
 		mysqli_query($con, "DELETE FROM tb_transaksi_tmp WHERE id_keranjang = {$isikeranjang[$i]['id_keranjang']}");
 	}
 
-	$sql = mysqli_query($con, "SELECT * FROM tbl_customer,tb_transaksi where tbl_customer.id_customer=tb_transaksi.id_customer AND id_transaksi='$invoice' AND
-	tbl_customer.id_customer='$_SESSION[idcs]'");
+	$sql = mysqli_query($con, "SELECT * FROM tb_customer,tb_transaksi where tb_customer.id_customer=tb_transaksi.id_customer AND id_transaksi='$invoice' AND
+	tb_customer.id_customer='$_SESSION[idcs]'");
 	$r = mysqli_fetch_assoc($sql);
 	$email = $r['email'];
 	$nama = $r['nama_lengkap'];
@@ -122,6 +142,8 @@ if (isset($_POST['pesan'])) {
 	$kdpos      = 9999;
 	$almt       = $_POST['alamat'];
 	$berat      = $_POST['berat'];
+	$id_prov      = $_POST['id_prov'];
+	$id_kota      = $_POST['id_kota'];
 	$ongkir     = 0;
 	$total      = $_POST['total'];
 	$idcust     = $_SESSION['idcs'];
@@ -133,7 +155,7 @@ if (isset($_POST['pesan'])) {
 	$dj         = str_replace(':', '', $jam_order);
 	$invoice    = $idcust . generateRandomUser(2, 1) . $dt . $dj;
 
-	
+
 	// simpan data pemesanan
 	$transaksi = mysqli_query($con, "INSERT INTO `tb_transaksi`(
 	`id_transaksi`, 
@@ -150,7 +172,9 @@ if (isset($_POST['pesan'])) {
 	`alamat_pengiriman`, 
 	`penerima`, 
 	`jumlah_berat`,
-	`no_resi`) VALUES
+	`no_resi`,
+	`id_prov`,
+	`id_kota`) VALUES
 	    ('$invoice',
 	    'Menunggu Pembayaran',
 	    '$tanggal',
@@ -165,7 +189,9 @@ if (isset($_POST['pesan'])) {
 	    '$almt',
 	    '$nmpenerima',
 	    '$berat',
-	    '')");
+	    '',
+		'$id_prov',
+		'$id_kota')");
 
 	// simpan data status
 	// $status = mysqli_query($con, "INSERT INTO `tbl_status_transaksi`(`id_order`, `status_order`, `tgl_status`) VALUES ('$invoice','Menunggu Pembayaran','$tglskrg')");
@@ -174,21 +200,24 @@ if (isset($_POST['pesan'])) {
 	$isikeranjang = isi_keranjang();
 	$jml          = count($isikeranjang);
 	// simpan data detail pemesanan
-	for ($i = 0; $i < $jml; $i++) {
-		echo "INSERT INTO `tb_transaksi_detail`(`id_transaksi`, `kd_produk`, `id_customer`, `size`, `jumlah_beli`) VALUES  ('$invoice','{$isikeranjang[$i]['kd_produk']}',{$isikeranjang[$i]['id_customer']},'{$isikeranjang[$i]['size']}',{$isikeranjang[$i]['jumlah_beli']})";
-		// mysqli_query($con, "INSERT INTO `tb_transaksi_detail`(`id_transaksi`, `kd_produk`, `id_customer`, `size`, `jumlah_beli`) VALUES  ('$invoice',{$isikeranjang[$i]['kd_produk']},{$isikeranjang[$i]['id_customer']},{$isikeranjang[$i]['size']},{$isikeranjang[$i]['jumlah_beli']})");
+	// for ($i = 0; $i < $jml; $i++) {
+	// echo "INSERT INTO `tb_transaksi_detail`(`id_transaksi`, `kd_produk`, `id_customer`, `size`, `jumlah_beli`, `total_harga`) VALUES  ('$invoice','{$isikeranjang[$i]['kd_produk']}',{$isikeranjang[$i]['id_customer']},'{$isikeranjang[$i]['size']}',{$isikeranjang[$i]['jumlah_beli']})";
+	// mysqli_query($con, "INSERT INTO `tb_transaksi_detail`(`id_transaksi`, `kd_produk`, `id_customer`, `size`, `jumlah_beli`) VALUES  ('$invoice',{$isikeranjang[$i]['kd_produk']},{$isikeranjang[$i]['id_customer']},{$isikeranjang[$i]['size']},{$isikeranjang[$i]['jumlah_beli']})");
+	// }
+	foreach ($_SESSION['data_detail_transaksi_tmp'] as $isikeranjang) {
+		mysqli_query($con, "INSERT INTO `tb_transaksi_detail`(`id_transaksi`, `kd_produk`, `id_customer`, `size`, `jumlah_beli`, `harga`, `total_harga`) VALUES  ('$invoice','{$isikeranjang['kd_produk']}',{$isikeranjang['id_customer']},'{$isikeranjang['size']}',{$isikeranjang['jumlah_beli']}, {$isikeranjang['harga']}, {$isikeranjang['total_harga']})");
 	}
 
 	// Merubah stok di tabel produk
 	for ($i = 0; $i < $jml; $i++) {
-		$sqlpr = mysqli_query($con, "SELECT * FROM tbl_detail_size WHERE kd_produk={$isikeranjang[$i]['kd_produk']}");
+		$sqlpr = mysqli_query($con, "SELECT * FROM tb_detail_size WHERE kd_produk={$isikeranjang[$i]['kd_produk']}");
 		$rpr = mysqli_fetch_array($sqlpr);
 		$stok = $rpr["stok"];
 		$terjual = $rpr["terjual"];
 		$jumlahbeli = "{$isikeranjang[$i]['jumlah_beli']}";
 		$stokakhir = $stok - $jumlahbeli;
 
-		mysqli_query($con, "UPDATE tbl_detail_size SET stok='$stokakhir' WHERE kd_produk={$isikeranjang[$i]['kd_produk']} AND ukuran = {$isikeranjang[$i]['ukuran']}");
+		mysqli_query($con, "UPDATE tb_detail_size SET stok='$stokakhir' WHERE kd_produk={$isikeranjang[$i]['kd_produk']} AND ukuran = {$isikeranjang[$i]['ukuran']}");
 	}
 
 	// setelah data pemesanan tersimpan, hapus data pemesanan di tabel pemesanan sementara (keranjang)
@@ -196,8 +225,8 @@ if (isset($_POST['pesan'])) {
 		mysqli_query($con, "DELETE FROM tb_transaksi_tmp WHERE id_keranjang = {$isikeranjang[$i]['id_keranjang']}");
 	}
 
-	$sql = mysqli_query($con, "SELECT * FROM tbl_customer,tb_transaksi where tbl_customer.id_customer=tbl_orders.id_customer AND id_transaksi='$invoice' AND
-	tbl_customer.id_customer='$_SESSION[idcs]'");
+	$sql = mysqli_query($con, "SELECT * FROM tb_customer,tb_transaksi where tb_customer.id_customer=tbl_orders.id_customer AND id_transaksi='$invoice' AND
+	tb_customer.id_customer='$_SESSION[idcs]'");
 	$r = mysqli_fetch_assoc($sql);
 	$email = $r['email'];
 	$nama = $r['nama_lengkap'];

@@ -15,7 +15,7 @@ tbl_produk
 - judul_seo
 - tanggal_input
 
-tbl_detail_size
+tb_detail_size
 * id_detail
 - kd_produk
 - ukuran

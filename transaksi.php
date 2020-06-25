@@ -36,8 +36,8 @@ $r = mysqli_fetch_assoc($sql);
         <h3 class="card-title">Terima kasih atas pesanan anda!</h3>
         <h3 class="card-title">Waktu Pembayaran Anda 3 Jam, Jika Belum Melakukan Pembayaran, <br> Pesanan Akan Dibatalkan!</h3>
         <p class="card-text">Pesanan Anda telah ditempatkan dan akan diproses sesegera mungkin.</p>
-        <p class="card-text">Pastikan Anda mencatat nomor pesanan Anda, yaitu <span class="text-medium"><?= $r["id_order"] ?>.</span>
-          <p>Transfer Dana Sesuai Dengan Nominal Yang Tertera <b>Rp.<?= number_format($r["total"], 2, ',', '.'); ?></b></p>
+        <!-- <p class="card-text">Pastikan Anda mencatat nomor pesanan Anda, yaitu <span class="text-medium"><?= $r["id_order"] ?>.</span> -->
+        <p>Transfer Dana Sesuai Dengan Nominal Yang Tertera <b>Rp.<?= number_format($r["total"], 2, ',', '.'); ?></b></p>
         </p>
         <!-- Account / Shipping Info-->
         <section class="widget widget-light-skin">

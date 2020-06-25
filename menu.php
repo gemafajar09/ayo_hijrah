@@ -1,6 +1,6 @@
 <?php
 error_reporting(0);
-$sql = mysqli_query($con, "SELECT * FROM tbl_customer where id_customer='$_SESSION[idcs]'");
+$sql = mysqli_query($con, "SELECT * FROM tb_customer where id_customer='$_SESSION[idcs]'");
 $r = mysqli_fetch_assoc($sql);
 ?>
 <div class="offcanvas-container" id="shop-categories">
@@ -59,53 +59,53 @@ $r = mysqli_fetch_assoc($sql);
         <img src="img/user-default.png" alt="Ayo Hijrah">
       </div>
     <?php } ?>
-      <div class="user-info">
+    <div class="user-info">
 
-      </div>
-  <nav class="offcanvas-menu">
-    <ul class="menu">
-      <li class="has-children active"><span><a href="./"><span>Home</span></a></span>
-      </li>
-      <li class="has-children"><span><a href="shop"><span>Shop</span></a></span>
-      </li>
-      <li class="has-children"><span><a href="about">About</a></span>
-      </li>
-      <li class="has-children"><span><a href="testimonial"><span>Testimonial</span></a></span>
-      </li>
-      <li class="has-children"><span><a href="info-rek"><span>Info Rekening</span></a></span>
-      </li>
-      <li class="has-children"><span><a href="faq"><span>FAQ</span></a></span>
-      </li>
-      <!-- <li class="has-children"><span><a href="garansi"><span>Ketentuan Garansi</span></a></span> -->
-      <!-- </li> -->
-      <li class="has-children"><span><a href="kontak"><span>Contact US</span></a></span>
-      </li>
-      <?php
-      if (empty($_SESSION["email"])) { ?>
-        <li class="has-children"><span><a href="login">Login</a></span>
+    </div>
+    <nav class="offcanvas-menu">
+      <ul class="menu">
+        <li class="has-children active"><span><a href="./"><span>Home</span></a></span>
         </li>
-        <li class="has-children"><span><a href="registrasi">Register</a></span>
+        <li class="has-children"><span><a href="shop"><span>Shop</span></a></span>
         </li>
-      <?php } ?>
-      <?php
-      if (!empty($_SESSION["email"])) { ?>
-        <li class="has-children"><span><a href="my-profil">My Profil</a></span>
+        <li class="has-children"><span><a href="about">About</a></span>
         </li>
-        <li class="has-children"><span><a href="keranjang">Keranjang</a></span>
+        <li class="has-children"><span><a href="testimonial"><span>Testimonial</span></a></span>
         </li>
-        <li class="has-children"><span><a href="histori-pesanan">History Pemesanan</a></span>
+        <li class="has-children"><span><a href="info-rek"><span>Info Rekening</span></a></span>
         </li>
-        <li class="has-children"><span><a href="logout.php">Logout</a></span>
+        <li class="has-children"><span><a href="faq"><span>FAQ</span></a></span>
         </li>
-      <?php } ?>
+        <!-- <li class="has-children"><span><a href="garansi"><span>Ketentuan Garansi</span></a></span> -->
+        <!-- </li> -->
+        <li class="has-children"><span><a href="kontak"><span>Contact US</span></a></span>
+        </li>
+        <?php
+        if (empty($_SESSION["email"])) { ?>
+          <li class="has-children"><span><a href="login">Login</a></span>
+          </li>
+          <li class="has-children"><span><a href="registrasi">Register</a></span>
+          </li>
+        <?php } ?>
+        <?php
+        if (!empty($_SESSION["email"])) { ?>
+          <li class="has-children"><span><a href="my-profil">My Profil</a></span>
+          </li>
+          <li class="has-children"><span><a href="keranjang">Keranjang</a></span>
+          </li>
+          <li class="has-children"><span><a href="histori-pesanan">History Pemesanan</a></span>
+          </li>
+          <li class="has-children"><span><a href="logout.php">Logout</a></span>
+          </li>
+        <?php } ?>
 
-    </ul>
-  </nav>
+      </ul>
+    </nav>
 </div>
 <!-- Topbar-->
 <div class="topbar" style="background-color: #f2e9d8;">
   <div class="topbar-column">
-   
+
     <a class="social-button sb-instagram shape-none sb-dark" href="https://www.instagram.com/rafika_stores/" target="_blank"><i class="socicon-instagram"></i></a>
     <a class="social-button sb-youtube shape-none sb-dark" href="https://www.youtube.com/channel/UCZ3WsloMYUQ49FZ8Toq7nMQ" target="_blank"><i class="socicon-youtube"></i></a>
   </div>
@@ -156,7 +156,8 @@ $r = mysqli_fetch_assoc($sql);
 </div>
 <!-- Navbar-->
 <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page.-->
-<header class="navbar navbar-sticky" style="border-bottom:none"><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<header class="navbar navbar-sticky" style="border-bottom:none">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <!-- Search-->
   <form class="site-search" method="get">
     <input type="text" name="site_search" placeholder="Type to search...">
