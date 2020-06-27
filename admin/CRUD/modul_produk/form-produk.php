@@ -27,106 +27,96 @@ if (isset($_GET['aksi'])) {
     case "tambahproduk":
 
       if (isset($_POST['save'])) {
-        if ($_POST['stok'] > 0) {
-          $status = "Y";
+
+        $cek = mysqli_query($con, "SELECT * FROM tb_produk where kd_produk='$_POST[kd_produk]'");
+        $jumlah = mysqli_num_rows($cek);
+        if ($jumlah > 0) {
+          echo "<script>alert('Maaf, Kode sudah ada, silahkan masukan kode yang lain !');window.location.href='index.php?page=produk&aksi=tambahproduk'</script>";
         } else {
-          $status = "T";
-        }
-        $judulseo = seo_title($_POST['judul']);
-        $tglskrg = date('Y-m-d');
-
-        $nmberkas  = $_FILES["foto"]["name"];
-        $lokberkas = $_FILES["foto"]["tmp_name"];
-        $size     = $_FILES['foto']['size'];
-
-        if (empty($nmberkas)) {
-          $date = "";
-        } else {
-          $date = date("YmdHis");
-        }
-        // insert size
-        $ukuran = $_POST['ukuran'];
-        $stok = $_POST['stok'];
-        foreach ($stok as $i => $a) {
-          mysqli_query($con, "INSERT INTO `tb_detail_size`(`kd_produk`, `ukuran`, `stok`) VALUES ('$_POST[kd_produk]','$ukuran[$i]','$stok[$i]')");
-        }
-
-
-        // batas input size
-        // upload foto
-        $nmfoto = $date . $nmberkas;
-        if ($size < 1048576) {
-          if (!empty($lokberkas)) {
-            move_uploaded_file($lokberkas, "../img/produk/$nmfoto");
-          }
-          $nmberkas1  = $_FILES["foto1"]["name"];
-          $lokberkas1 = $_FILES["foto1"]["tmp_name"];
-          foreach ($nmberkas1 as $i => $a) {
-            if (empty($nmberkas1[$i])) {
-              $date1 = "";
-            } else {
-              $date1 = date("YmdHis");
-            }
-            $nmfoto1 = $date1 . $nmberkas1[$i];
-            if (!empty($lokberkas1[$i])) {
-              move_uploaded_file($lokberkas1[$i], "../img/produk_detail/$nmfoto1");
-            }
-            // var_dump($nmfoto1);
-            // var_dump($_POST['kd_produk']);
-            mysqli_query($con, "INSERT INTO tb_gambar(gambar_produk, kd_produk) VALUES ('$nmfoto1', '$_POST[kd_produk]')");
-          }
-          // exit;
-          // batas upload foto
-          $cek = mysqli_query($con, "select * from tbl_produk where kd_produk='$_POST[kd_produk]'");
-          $jumlah = mysqli_num_rows($cek);
-          if ($jumlah) {
-            echo "<script>alert('Maaf, Kode sudah ada, silahkan masukan kode yang lain !');window.location.href='index.php?page=produk&aksi=tambahproduk'</script>";
+          if ($_POST['stok'] > 0) {
+            $status = "Y";
           } else {
-            $save = mysqli_query($con, "INSERT INTO `tb_produk`(
-             `kd_produk`, 
-             `id_kategori`, 
-             `id_brand`, 
-             `judul`, 
-             `berat`, 
-             `deskripsi`, 
-             `harga_grosir`, 
-             `harga_eceran`, 
-             `foto`, 
-             `status`, 
-             `jenis`, 
-             `judul_seo`, 
-             `tgl_input`) VALUES
-                ('$_POST[kd_produk]',
-                '$_POST[id_kategori]',
-                '$_POST[id_brand]',
-                '$_POST[judul]',
-	              '$_POST[berat]',
-                '$_POST[deskripsi]',
-                '$_POST[harga_grosir]',
-                '$_POST[harga_eceran]',
-                '$nmfoto',
-                '$status',
-                'Baru',
-                '$judulseo',
-                '$tglskrg')");
-            // simpan foto
+            $status = "T";
+          }
+          $judulseo = seo_title($_POST['judul']);
+          $tglskrg = date('Y-m-d');
+
+          $allowed = array('jpg', 'jpeg', 'JPG', 'JPEG');
+          $nama_foto    = $_FILES['foto']['name'];
+          $lokasi_foto = $_FILES["foto"]["tmp_name"];
+          $ukuran_foto = $_FILES['foto']['size'];
+          $file_name = explode('.', $nama_foto);
+          $nama_file = end($file_name);
+          $file_ext = strtolower($nama_file);
+          $nama_file_foto = str_replace(" ", "-", $file_name[0]) . "-" . substr(uniqid('', true), -5) . "." . $file_ext;
+          if ($ukuran_foto < 1048576) {
+            if (!in_array($file_ext, $allowed)) {
+              echo "<script>
+                      window.alert('Gambar Produk Thumnail Tidak Valid');
+                      window.location='?page=produk';
+                    </script>";
+            } else {
+
+              $allowed1 = array("image/jpg", "image/jpeg");
+              $nama_foto1    = $_FILES['foto1']['name'];
+              $type    = $_FILES['foto1']['type'];
+              $lokasi_foto1 = $_FILES["foto1"]["tmp_name"];
+              $ukuran_foto1 = $_FILES['foto1']['size'];
+              $file_name1 = explode('.', $nama_foto1);
+              $nama_file1 = end($file_name1);
+              $file_ext1 = strtolower($nama_file1);
+              $nama_file_foto1 = str_replace(" ", "-", $file_name1[0]) . "-" . substr(uniqid('', true), -5) . "." . $file_ext1;
+
+              foreach ($nama_foto1 as $i => $a) {
+                if (!in_array($type[$i], $allowed1)) {
+                  // var_dump($type[$i]);
+                  echo "<script>
+                            window.alert('Gambar Tidak Valid');
+                            window.location='?page=produk';
+                          </script>";
+                  exit;
+                } else {
+                  if (empty($nama_foto1[$i])) {
+                    $date1 = "";
+                  } else {
+                    $date1 = date("YmdHis");
+                  }
+                  $nmfoto1 = $date1 . $nama_foto1[$i];
+                  if (!empty($lokasi_foto1[$i])) {
+                    move_uploaded_file($lokasi_foto1[$i], "../img/produk_detail/$nmfoto1");
+                  }
+                  mysqli_query($con, "INSERT INTO tb_gambar(gambar_produk, kd_produk) VALUES ('$nmfoto1', '$_POST[kd_produk]')");
+                }
+              }
+              // insert size
+              $ukuran = $_POST['ukuran'];
+              $stok = $_POST['stok'];
+              foreach ($stok as $i => $a) {
+                mysqli_query($con, "INSERT INTO `tb_detail_size`(`kd_produk`, `ukuran`, `stok`) VALUES ('$_POST[kd_produk]','$ukuran[$i]','$stok[$i]')");
+              }
+              // batas input size
+              if (!empty($lokasi_foto)) {
+                move_uploaded_file($lokasi_foto, "../img/produk/$nama_file_foto");
+              }
+              $save = mysqli_query($con, "INSERT INTO `tb_produk`(`kd_produk`,`id_kategori`,`id_brand`,`judul`, `berat`,
+               `deskripsi`, `harga_grosir`, `harga_eceran`, `foto`, `status`, `jenis`, `judul_seo`,  `tgl_input`) VALUES
+                  ('$_POST[kd_produk]','$_POST[id_kategori]','$_POST[id_brand]', '$_POST[judul]','$_POST[berat]', '$_POST[deskripsi]', '$_POST[harga_grosir]', '$_POST[harga_eceran]', '$nama_file_foto', '$status','Baru','$judulseo','$tglskrg')");
+              // }
+            }
           }
           if ($save) {
             echo "<script>
-            alert('Tambah Data Berhasil');
-            window.location='?page=produk';
-            </script>";
+              alert('Tambah Data Berhasil');
+              window.location='?page=produk';
+              </script>";
             exit;
           } else {
             echo "<script>alert('Gagal');
-            </script>";
+              </script>";
           }
-        } else {
-          echo  "<script>
-                alert('Maksimal Upload Foto 1 MB');
-                </script>";
         }
       }
+
 ?>
       <section class="content-header">
         <h1>
@@ -234,7 +224,7 @@ if (isset($_GET['aksi'])) {
                     <div class="form-group">
                       <label for="brt" class="col-sm-2 control-label">Berat</label>
                       <div class="col-sm-4">
-                        <input type="text" name="berat" id="brt" class="form-control" placeholder="Berat">
+                        <input type="number" name="berat" id="brt" class="form-control" placeholder="Berat">
                       </div>
                     </div>
 
@@ -324,18 +314,68 @@ if (isset($_GET['aksi'])) {
         } else {
           $status = "T";
         }
-
-
         $judulseo = seo_title($_POST['judul']);
-        $nmberkas  = $_FILES["foto"]["name"];
-        $lokberkas = $_FILES["foto"]["tmp_name"];
-        if (!empty($lokberkas)) {
-          $nmfoto = date("YmdHis") . $nmberkas;
-          unlink("../img/produk/" . $data['foto']);
-          move_uploaded_file($lokberkas, "../img/produk/$nmfoto");
-        } else {
-          $nmfoto = $_POST["fotolama"];
+
+
+        $allowed1 = array("image/jpg", "image/jpeg");
+        $nama_foto1    = $_FILES['foto1']['name'];
+        $type    = $_FILES['foto1']['type'];
+        $lokasi_foto1 = $_FILES["foto1"]["tmp_name"];
+        $ukuran_foto1 = $_FILES['foto1']['size'];
+        $file_name1 = explode('.', $nama_foto1);
+        $nama_file1 = end($file_name1);
+        $file_ext1 = strtolower($nama_file1);
+        $nama_file_foto1 = str_replace(" ", "-", $file_name1[0]) . "-" . substr(uniqid('', true), -5) . "." . $file_ext1;
+
+        foreach ($nama_foto1 as $i => $a) {
+          if (!in_array($type[$i], $allowed1)) {
+            echo "<script>
+                            window.alert('Gambar Tidak Valid');
+                            window.location='?page=produk';
+                          </script>";
+            exit;
+          } else {
+            if (empty($nama_foto1[$i])) {
+              $date1 = "";
+            } else {
+              $date1 = date("YmdHis");
+            }
+            $nmfoto1 = $date1 . $nama_foto1[$i];
+            if (!empty($lokasi_foto1[$i])) {
+              move_uploaded_file($lokasi_foto1[$i], "../img/produk_detail/$nmfoto1");
+            }
+            $kd_produk1 = $data['kd_produk'];
+            mysqli_query($con, "INSERT INTO tb_gambar(gambar_produk, kd_produk) VALUES ('$nmfoto1', '$kd_produk1')");
+          }
         }
+
+        $allowed = array('jpg', 'jpeg', 'JPG', 'JPEG');
+        $nama_foto    = $_FILES['foto']['name'];
+        $lokasi_foto = $_FILES["foto"]["tmp_name"];
+        $ukuran_foto = $_FILES['foto']['size'];
+        $file_name = explode('.', $nama_foto);
+        $nama_file = end($file_name);
+        $file_ext = strtolower($nama_file);
+        $nama_file_foto = str_replace(" ", "-", $file_name[0]) . "-" . substr(uniqid('', true), -5) . "." . $file_ext;
+        if ($ukuran_foto < 1048576) {
+          if (!in_array($file_ext, $allowed)) {
+            echo "<script>
+                      window.alert('Gambar Produk Thumbnail Tidak Valid');
+                      window.location='?page=produk';
+                    </script>";
+            exit;
+          } else {
+            if (!empty($lokasi_foto)) {
+              unlink("../img/produk/" . $data['foto']);
+              move_uploaded_file($lokasi_foto, "../img/produk/$nama_file_foto");
+            } else {
+              $nama_file_foto = $_POST["fotolama"];
+            }
+            // edit produk
+            $save = mysqli_query($con, "UPDATE tb_produk set judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]', harga_grosir='$_POST[harga_grosir]',harga_eceran='$_POST[harga_eceran]', foto='$nama_file_foto', judul_seo='$judulseo', status='$status' where id_produk='$_GET[id_produk]'");
+          }
+        }
+
 
 
         // edit ukuran
@@ -346,45 +386,35 @@ if (isset($_GET['aksi'])) {
           mysqli_query($con, "UPDATE `tb_detail_size` SET `stok`= '$stok[$i]' WHERE id_detail='$id_detail[$i]'");
         }
         // exit;
-
-        //penambahan gambar produk 
-        $nmberkas1  = $_FILES["foto1"]["name"];
-        $lokberkas1 = $_FILES["foto1"]["tmp_name"];
-        foreach ($nmberkas1 as $i => $a) {
-          if (empty($nmberkas1[$i])) {
-            $date1 = "";
-          } else {
-            $date1 = date("YmdHis");
-          }
-          $nmfoto1 = $date1 . $nmberkas1[$i];
-          if (!empty($lokberkas1[$i])) {
-            move_uploaded_file($lokberkas1[$i], "../img/produk_detail/$nmfoto1");
-          }
-          // var_dump($nmfoto1);
-          // var_dump($data['kd_produk']);
-          $kd_produk1 = $data['kd_produk'];
-          // exit;
-          mysqli_query($con, "INSERT INTO tb_gambar(gambar_produk, kd_produk) 
-                                  VALUES ('$nmfoto1', '$kd_produk1')");
-        }
-
-
-
-
-        // $lihat = mysqli_fetch_assoc(mysqli_query($con, "SELECT * FROM tb_produk where id_produk='$_GET[id_produk]'"));
-        // $kd_produk = $lihat["kd_produk"];
-        // if($ukuran == NULL)
-        // {
-        $save = mysqli_query($con, "UPDATE tb_produk set judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]', harga_grosir='$_POST[harga_grosir]',harga_eceran='$_POST[harga_eceran]', foto='$nmfoto', judul_seo='$judulseo', status='$status' where id_produk='$_GET[id_produk]'");
-
-        // mysqli_query($con, "UPDATE tb_barang set nama_barang='$_POST[judul]', harga_jual='$_POST[harga]' where kode_barang='$kd_produk'");  
-        // }else{
-        //   $save = mysqli_query($con, "UPDATE tb_produk set ukuran='$ukuran', judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]',harga_lama='$_POST[harga_lama]',
-        //   harga='$_POST[harga]', harga_grosir='$_POST[harga_grosir]', stok='$_POST[stok]', foto='$nmfoto', foto1='$nmfoto1',foto2='$nmfoto2',foto3='$nmfoto3',foto4='$nmfoto4', judul_seo='$judulseo', status='$status' where id_produk='$_GET[id_produk]'");
-
-        // mysqli_query($con, "UPDATE tb_barang set nama_barang='$_POST[judul]', harga_jual='$_POST[harga]' where kode_barang='$kd_produk'");
+        // $nmberkas  = $_FILES["foto"]["name"];
+        // $lokberkas = $_FILES["foto"]["tmp_name"];
+        // if (!empty($lokberkas)) {
+        //   $nmfoto = date("YmdHis") . $nmberkas;
+        //   unlink("../img/produk/" . $data['foto']);
+        //   move_uploaded_file($lokberkas, "../img/produk/$nmfoto");
+        // } else {
+        //   $nmfoto = $_POST["fotolama"];
         // }
 
+
+
+        //penambahan gambar produk 
+        // $nmberkas1  = $_FILES["foto1"]["name"];
+        // $lokberkas1 = $_FILES["foto1"]["tmp_name"];
+        // foreach ($nmberkas1 as $i => $a) {
+        //   if (empty($nmberkas1[$i])) {
+        //     $date1 = "";
+        //   } else {
+        //     $date1 = date("YmdHis");
+        //   }
+        //   $nmfoto1 = $date1 . $nmberkas1[$i];
+        //   if (!empty($lokberkas1[$i])) {
+        //     move_uploaded_file($lokberkas1[$i], "../img/produk_detail/$nmfoto1");
+        //   }
+        //   $kd_produk1 = $data['kd_produk'];
+        //   mysqli_query($con, "INSERT INTO tb_gambar(gambar_produk, kd_produk) 
+        //                           VALUES ('$nmfoto1', '$kd_produk1')");
+        // }
 
 
         if ($save) {
