@@ -547,7 +547,7 @@ if (isset($_GET['aksi'])) {
 
                   <th>Jumlah Transfer</th>
 
-                  <td><?= "Rp. " . number_format($dtkonf['total_bayars']) ?></td>
+                  <td><?= "Rp. " . number_format($r['total']) ?></td>
 
                 </tr>
 
