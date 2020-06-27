@@ -91,39 +91,66 @@ $tgl = date("Y-m-d H:i:s");
 
 if (isset($_POST["pesan"])) {
 
-	$nmfoto  = $_FILES["gambar"]["name"];
+	// function fileUpload($files, $lokasi)
+	// {
+	// 	$allowed = array('jpg', 'jpeg', 'png', 'gif', 'JPG', 'JPEG', 'PNG');
+	// 	$file_tmp = $files['tmp_name'];
+	// 	$ukuran_foto = $files['size'];
+	// 	$ukuran = 1000000;
+	// 	$file_name = explode('.', $files['name']);
+	// 	$nama_file = end($file_name);
+	// 	$file_ext = strtolower($nama_file);
+	// 	if ($ukuran_foto <= $ukuran) {
+	// 		if (!in_array($file_ext, $allowed)) {
+	// 			return false;
+	// 		} else {
+	// 			$nama_file = str_replace(" ", "-", $file_name[0]) . "-" . substr(uniqid('', true), -5) . "." . $file_ext;
+	// 			$lokasi_file = $lokasi . $nama_file;
+	// 			move_uploaded_file($file_tmp, $lokasi_file);
+	// 			return $nama_file;
+	// 		}
+	// 	} else {
+	// 		return false;
+	// 	}
+	// }
 
+	// $nmfoto  = $_FILES["gambar"]["name"];
 	$lokfoto = $_FILES["gambar"]["tmp_name"];
+	// $newbukti = date("YmdHis") . $nmfoto;
+	// $size     = $_FILES['gambar']['size'];
 
-	$newbukti = date("YmdHis") . $nmfoto;
+	$allowed = array('jpg', 'jpeg', 'JPG', 'JPEG');
+	$file_tmp = $_FILES["gambar"]["tmp_name"];
+	$ukuran_foto = $_FILES['gambar']['size'];
+	$file_name = explode('.', $_FILES["gambar"]["name"]);
+	$nama_file = end($file_name);
+	$file_ext = strtolower($nama_file);
 
-	$size     = $_FILES['gambar']['size'];
-
-	if ($size < 2048576) {
-		$pindah = move_uploaded_file($lokfoto, "img/bukti/$newbukti");
-		if ($pindah) {
-
-			$sqlpr = mysqli_query($con, "INSERT INTO `tb_konfirmasi_bayar`(`id_transaksi`, `total_bayars`, `bukti`, `tgl_bayar`) VALUES ('$_POST[id_transaksi]' ,'$_POST[totalbayar]', '$newbukti', '$tgl')");
-
-			$update = mysqli_query($con, " UPDATE tb_transaksi set status_order='Lunas' where id_transaksi='$_GET[id_transaksi]'");
-
+	if ($ukuran_foto < 2048576) {
+		if (!in_array($file_ext, $allowed)) {
 			echo "<script>
-
-		window.alert('Konfirmasi berhasil');
-
-		window.location='./';
-
-	</script>";
+					window.alert('Gambar Tidak Valid');
+					window.location='./';
+				</script>";
 		} else {
+			$newbukti = str_replace(" ", "-", $file_name[0]) . "-" . substr(uniqid('', true), -5) . "." . $file_ext;
+			$pindah = move_uploaded_file($lokfoto, "img/bukti/$newbukti");
+
+			// echo "INSERT INTO `tb_konfirmasi_bayar`(`id_transaksi`, `bukti`, `tgl_bayar`) VALUES ('$_POST[id_transaksi]' , '$newbukti', '$tgl')";
+			// // exit;
+
+			$sqlpr = mysqli_query($con, "INSERT INTO `tb_konfirmasi_bayar`(`id_transaksi`, `bukti`, `tgl_bayar`) VALUES ('$_POST[id_transaksi]' , '$newbukti', '$tgl')");
+
+			$update = mysqli_query($con, " UPDATE tb_transaksi set status_order='Menunggu Konfirmasi' where id_transaksi='$_GET[id_transaksi]'");
+
 			echo "<script>
-
-		window.alert('GAGAL Upload. Maksimal Upload Foto 2 MB');
-
-	</script>";
+					window.alert('Konfirmasi berhasil');
+					window.location='./';	
+				</script>";
 		}
 	} else {
 		echo  "<script>
-                alert('Maksimal Upload Foto 2 MB');
+                	alert('Maksimal Upload Foto 2 MB');
                 </script>";
 	}
 }

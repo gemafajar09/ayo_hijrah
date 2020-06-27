@@ -10,35 +10,59 @@ if (isset($_GET['aksi'])) {
       }
       if (isset($_POST['save'])) {
 
-        $namaFile = $_FILES['logo_bank']['name'];
-        $namaSementara = $_FILES['logo_bank']['tmp_name'];
+        // $namaFile = $_FILES['logo_bank']['name'];
+        // $namaSementara = $_FILES['logo_bank']['tmp_name'];
+        // $ukuran_foto  = $_FILES['logo_bank']['size'];
+        // $dirUpload = "../img/bank/";
+        // if ($ukuran_foto != '0') {
+        //   unlink('../img/bank/' . $data['logo_bank']);
+        //   $terupload = move_uploaded_file($namaSementara, $dirUpload . $namaFile);
+        //   $save = mysqli_query($con, "UPDATE tb_bank set nama_bank='$_POST[nama_bank]', logo_bank = '$namaFile' where id_bank='$_GET[id]'");
+        // } else {
+        //   $save = mysqli_query($con, "UPDATE tb_bank set nama_bank='$_POST[nama_bank]' where id_bank='$_GET[id]'");
+        // }
+
+        // if ($save) {
+        //   echo "<script>
+        //        window.location='?page=bank';
+        //       </script>";
+        // } else {
+        //   echo "<script>alert('Gagal');
+        //       </script>";
+        // }
+
+        $allowed = array('jpg', 'jpeg', 'JPG', 'JPEG');
+        $nama_foto    = $_FILES['logo_bank']['name'];
+        $lokasi_foto  = $_FILES['logo_bank']['tmp_name'];
         $ukuran_foto  = $_FILES['logo_bank']['size'];
-        // var_dump($namaFile);
-        // exit;
-        // tentukan lokasi file akan dipindahkan
-        $dirUpload = "../img/bank/";
+        $file_name = explode('.', $nama_foto);
+        $nama_file = end($file_name);
+        $file_ext = strtolower($nama_file);
+        $nama_file_foto = str_replace(" ", "-", $file_name[0]) . "-" . substr(uniqid('', true), -5) . "." . $file_ext;
 
-        // var_dump($namaFile);
-        // var_dump($_POST['nama_bank']);
-        // exit;
-        // pindahkan file
+        if ($ukuran_foto < 2048576 && $ukuran_foto != 0) {
+          if (!in_array($file_ext, $allowed)) {
+            echo "<script>
+                    window.alert('Gambar Tidak Valid');
+                    window.location='?page=bank';
+                  </script>";
+          } else {
+            if ($ukuran_foto != '0') {
+              unlink('../img/bank/' . $data['logo_bank']);
 
-        if ($ukuran_foto != '0') {
-
-          unlink('../img/bank/' . $data['logo_bank']);
-          $terupload = move_uploaded_file($namaSementara, $dirUpload . $namaFile);
-          $save = mysqli_query($con, "UPDATE tb_bank set nama_bank='$_POST[nama_bank]', logo_bank = '$namaFile' where id_bank='$_GET[id]'");
+              move_uploaded_file($lokasi_foto, "../img/bank/" . $nama_file_foto);
+              $save = mysqli_query($con, "UPDATE tb_bank set nama_bank='$_POST[nama_bank]', logo_bank = '$nama_file_foto' where id_bank='$_GET[id]'");
+            } else {
+              $save = mysqli_query($con, "UPDATE tb_bank set nama_bank='$_POST[nama_bank]' where id_bank='$_GET[id]'");
+            }
+            echo "<script>
+             window.location='?page=bank';
+            </script>";
+          }
         } else {
-          $save = mysqli_query($con, "UPDATE tb_bank set nama_bank='$_POST[nama_bank]' where id_bank='$_GET[id]'");
-        }
-
-        if ($save) {
-          echo "<script>
-               window.location='?page=bank';
-              </script>";
-        } else {
-          echo "<script>alert('Gagal');
-              </script>";
+          echo  "<script>
+                	alert('Maksimal Upload Foto 2 MB');
+                </script>";
         }
       }
 ?>
@@ -92,27 +116,50 @@ if (isset($_GET['aksi'])) {
       break;
     case "tambahbank":
       if (isset($_POST['save'])) {
-        $namaFile = $_FILES['logo_bank']['name'];
-        $namaSementara = $_FILES['logo_bank']['tmp_name'];
+        // $namaFile = $_FILES['logo_bank']['name'];
+        // $namaSementara = $_FILES['logo_bank']['tmp_name'];
+        // $dirUpload = "../img/bank/";
+        // $terupload = move_uploaded_file($namaSementara, $dirUpload . $namaFile);
+        // $save = mysqli_query($con, "INSERT INTO tb_bank (nama_bank, logo_bank) VALUES('$_POST[nama_bank]','$namaFile')");
 
-        // tentukan lokasi file akan dipindahkan
-        $dirUpload = "../img/bank/";
+        // if ($save) {
+        //   echo "<script>alert('Tambah Data Berhasil');
+        //   window.location='?page=bank';
+        //   </script>";
+        //   exit;
+        // } else {
+        //   echo "<script>alert('Gagal');
+        //   </script>";
+        // }
 
-        // var_dump($namaFile);
-        // var_dump($_POST['nama_bank']);
-        // exit;
-        // pindahkan file
-        $terupload = move_uploaded_file($namaSementara, $dirUpload . $namaFile);
-        $save = mysqli_query($con, "INSERT INTO tb_bank (nama_bank, logo_bank) VALUES('$_POST[nama_bank]','$namaFile')");
+        $allowed = array('jpg', 'jpeg', 'JPG', 'JPEG');
+        $nama_foto    = $_FILES['logo_bank']['name'];
+        $lokasi_foto = $_FILES["logo_bank"]["tmp_name"];
+        $ukuran_foto = $_FILES['logo_bank']['size'];
+        $file_name = explode('.', $nama_foto);
+        $nama_file = end($file_name);
+        $file_ext = strtolower($nama_file);
+        $nama_file_foto = str_replace(" ", "-", $file_name[0]) . "-" . substr(uniqid('', true), -5) . "." . $file_ext;
 
-        if ($save) {
-          echo "<script>alert('Tambah Data Berhasil');
-          window.location='?page=bank';
-          </script>";
-          exit;
+        if ($ukuran_foto < 2048576) {
+          if (!in_array($file_ext, $allowed)) {
+            echo "<script>
+                    window.alert('Gambar Tidak Valid');
+                    window.location='?page=bank';
+                  </script>";
+          } else {
+            // $pindah = move_uploaded_file($lokfoto, "img/bukti/$newbukti");
+            move_uploaded_file($lokasi_foto, "../img/bank/" . $nama_file_foto);
+            $save = mysqli_query($con, "INSERT INTO tb_bank (nama_bank, logo_bank) VALUES('$_POST[nama_bank]','$nama_file_foto')");
+
+            echo "<script>
+            window.location='?page=bank';
+            </script>";
+          }
         } else {
-          echo "<script>alert('Gagal');
-          </script>";
+          echo  "<script>
+                	alert('Maksimal Upload Foto 2 MB');
+                </script>";
         }
       }
     ?>

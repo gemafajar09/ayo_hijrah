@@ -21,84 +21,159 @@
     <!-- Alert-->
     <!-- Shopping Cart-->
     <div class="table-responsive shopping-cart">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Nama Produk</th>
-            <th class="text-center">Jumlah</th>
-            <th class="text-center">Ukuran</th>
-            <th class="text-center">Subtotal</th>
-            <th class="text-center"><a class="btn btn-sm btn-outline-danger">Hapus</a></th>
-          </tr>
-        </thead>
-        <?php
-        // error_reporting(0);
-        $sql = mysqli_query($con, "SELECT *,
-        (SELECT group_concat(tmp.size order by tmp.size asc) from tb_transaksi_tmp tmp where tb_transaksi_tmp.id_customer = " . $_SESSION['idcs'] . " and tmp.kd_produk = tb_transaksi_tmp.kd_produk) as size_dibeli,
-        (SELECT group_concat(size_tersedia.ukuran order by size_tersedia.ukuran asc) from tb_produk produk join tb_detail_size size_tersedia on produk.kd_produk = size_tersedia.kd_produk where produk.kd_produk = tb_transaksi_tmp.kd_produk) as size_tersedia 
-        FROM tb_transaksi_tmp,tb_produk,tb_customer where tb_transaksi_tmp.kd_produk=tb_produk.kd_produk AND tb_transaksi_tmp.id_customer=tb_customer.id_customer AND tb_transaksi_tmp.id_customer ='$_SESSION[idcs]'");
-        $cek = mysqli_num_rows($sql);
 
+
+      <table class="table ">
+        <tr>
+          <th>Nama Produk</th>
+          <th class="text-center">Jumlah</th>
+          <th class="text-center">Ukuran</th>
+          <th class="text-center">Subtotal</th>
+          <th class="text-center"><a class="btn btn-sm btn-outline-danger">Hapus</a></th>
+        </tr>
+        <?php
+        $sql = mysqli_query($con, "SELECT * FROM (SELECT 
+																tb_transaksi_tmp.id_customer,
+																tb_produk.judul,
+																tb_produk.foto,
+																tb_produk.berat,
+																tb_produk.harga_eceran,
+																tb_produk.harga_grosir,
+                                SUM(tb_transaksi_tmp.jumlah_beli) as total_beli,
+                                (SELECT Group_concat(tmp.id_keranjang
+																				ORDER BY tmp.size ASC)
+															FROM tb_transaksi_tmp tmp
+															WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
+															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS id_keranjang,
+														(SELECT Group_concat(tmp.size
+																				ORDER BY tmp.size ASC)
+															FROM tb_transaksi_tmp tmp
+															WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
+															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS size_dibeli,
+														
+														(SELECT Group_concat(tmp.kd_produk
+																				ORDER BY tmp.size ASC)
+															FROM tb_transaksi_tmp tmp
+															WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
+															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS kd_produk,
+														
+														(SELECT Group_concat(tmp.jumlah_beli
+																				ORDER BY tmp.size ASC)
+															FROM tb_transaksi_tmp tmp
+															WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
+															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS jumlah_beli,
+														
+														(SELECT Group_concat(size_tersedia.ukuran
+																				ORDER BY size_tersedia.ukuran ASC)
+															FROM tb_produk produk
+															JOIN tb_detail_size size_tersedia ON produk.kd_produk = size_tersedia.kd_produk
+															WHERE produk.kd_produk = tb_transaksi_tmp.kd_produk
+															AND size_tersedia.stok != 0) AS size_tersedia
+														FROM tb_transaksi_tmp,
+															tb_produk,
+															tb_customer
+														WHERE tb_transaksi_tmp.kd_produk = tb_produk.kd_produk
+														AND tb_transaksi_tmp.id_customer = tb_customer.id_customer
+														AND tb_transaksi_tmp.id_customer = '$_SESSION[idcs]') produk GROUP BY produk.kd_produk");
+
+        $cek = mysqli_num_rows($sql);
         if ($cek == 0) { ?>
-          <tbody>
-            <tr>
-              <td colspan=7>
-                <h3>Keranjang Belanja Anda Masih Kosong</h3>
-              </td>
-            </tr>
-          </tbody>
-      </table>
-      <?php
+          <tr>
+            <td colspan=7>Keranjang Belanja Anda Masih Kosong</td>
+          </tr>
+          <?php
         } else {
           $no = 0;
-          $arr = array();
-          $arrHarga = array();
+          $sub = 0;
+          $totala = 0;
+          $_SESSION['data_detail_transaksi_tmp'] = array();
+          $data_detail_transaksi = array();
           while ($r = mysqli_fetch_assoc($sql)) {
             $no++;
-            // var_dump($r);
-            if ($r['jenis_toko'] == 'Grosir' && $r['size_dibeli'] == $r['size_tersedia']) {
-              $harga = "Rp. " . number_format($r['harga_grosir']);
-              $total = "Rp. " . number_format($r['harga_grosir'] * $r['jumlah_beli']);
-              $sub = $r['harga_grosir'] * $r['jumlah_beli'];
-            } else {
-              $harga = "Rp. " . number_format($r['harga_eceran']);
-              $total = "Rp. " . number_format($r['harga_eceran'] * $r['jumlah_beli']);
-              $sub = $r['harga_eceran'] * $r['jumlah_beli'];
-            }
-            $subtot += $sub;
-            $arr[] = $r;
-      ?>
-        <tbody>
-          <tr>
-            <td>
-              <div class="product-item"><a class="product-thumb" href="#"><img src="img/produk/<?= $r['foto'] ?>" alt="Product" style="width : 110px; height: 130px;"></a>
-                <div class="product-info">
-                  <h4 class="product-title"><a href="#"><?= $r["judul"]; ?></a></h4><span><em>Harga:</em> <?= $harga; ?></span>
-                </div>
-              </div>
-            </td>
-            <td class="text-center">
-              <div class="count-input">
-                <form action="update-keranjang-<?= $r['id_keranjang'] ?>" method="POST">
-                  <input class="form-control col-sm-9" name="jml" value="<?= $r['jumlah_beli']; ?>">
-                  <button type="submit" name="simpanP" class="btn-success col-sm-3 text-center" style="height:35px"><span class='icon-plus' style="margin-left:-5px;"></button>
-                </form>
-              </div>
 
-            </td>
-            <td class="text-center text-lg text-medium"><?= $r['size']; ?></td>
-            <td class="text-center text-lg text-medium">Rp.<?= number_format($sub) ?></td>
-            <td class="text-center"><a class="remove-from-cart" href="del-keranjang-<?= $r['id_keranjang']; ?>" data-toggle="tooltip" title="Remove item" onclick="return confirm('Yakin Hapus?')">
-                <i class="icon-cross"></i></a></td>
-          </tr>
-        <?php
-          }
-        ?>
-        </tbody>
-        </table>
+            $size_tersedia = count(explode(",", $r['size_tersedia']));
+
+            $size = $r['size_dibeli'];
+            $ukuran = explode(",", $size);
+
+            $jbeli = $r['jumlah_beli'];
+            $jumlah_beli = explode(",", $jbeli);
+
+            $idk = $r['id_keranjang'];
+            $id_keranjang = explode(",", $idk);
+
+            $kdproduk1 = $r['kd_produk'];
+            $kd_produk = explode(",", $kdproduk1);
+
+            foreach ($ukuran as $no => $u) {
+              $harga_asli = 0;
+              if ($_SESSION['jenis_toko'] == 'Grosir' && $r['size_dibeli'] == $r['size_tersedia'] && $r['total_beli'] >= (12 * count($size_tersedia) && $r['jumlah_beli'] >= 12)) {
+                $harga_asli = $r['harga_grosir'];
+                $harga = "Rp. " . number_format($r['harga_grosir']);
+                $total = $r['harga_grosir'] * $jumlah_beli[$no];
+              } else {
+                $harga_asli = $r['harga_eceran'];
+                $harga = "Rp. " . number_format($r['harga_eceran']);
+                $total = $r['harga_eceran'] * $jumlah_beli[$no];
+              }
+              $sub = $harga_asli * $jumlah_beli[$no];
+              $totala += $sub;
+              $rand = rand(2, 100);
+              @$subtot += $sub + $rand;
+
+              $totalakhir = $subtot;
+              $berat = $r['berat'] * $jumlah_beli[$no];
+              @$subberat += $berat;
+
+              $data_detail_transaksi[] = array(
+                "kd_produk" => $kd_produk[$no],
+                "id_customer" => $_SESSION['idcs'],
+                "size" => $u,
+                "jumlah_beli" => $jumlah_beli[$no],
+                "total_harga" => $total,
+                "harga" => $harga_asli
+              );
+          ?>
+              <tr>
+                <td>
+                  <div class="product-item"><a class="product-thumb" href="#"><img src="img/produk/<?= $r['foto'] ?>" alt="Product" style="width : 110px; height: 130px;"></a>
+                    <div class="product-info">
+                      <h4 class="product-title"><a href="#"><?= $r["judul"]; ?></a></h4><span><em>Harga:</em> <?= $harga; ?></span>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <div class="count-input">
+                    <form action="update-keranjang-<?= $id_keranjang[$no] ?>" method="POST">
+                      <input class="form-control col-sm-9" name="jml" value="<?= $jumlah_beli[$no]; ?>">
+                      <button type="submit" name="simpanP" class="btn-success col-sm-3 text-center" style="height:35px"><span class='icon-plus' style="margin-left:-5px;"></button>
+                    </form>
+                  </div>
+
+                </td>
+                <td class="text-center text-lg text-medium"><?= $u; ?></td>
+                <td class="text-center text-lg text-medium">Rp.<?= number_format($sub) ?></td>
+                <td class="text-center"><a class="remove-from-cart" href="del-keranjang-<?= $id_keranjang[$no]; ?>" data-toggle="tooltip" title="Remove item" onclick="return confirm('Yakin Hapus?')">
+                    <i class="icon-cross"></i></a></td>
+              </tr>
+            <?php
+            }
+            ?>
+
+          <?php }
+
+          ?>
+      </table>
+
+
+
     </div>
+
+
+
+
     <div class="shopping-cart-footer">
-      <div class="column text-lg">Subtotal: <span class="text-medium"><?= number_format($subtot) ?></span></div>
+      <div class="column text-lg">Subtotal: <span class="text-medium"><?= number_format($totala) ?></span></div>
     </div>
     <div class="shopping-cart-footer">
       <div class="column"><a class="btn btn-outline-secondary" href="shop">

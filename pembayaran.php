@@ -152,7 +152,7 @@ if (@$_SESSION['idcs'] == '') {
 
 											foreach ($ukuran as $no => $u) {
 												$harga_asli = 0;
-												if ($_SESSION['jenis_toko'] == 'Grosir' && $r['size_dibeli'] == $r['size_tersedia']) {
+												if ($_SESSION['jenis_toko'] == 'Grosir' && $r['size_dibeli'] == $r['size_tersedia'] && $jumlah_beli[$no] >= 12) {
 													$harga_asli = $r['harga_grosir'];
 													$harga = "Rp. " . number_format($r['harga_grosir']);
 													$total = $r['harga_grosir'] * $jumlah_beli[$no];

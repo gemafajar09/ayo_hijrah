@@ -494,6 +494,14 @@ if (isset($_GET['aksi'])) {
                       <option value="Barang Telah Diterima">Barang Telah Diterima</option>
                       <option value="Dibatalkan">Dibatalkan</option>
 
+                    <?php } else if ($r1['status_order'] == 'Menunggu Konfirmasi') { ?>
+
+                      <option selected value="Pembayaran Diterima">Pembayaran Diterima</option>
+                      <option value="Barang Tengah Disiapkan">Barang Tengah Disiapkan</option>
+                      <option value="Proses Pengiriman">Proses Pengiriman</option>
+                      <option value="Barang Telah Diterima">Barang Telah Diterima</option>
+                      <option value="Dibatalkan">Dibatalkan</option>
+
                     <?php } else if ($r1['status_order'] == 'Lunas') { ?>
 
                       <option selected value="Pembayaran Diterima">Pembayaran Diterima</option>
@@ -503,6 +511,7 @@ if (isset($_GET['aksi'])) {
                       <option value="Dibatalkan">Dibatalkan</option>
 
                     <?php } ?>
+
                   </select>
 
                 </div>
@@ -688,6 +697,9 @@ if (isset($_GET['aksi'])) {
                     } else if ($r['status_order'] == 'Lunas') {
 
                       $status = "<span style='color: #fff; background-color: #0ebdbb; padding: 5px;'>Lunas</span>";
+                    } else if ($r['status_order'] == 'Menunggu Konfirmasi') {
+
+                      $status = "<span style='color: #fff; background-color: #0ebdbb; padding: 5px;'>Menunggu Konfirmasi</span>";
                     }
 
                   ?>
