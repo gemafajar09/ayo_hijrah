@@ -44,24 +44,24 @@
 																				ORDER BY tmp.size ASC)
 															FROM tb_transaksi_tmp tmp
 															WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
-															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS id_keranjang,
+															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk GROUP BY tmp.kd_produk) AS id_keranjang,
 														(SELECT Group_concat(tmp.size
 																				ORDER BY tmp.size ASC)
 															FROM tb_transaksi_tmp tmp
 															WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
-															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS size_dibeli,
+															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk GROUP BY tmp.kd_produk) AS size_dibeli,
 														
 														(SELECT Group_concat(tmp.kd_produk
 																				ORDER BY tmp.size ASC)
 															FROM tb_transaksi_tmp tmp
 															WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
-															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS kd_produk,
+															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk GROUP BY tmp.kd_produk) AS kd_produk,
 														
 														(SELECT Group_concat(tmp.jumlah_beli
 																				ORDER BY tmp.size ASC)
 															FROM tb_transaksi_tmp tmp
 															WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
-															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS jumlah_beli,
+															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk GROUP BY tmp.kd_produk) AS jumlah_beli,
 														
 														(SELECT Group_concat(size_tersedia.ukuran
 																				ORDER BY size_tersedia.ukuran ASC)
@@ -74,13 +74,15 @@
 															tb_customer
 														WHERE tb_transaksi_tmp.kd_produk = tb_produk.kd_produk
 														AND tb_transaksi_tmp.id_customer = tb_customer.id_customer
-														AND tb_transaksi_tmp.id_customer = '$_SESSION[idcs]') produk GROUP BY produk.kd_produk");
+														AND tb_transaksi_tmp.id_customer = '$_SESSION[idcs]' GROUP BY tb_transaksi_tmp.kd_produk) produk GROUP BY produk.kd_produk");
 
         $cek = mysqli_num_rows($sql);
+        // var_dump($cek);
         if ($cek == 0) { ?>
           <tr>
             <td colspan=7>Keranjang Belanja Anda Masih Kosong</td>
           </tr>
+          </table>
           <?php
         } else {
           $no = 0;

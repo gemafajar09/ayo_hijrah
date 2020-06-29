@@ -82,30 +82,75 @@ if (@$_SESSION['idcs'] == '') {
 									// 		       AND tb_transaksi_tmp.id_customer = tb_customer.id_customer
 									// 			   AND tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'");
 
-									$sql = mysqli_query($con, "SELECT * FROM (SELECT tb_transaksi_tmp.id_keranjang,
+									// $sql = mysqli_query($con, "SELECT * FROM (SELECT tb_transaksi_tmp.id_keranjang,
+									// 							tb_transaksi_tmp.id_customer,
+									// 							tb_produk.judul,
+									// 							tb_produk.foto,
+									// 							tb_produk.berat,
+									// 							tb_produk.harga_eceran,
+									// 							tb_produk.harga_grosir,
+									// 					(SELECT Group_concat(tmp.size
+									// 											ORDER BY tmp.size ASC)
+									// 						FROM tb_transaksi_tmp tmp
+									// 						WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
+									// 						AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS size_dibeli,
+														
+									// 					(SELECT Group_concat(tmp.kd_produk
+									// 											ORDER BY tmp.size ASC)
+									// 						FROM tb_transaksi_tmp tmp
+									// 						WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
+									// 						AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS kd_produk,
+														
+									// 					(SELECT Group_concat(tmp.jumlah_beli
+									// 											ORDER BY tmp.size ASC)
+									// 						FROM tb_transaksi_tmp tmp
+									// 						WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
+									// 						AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS jumlah_beli,
+														
+									// 					(SELECT Group_concat(size_tersedia.ukuran
+									// 											ORDER BY size_tersedia.ukuran ASC)
+									// 						FROM tb_produk produk
+									// 						JOIN tb_detail_size size_tersedia ON produk.kd_produk = size_tersedia.kd_produk
+									// 						WHERE produk.kd_produk = tb_transaksi_tmp.kd_produk
+									// 						AND size_tersedia.stok != 0) AS size_tersedia
+									// 					FROM tb_transaksi_tmp,
+									// 						tb_produk,
+									// 						tb_customer
+									// 					WHERE tb_transaksi_tmp.kd_produk = tb_produk.kd_produk
+									// 					AND tb_transaksi_tmp.id_customer = tb_customer.id_customer
+									// 					AND tb_transaksi_tmp.id_customer = '$_SESSION[idcs]') produk GROUP BY produk.kd_produk");
+
+
+									$sql = mysqli_query($con, "SELECT * FROM (SELECT 
 																tb_transaksi_tmp.id_customer,
 																tb_produk.judul,
 																tb_produk.foto,
 																tb_produk.berat,
 																tb_produk.harga_eceran,
 																tb_produk.harga_grosir,
+                                SUM(tb_transaksi_tmp.jumlah_beli) as total_beli,
+                                (SELECT Group_concat(tmp.id_keranjang
+																				ORDER BY tmp.size ASC)
+															FROM tb_transaksi_tmp tmp
+															WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
+															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk GROUP BY tmp.kd_produk) AS id_keranjang,
 														(SELECT Group_concat(tmp.size
 																				ORDER BY tmp.size ASC)
 															FROM tb_transaksi_tmp tmp
 															WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
-															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS size_dibeli,
+															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk GROUP BY tmp.kd_produk) AS size_dibeli,
 														
 														(SELECT Group_concat(tmp.kd_produk
 																				ORDER BY tmp.size ASC)
 															FROM tb_transaksi_tmp tmp
 															WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
-															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS kd_produk,
+															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk GROUP BY tmp.kd_produk) AS kd_produk,
 														
 														(SELECT Group_concat(tmp.jumlah_beli
 																				ORDER BY tmp.size ASC)
 															FROM tb_transaksi_tmp tmp
 															WHERE tb_transaksi_tmp.id_customer = '$_SESSION[idcs]'
-															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk) AS jumlah_beli,
+															AND tmp.kd_produk = tb_transaksi_tmp.kd_produk GROUP BY tmp.kd_produk) AS jumlah_beli,
 														
 														(SELECT Group_concat(size_tersedia.ukuran
 																				ORDER BY size_tersedia.ukuran ASC)
@@ -118,7 +163,7 @@ if (@$_SESSION['idcs'] == '') {
 															tb_customer
 														WHERE tb_transaksi_tmp.kd_produk = tb_produk.kd_produk
 														AND tb_transaksi_tmp.id_customer = tb_customer.id_customer
-														AND tb_transaksi_tmp.id_customer = '$_SESSION[idcs]') produk GROUP BY produk.kd_produk");
+														AND tb_transaksi_tmp.id_customer = '$_SESSION[idcs]' GROUP BY tb_transaksi_tmp.kd_produk) produk GROUP BY produk.kd_produk");
 
 									$cek = mysqli_num_rows($sql);
 									if ($cek == 0) { ?>
@@ -140,9 +185,10 @@ if (@$_SESSION['idcs'] == '') {
 											// 	echo 'harga gorsir';
 											// }
 
+											$size_tersedia = count(explode(",", $r['size_tersedia']));
+
 											$size = $r['size_dibeli'];
 											$ukuran = explode(",", $size);
-
 
 											$jbeli = $r['jumlah_beli'];
 											$jumlah_beli = explode(",", $jbeli);
@@ -152,7 +198,7 @@ if (@$_SESSION['idcs'] == '') {
 
 											foreach ($ukuran as $no => $u) {
 												$harga_asli = 0;
-												if ($_SESSION['jenis_toko'] == 'Grosir' && $r['size_dibeli'] == $r['size_tersedia'] && $jumlah_beli[$no] >= 12) {
+												if ($_SESSION['jenis_toko'] == 'Grosir' && $r['size_dibeli'] == $r['size_tersedia'] && $r['total_beli'] >= (12 * count($size_tersedia) && $r['jumlah_beli'] >= 12)) {
 													$harga_asli = $r['harga_grosir'];
 													$harga = "Rp. " . number_format($r['harga_grosir']);
 													$total = $r['harga_grosir'] * $jumlah_beli[$no];
