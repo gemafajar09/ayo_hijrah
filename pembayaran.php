@@ -253,8 +253,8 @@ if (@$_SESSION['idcs'] == '') {
 									</select>
 								</div>
 								<div class="form-group col-md-12">
-									<label for="kodepos"></label>
-									<input type="hidden" value="99" name="kodepos" id="kodepos" class="form-control" onkeypress="return hanyaAngka(event)" required>
+									<label for="kodepos">Kode Pos</label>
+									<input type="text" name="kodepos" id="kodepos" class="form-control" onkeypress="return hanyaAngka(event)" required>
 								</div>
 								<div class="form-group col-md-12">
 									<label for="alamat">Alamat *</label>

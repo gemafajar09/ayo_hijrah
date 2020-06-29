@@ -55,6 +55,7 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
   <link id="mainStyles" rel="stylesheet" media="screen" href="css/stylesfaq.css">
   <!-- Customizer Styles-->
   <link rel="stylesheet" media="screen" href="customizer/customizer.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <style>
     .pagination {
       display: inline-block;
@@ -197,6 +198,11 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
       src: url(css/bradhitc.ttf);
     }
 
+    @font-face {
+      font-family: 'quick';
+      src: url(css/Quicksand-Regular_afda0c4733e67d13c4b46e7985d6a9ce.ttf);
+    }
+
     /* body{
       font-family: 'bradley';
       font-size: 70pt;
@@ -289,7 +295,7 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
             <section class="widget widget-light-skin">
               <h5 class="" style="color: black">Contact Information</h5>
               <p class="" style="color: black">
-                <h6>Alamat : Jl. Batang Antokan No.8, Rimbo Kaluang, Kec. Padang Bar., Kota Padang, Sumatera Barat 25114</h6>
+                <h6>Alamat : Jl. Pondok, Kp. Pd., Kec. Padang Bar., Kota Padang, Sumatera Barat</h6>
               </p>
               <ul class="list-unstyled text-sm text-white">
                 <table>
@@ -303,17 +309,17 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
                       <h6>Call Only</h6>
                     </td>
                     <td style="color: black">
-                      <h6>: 0821-7006-5191</h6>
+                      <h6>: +62 811 66 190 20</h6>
                     </td>
                   </tr>
                 </table>
               </ul>
+              <p style="color: black">
+                <h5>Claim / Reject / Refund (Retur) : <br></h5>
+                <h6>Admin 1 : +62 811 66 190 20 <br>
+                  Admin 2 : +62 811 66 190 30</h6>
+              </p>
             </section>
-            <p style="color: black">
-              <h5>Claim / Reject / Refund (Retur) : <br></h5>
-              <h6>Admin 1 : 0821-7006-5191 <br>
-                Admin 2 : 0821-7006-5191</h6>
-              </<p>
           </div>
           <div class="col-lg-4 col-md-6">
             <!-- About Us-->
@@ -323,8 +329,8 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
                 <li><a style="color: black" href="./">Home</a></li>
                 <li><a style="color: black" href="shop">Shop</a></li>
                 <li><a style="color: black" href="about">About</a></li>
-                <li><a style="color: black" href="testimonial">Testimonial</a></li>
-                <li><a style="color: black" href="cara-beli">Cara Belanja</a></li>
+                <!-- <li><a style="color: black" href="testimonial">Testimonial</a></li> -->
+                <!-- <li><a style="color: black" href="cara-beli">Cara Belanja</a></li> -->
                 <li><a style="color: black" href="kontak">Contact</a></li>
                 <li><a style="color: black" href="faq">FAQ</a></li>
                 <li><a style="color: black" href="https://cekresi.com/" target="_blank">Cek No resi</a></li>

@@ -114,9 +114,11 @@ if (isset($_POST['pesan'])) {
 	}
 
 	// setelah data pemesanan tersimpan, hapus data pemesanan di tabel pemesanan sementara (keranjang)
-	for ($i = 0; $i < $jml; $i++) {
-		mysqli_query($con, "DELETE FROM tb_transaksi_tmp WHERE id_keranjang = {$isikeranjang[$i]['id_keranjang']}");
-	}
+	mysqli_query($con, "DELETE FROM tb_transaksi_tmp WHERE id_customer = '$_SESSION[idcs]'");
+	// for ($i = 0; $i < $jml; $i++) {
+	// 	mysqli_query($con, "DELETE FROM tb_transaksi_tmp WHERE id_customer = '$_SESSION[idcs]'");
+	// }
+	// exit;
 
 	$sql = mysqli_query($con, "SELECT * FROM tb_customer,tb_transaksi where tb_customer.id_customer=tb_transaksi.id_customer AND id_transaksi='$invoice' AND
 	tb_customer.id_customer='$_SESSION[idcs]'");

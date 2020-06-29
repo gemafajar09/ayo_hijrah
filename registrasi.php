@@ -36,7 +36,7 @@ include "config/koneksi.php";;
 
 </head>
 
-<body>
+<body style="background:url(foto/background/sft.jpg)">
   <div class="container">
     <div class="row">
       <!-- Logo -->

@@ -21,13 +21,14 @@
 			<div class="cart_container" style="border: 1px solid #ccc; border-radius: 5px; padding: 25px;">
 				<div class="table table-responsive">
 					<table class="table table-bordered">
-						<tr class="bg-primary">
-							<th class="text-center putih">No</th>
-							<th class="text-center putih">Tanggal Order</th>
-							<th class="text-center putih">Customer</th>
-							<th class="text-center putih">Total Bayar</th>
-							<th class="text-center putih">Status</th>
-							<th class="text-center putih">Konfirmasi Pembayaran</th>
+						<tr class="bg-dark">
+							<th class="text-center putih" style="color: white;">No</th>
+							<th class="text-center putih" style="color: white;">Tanggal Order</th>
+							<th class="text-center putih" style="color: white;">Customer</th>
+							<th class="text-center putih" style="color: white;">Total Bayar</th>
+							<th class="text-center putih" style="color: white;">Status</th>
+							<th class="text-center putih" style="color: white;">Konfirmasi Pembayaran</th>
+							<th class="text-center putih" style="color: white;">Cek Detail Transaksi</th>
 						</tr>
 						<?php
 						// $sql = mysqli_query($con, "SELECT * FROM tb_customer,tbl_orders
@@ -53,7 +54,6 @@
 								$totalakhir = $subtot;
 								$berat = $r['berat'] * $r['jml'];
 								@$subberat += $berat;
-
 							?>
 								<tr>
 									<td class="text-center"><?php echo $no; ?></td>
@@ -66,7 +66,7 @@
 									} else {
 										echo "<td class='text-center'><img src='foto/ceklis.png' style='width:30px'><br> No Resi :  $r[no_resi] </td>";
 									} ?>
-
+									<td class="text-center"><a href="histori-pesanan-detail-<?php echo $r['id_transaksi']; ?>" class="btn-info" style="border:1px solid #87c7fd; border-radius:5px; padding:3px 5px;">Cek Detail</a></td>
 								</tr>
 						<?php }
 						} ?>
