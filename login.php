@@ -7,8 +7,9 @@ include "config/koneksi.php";
 
 <!-- Mirrored from themes.rokaux.com/unishop/v2.2/template-1/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Apr 2018 05:47:23 GMT -->
 
-<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
   <title>Ayo Hijrah</title>
   <!-- SEO Meta Tags-->
   <meta name="description" content="Unishop - Universal E-Commerce Template">
@@ -36,7 +37,7 @@ include "config/koneksi.php";
 
 </head>
 
-<body>
+<body style="background:url(foto/background/sft.jpg)">
   <div class="container">
     <div class="row">
       <!-- Logo -->

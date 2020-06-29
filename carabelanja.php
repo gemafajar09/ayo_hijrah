@@ -22,11 +22,11 @@
 				<ol class="faq-container">
 					<li>
 						<div class="answer">
-							Daftar/Registrasi akun dulu, belum memiliki akun, atau login dahulu jika sudah punya akun .
+							Daftar/Registrasi akun dulu, jika belum memiliki akun, atau login jika sudah punya akun .
 						</div>
 						<div class="">
-							<a href="foto/carabelanja/register.PNG" target="_blank"><img src="foto/carabelanja/register.PNG" width="25%"></a>
-							<a href="foto/carabelanja/login.PNG" target="_blank"><img src="foto/carabelanja/login.PNG" width="25%"></a>
+							<a href="img/carabeli/2.PNG" target="_blank"><img src="img/carabeli/2.PNG" width="40%"></a>
+							<a href="img/carabeli/1.PNG" target="_blank"><img src="img/carabeli/1.PNG" width="30%"></a>
 						</div>
 					</li>
 					<li>
@@ -34,7 +34,7 @@
 							Pilih tab SHOP untuk melihat semua kategori.
 						</div>
 						<div class="">
-							<a href="foto/carabelanja/shop.PNG" target="_blank"><img src="foto/carabelanja/shop.PNG" width="45%"></a>
+							<a href="img/carabeli/3.PNG" target="_blank"><img src="img/carabeli/3.PNG" width="45%"></a>
 						</div>
 					</li>
 					<li>
@@ -42,7 +42,7 @@
 							Pilih produk yang mau kamu beli. Selanjutnya kamu akan masuk ke detail produk yang barusan dipilih.
 						</div>
 						<div class="">
-							<a href="foto/carabelanja/detail produk.PNG" target="_blank"><img src="foto/carabelanja/detail produk.PNG" width="45%"></a>
+							<a href="img/carabeli/4.PNG" target="_blank"><img src="img/carabeli/4.PNG" width="45%"></a>
 						</div>
 					</li>
 					<li>

@@ -7,7 +7,7 @@ $r = mysqli_fetch_assoc($sql);
   <div class="offcanvas-header">
     <?php
     if (!empty($_SESSION["email"])) { ?>
-      <img src="foto/customer/<?= $r["fotoregis"]; ?>" alt="Rafika Stores" style="width:50%">
+      <img src="foto/customer/<?= $r["fotoregis"]; ?>" alt="Ayo Hijrah" style="width:50%">
       <h3 class="offcanvas-title"><?= $r["nama_lengkap"]; ?></h3>
     <?php } ?>
 
@@ -70,8 +70,7 @@ $r = mysqli_fetch_assoc($sql);
         </li>
         <li class="has-children"><span><a href="about">About</a></span>
         </li>
-        <li class="has-children"><span><a href="testimonial"><span>Testimonial</span></a></span>
-        </li>
+        <!-- <li class="has-children"><span><a href="testimonial"><span>Testimonial</span></a></span></li> -->
         <li class="has-children"><span><a href="info-rek"><span>Info Rekening</span></a></span>
         </li>
         <li class="has-children"><span><a href="faq"><span>FAQ</span></a></span>
@@ -106,8 +105,8 @@ $r = mysqli_fetch_assoc($sql);
 <div class="topbar" style="background-color: #f2e9d8;">
   <div class="topbar-column">
 
-    <a class="social-button sb-instagram shape-none sb-dark" href="https://www.instagram.com/rafika_stores/" target="_blank"><i class="socicon-instagram"></i></a>
-    <a class="social-button sb-youtube shape-none sb-dark" href="https://www.youtube.com/channel/UCZ3WsloMYUQ49FZ8Toq7nMQ" target="_blank"><i class="socicon-youtube"></i></a>
+    <a class="social-button sb-instagram shape-none sb-dark" href="https://www.instagram.com/ayohijrah.indonesia/" target="_blank"><i class="socicon-instagram"></i></a>
+    <a class="social-button sb-youtube shape-none sb-dark" href="#" target="_blank"><i class="socicon-youtube"></i></a>
   </div>
   <?php
   if (!empty($_SESSION["email"])) { ?>
@@ -131,7 +130,7 @@ $r = mysqli_fetch_assoc($sql);
               <li><a href="keranjang">Keranjang</a></li>
               <li><a href="histori-pesanan">History</a></li>
               <li class="sub-menu-separator"></li>
-              <li><a href="logout.php"> <i class="icon-unlock"></i>Logout</a></li>
+              <!-- <li><a href="logout.php"> <i class="icon-unlock"></i>Logout</a></li> -->
             </ul>
           </div>
           <!-- END -->
@@ -193,11 +192,10 @@ $r = mysqli_fetch_assoc($sql);
           <!-- <a><a href="garansi">Garansi</a></li> -->
         </ul>
       </li>
-
-      <li <?php if (@$_GET['module'] == 'testimonial') {
-            echo 'class=active';
-          } ?>><a href="testimonial"><span>Testimonial</span></a>
-      </li>
+      <!-- <li <?php if (@$_GET['module'] == 'testimonial') {
+                  echo 'class=active';
+                } ?>><a href="testimonial"><span>Testimonial</span></a>
+      </li> -->
       <li <?php if (@$_GET['module'] == 'info_rek') {
             echo 'class=active';
           } ?>><a href="info-rek"><span>Info Rekening</span></a>
@@ -206,6 +204,19 @@ $r = mysqli_fetch_assoc($sql);
             echo 'class=active';
           } ?>><a href="kontak"><span>Contact US</span></a>
       </li>
+      <?php
+      if (!empty($_SESSION["email"])) {
+      ?>
+        <li <?php if (@$_GET['module'] == 'histori_pesanan') {
+              echo 'class=active';
+            } ?>><a href="histori-pesanan"><span>Histori Pesanan</span></a>
+        </li>
+
+
+        <li><a href="logout.php"><span>Logout</span></a></li>
+      <?php
+      }
+      ?>
     </ul>
   </nav>
   <!-- Toolbar-->
