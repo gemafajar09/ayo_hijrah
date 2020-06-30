@@ -47,22 +47,23 @@ if (isset($_GET['aksi'])) {
                     window.location='?page=bank';
                   </script>";
           } else {
-            if ($ukuran_foto != '0') {
+            // if ($ukuran_foto != '0') {
               unlink('../img/bank/' . $data['logo_bank']);
 
               move_uploaded_file($lokasi_foto, "../img/bank/" . $nama_file_foto);
               $save = mysqli_query($con, "UPDATE tb_bank set nama_bank='$_POST[nama_bank]', logo_bank = '$nama_file_foto' where id_bank='$_GET[id]'");
-            } else {
-              $save = mysqli_query($con, "UPDATE tb_bank set nama_bank='$_POST[nama_bank]' where id_bank='$_GET[id]'");
-            }
+            // } else {
+              
+            // }
             echo "<script>
              window.location='?page=bank';
             </script>";
           }
         } else {
-          echo  "<script>
-                	alert('Maksimal Upload Foto 2 MB');
-                </script>";
+          $save = mysqli_query($con, "UPDATE tb_bank set nama_bank='$_POST[nama_bank]' where id_bank='$_GET[id]'");
+          echo "<script>
+             window.location='?page=bank';
+            </script>";
         }
       }
 ?>
@@ -98,6 +99,7 @@ if (isset($_GET['aksi'])) {
                       <input type="hidden" name="foto_lama" value="<?= $data['logo_bank'] ?>">
                       <img src="../img/bank/<?= $data['logo_bank'] ?>" alt="" width="150px" height="150px">
                       <input type="file" name="logo_bank" class="form-control">
+                      <font color="red">*<span>Ukuran Foto Maximal 1 MB dan Format JPG/JPEG</span></font>
                     </div>
                   </div>
 
@@ -193,6 +195,7 @@ if (isset($_GET['aksi'])) {
                     <label for="" class="col-sm-2 control-label">Logo</label>
                     <div class="col-sm-8">
                       <input type="file" id="logo_bank" name="logo_bank" class="form-control">
+                      <font color="red">*<span>Ukuran Foto Maximal 1 MB dan Format JPG/JPEG</span></font>
                     </div>
                   </div>
                   <div class="form-group">

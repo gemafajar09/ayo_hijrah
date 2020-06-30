@@ -88,6 +88,7 @@ if (isset($_GET['aksi'])) {
                     <label for="nmsub" class="col-sm-2 control-label">Logo</label>
                     <div class="col-sm-4">
                       <input type="file" name="logo" id="logo" class="form-control">
+                      <font color="red">*<span>Ukuran Foto Maximal 1 MB dan Format JPG/JPEG</span></font>
                     </div>
                   </div>
 
@@ -129,23 +130,27 @@ if (isset($_GET['aksi'])) {
                     window.location='?page=merek';
                   </script>";
             } else {
-              if ($ukuran_foto != '0') {
+              // if ($ukuran_foto != '0') {
 
                 unlink('../img/brand/' . $data['gambar_brand']);
 
                 move_uploaded_file($lokasi_foto, "../img/brand/" . $nama_file_foto);
                 $save = mysqli_query($con, "UPDATE tb_brand set nama_brand='$_POST[nama_brand]', gambar_brand='$nama_file_foto' where id_brand='$_GET[id_brand]'");
-              } else {
-                $save = mysqli_query($con, "UPDATE tb_brand set nama_brand='$_POST[nama_brand]' where id_brand='$_GET[id_brand]'");
-              }
+              // } else {
+              //   $save = mysqli_query($con, "UPDATE tb_brand set nama_brand='$_POST[nama_brand]' where id_brand='$_GET[id_brand]'");
+              // }
               echo "<script>
                window.location='?page=merek';
               </script>";
             }
           } else {
-            echo  "<script>
-                	alert('Maksimal Upload Foto 2 MB');
-                </script>";
+            $save = mysqli_query($con, "UPDATE tb_brand set nama_brand='$_POST[nama_brand]' where id_brand='$_GET[id_brand]'");
+            echo "<script>
+            window.location='?page=merek';
+           </script>";
+            // echo  "<script>
+            //     	alert('Maksimal Upload Foto 2 MB');
+            //     </script>";
           }
         }
 
@@ -198,6 +203,7 @@ if (isset($_GET['aksi'])) {
                         <label for="nmsub" class="col-sm-2 control-label">Logo</label>
                         <div class="col-sm-4">
                           <input type="file" name="logo" id="logo" class="form-control">
+                          <font color="red">*<span>Ukuran Foto Maximal 1 MB dan Format JPG/JPEG</span></font>
                         </div>
                       </div>
 

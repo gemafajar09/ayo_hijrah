@@ -69,6 +69,7 @@ if (isset($_GET['aksi'])) {
                     <label for="fotokat" class="col-sm-2 control-label">Foto Kategori</label>
                     <div class="col-sm-4">
                       <input type="file" name="foto_kategori" id="foto_kategori" class="form-control" placeholder="Foto Kategori">
+                      <font color="red">*<span>Ukuran Foto Maximal 1 MB dan Format JPG/JPEG</span></font>
                     </div>
                   </div>
 
@@ -112,23 +113,27 @@ if (isset($_GET['aksi'])) {
                     window.location='?page=kategori';
                   </script>";
           } else {
-            if ($ukuran_foto != '0') {
+            // if ($ukuran_foto != '0') {
 
               unlink('../img/kategori/' . $data['gambar_kategori']);
 
               move_uploaded_file($lokasi_foto, "../img/kategori/" . $nama_file_foto);
               $save = mysqli_query($con, "UPDATE tb_kategori set nama_kategori='$_POST[nama_kategori]',seo_kategori='$judulseo', gambar_kategori='$nama_file_foto' where id_kategori='$_GET[id_kategori]'");
-            } else {
-              $save = mysqli_query($con, "UPDATE tb_kategori set nama_kategori='$_POST[nama_kategori]',seo_kategori='$judulseo' where id_kategori='$_GET[id_kategori]'");
-            }
+            // } else {
+            //   $save = mysqli_query($con, "UPDATE tb_kategori set nama_kategori='$_POST[nama_kategori]',seo_kategori='$judulseo' where id_kategori='$_GET[id_kategori]'");
+            // }
             echo "<script>
                window.location='?page=kategori';
               </script>";
           }
         } else {
-          echo  "<script>
-                	alert('Maksimal Upload Foto 2 MB');
-                </script>";
+          $save = mysqli_query($con, "UPDATE tb_kategori set nama_kategori='$_POST[nama_kategori]',seo_kategori='$judulseo' where id_kategori='$_GET[id_kategori]'");
+          echo "<script>
+               window.location='?page=kategori';
+              </script>";
+          // echo  "<script>
+          //       	alert('Maksimal Upload Foto 2 MB');
+          //       </script>";
         }
 
         // if ($ukuran_foto != '0') {
@@ -184,6 +189,7 @@ if (isset($_GET['aksi'])) {
                         <img src="../img/kategori/<?php echo $data['gambar_kategori'] ?>" alt="" width="150px">
                       </center>
                       <input type="file" name="foto_kategori" id="foto_kategori" class="form-control" placeholder="Foto Kategori">
+                      <font color="red">*<span>Ukuran Foto Maximal 1 MB dan Format JPG/JPEG</span></font>
                     </div>
                   </div>
 
