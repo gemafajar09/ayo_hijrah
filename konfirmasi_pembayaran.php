@@ -28,8 +28,7 @@ $r = mysqli_fetch_assoc($sql);
 				<div class="form-group col-md-12">
 					<label for="nama" style="font-size: 16px;">Bukti Pembayaran *</label>
 					<input type="file" name="gambar" class="form-control" required>
-					<font color="red" size="4">*</font>
-					<font size="2"><b>Nb : Ukuran Foto Maksimal 2mb</b></font>
+					<font color="red">*<span>Ukuran Foto Maximal 1 MB dan Format JPG/JPEG</span></font>
 				</div>
 				<div class="form-group col-md-12">
 					<input type="submit" name="pesan" value="Konfirmasi" class="btn btn-info" required>

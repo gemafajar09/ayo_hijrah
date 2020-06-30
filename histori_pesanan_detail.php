@@ -95,7 +95,7 @@ $id = $_GET['id_transaksi'];
 						<?php } ?>
 						<tr class="bg-dark">
 							<th colspan="6" class="text-right" style="color: white;">Harga Barang</th>
-							<th style="color: white;"><?php echo "Rp." . number_format($total); ?></th>
+							<th style="color: white;"><?php echo "Rp." . number_format($subtot); ?></th>
 						</tr>
 						<tr class="bg-dark">
 							<th colspan="6" class="text-right" style="color: white;">Ongkir</th>

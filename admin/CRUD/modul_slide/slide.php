@@ -41,7 +41,7 @@ if (isset($_GET['aksi'])) {
           }
         } else {
           echo  "<script>
-                	alert('Maksimal Upload Foto 2 MB');
+                    window.location='?page=slide';
                 </script>";
         }
       }
@@ -69,6 +69,7 @@ if (isset($_GET['aksi'])) {
                       <input type="hidden" name="foto_lama1" value="<?= $r['gambar_slider'] ?>">
                       <img src="../img/slide/<?= $r['gambar_slider'] ?>" style="width: 100%; height: 200px;"><br><br>
                       <input type="file" name="gambar_slider">
+                      <font color="red">**<span>Ukuran foto sebaiknya 1139px * 399px</span></font>
                     </div>
                   </div>
                   <div class="form-group">

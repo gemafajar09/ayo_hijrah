@@ -75,6 +75,16 @@ if (isset($_GET['aksi'])) {
                             window.location='?page=produk';
                           </script>";
                   exit;
+                }
+              }
+              foreach ($nama_foto1 as $i => $a) {
+                if (!in_array($type[$i], $allowed1)) {
+                  // var_dump($type[$i]);
+                  echo "<script>
+                            window.alert('Gambar Tidak Valid');
+                            window.location='?page=produk';
+                          </script>";
+                  exit;
                 } else {
                   if (empty($nama_foto1[$i])) {
                     $date1 = "";
@@ -225,6 +235,7 @@ if (isset($_GET['aksi'])) {
                       <label for="brt" class="col-sm-2 control-label">Berat</label>
                       <div class="col-sm-4">
                         <input type="number" name="berat" id="brt" class="form-control" placeholder="Berat">
+                        <span>*Dalam satuan gram</span>
                       </div>
                     </div>
 
@@ -269,16 +280,18 @@ if (isset($_GET['aksi'])) {
                     <div class="form-group">
                       <label for="hrg" class="col-sm-2 control-label">Foto</label>
                       <div class="col-sm-4">
-                        <input type="file" name="foto" id="hrg" class="form-control">
-                        <font color="red">*</font> <span></span>Ukuran Foto Maximal 1 MB</span>
+                        <input type="file" name="foto" id="hrg" class="form-control" required>
+                        <font color="red">*<span>Ukuran Foto Maximal 1 MB dan Format JPG/JPEG</span></font>
+                        <font color="red">**<span>Ukuran foto sebaiknya 700px * 700px</span></font>
                       </div>
                     </div>
 
                     <div class="form-group">
                       <label for="hrg" class="col-sm-2 control-label">Foto Lainnya</label>
                       <div class="col-sm-4">
-                        <input type="file" name="foto1[]" id="hrg" class="form-control" multiple>
-                        <font color="red">*</font> <span></span>Ukuran Foto Maximal 1 MB</span>
+                        <input type="file" name="foto1[]" id="hrg" class="form-control" multiple required>
+                        <font color="red">*<span>Ukuran Foto Maximal 1 MB dan Format JPG/JPEG</span></font>
+                        <font color="red">**<span>Ukuran foto sebaiknya 700px * 700px</span></font>
                       </div>
                     </div>
 
@@ -290,7 +303,8 @@ if (isset($_GET['aksi'])) {
                   </div>
               </form><br>
               <div class="text-right">
-                <font color="red">**</font> <span></span>Ukuran Foto di Atas 2MB tidak tersimpan ke tempat penyimpanan</span>
+              <!-- <font color="red">*<span>Ukuran Foto Maximal 1 MB dan Format JPG/JPEG</span></font>
+              <font color="red">**<span>Ukuran foto sebaiknya 700px * 700px</span></font> -->
               </div>
             </div>
           </div>
@@ -316,7 +330,6 @@ if (isset($_GET['aksi'])) {
         }
         $judulseo = seo_title($_POST['judul']);
 
-
         $allowed1 = array("image/jpg", "image/jpeg");
         $nama_foto1    = $_FILES['foto1']['name'];
         $type    = $_FILES['foto1']['type'];
@@ -326,28 +339,47 @@ if (isset($_GET['aksi'])) {
         $nama_file1 = end($file_name1);
         $file_ext1 = strtolower($nama_file1);
         $nama_file_foto1 = str_replace(" ", "-", $file_name1[0]) . "-" . substr(uniqid('', true), -5) . "." . $file_ext1;
-
-        foreach ($nama_foto1 as $i => $a) {
-          if (!in_array($type[$i], $allowed1)) {
-            echo "<script>
-                            window.alert('Gambar Tidak Valid');
-                            window.location='?page=produk';
-                          </script>";
-            exit;
-          } else {
-            if (empty($nama_foto1[$i])) {
-              $date1 = "";
+        
+        foreach($nama_foto1 as $no => $cari)
+        {
+          if($nama_foto1[$no] != ""){
+            foreach ($nama_foto1 as $i => $a) {
+              if (!in_array($type[$i], $allowed1)) 
+              {
+                echo "<script>
+                        window.alert('Gambar Tidak Valid');
+                        window.location='?page=produk';
+                      </script>";
+                exit;
+              }
+            }
+            foreach ($nama_foto1 as $i => $a) {
+              if (!in_array($type[$i], $allowed1)) 
+              {
+              echo "<script>
+                      window.alert('Gambar Tidak Valid');
+                      window.location='?page=produk';
+                    </script>";
+              exit;
             } else {
-              $date1 = date("YmdHis");
+              if (empty($nama_foto1[$i])) {
+                $date1 = "";
+              } else {
+                $date1 = date("YmdHis");
+              }
+              $nmfoto1 = $date1 . $nama_foto1[$i];
+              if (!empty($lokasi_foto1[$i])) {
+                move_uploaded_file($lokasi_foto1[$i], "../img/produk_detail/$nmfoto1");
+              }
+              $kd_produk1 = $data['kd_produk'];
+              mysqli_query($con, "INSERT INTO tb_gambar(gambar_produk, kd_produk) VALUES ('$nmfoto1', '$kd_produk1')");
+              }
             }
-            $nmfoto1 = $date1 . $nama_foto1[$i];
-            if (!empty($lokasi_foto1[$i])) {
-              move_uploaded_file($lokasi_foto1[$i], "../img/produk_detail/$nmfoto1");
-            }
-            $kd_produk1 = $data['kd_produk'];
-            mysqli_query($con, "INSERT INTO tb_gambar(gambar_produk, kd_produk) VALUES ('$nmfoto1', '$kd_produk1')");
           }
         }
+
+          
+        
 
         $allowed = array('jpg', 'jpeg', 'JPG', 'JPEG');
         $nama_foto    = $_FILES['foto']['name'];
@@ -357,23 +389,28 @@ if (isset($_GET['aksi'])) {
         $nama_file = end($file_name);
         $file_ext = strtolower($nama_file);
         $nama_file_foto = str_replace(" ", "-", $file_name[0]) . "-" . substr(uniqid('', true), -5) . "." . $file_ext;
-        if ($ukuran_foto < 1048576) {
-          if (!in_array($file_ext, $allowed)) {
-            echo "<script>
-                      window.alert('Gambar Produk Thumbnail Tidak Valid');
-                      window.location='?page=produk';
-                    </script>";
-            exit;
-          } else {
-            if (!empty($lokasi_foto)) {
-              unlink("../img/produk/" . $data['foto']);
-              move_uploaded_file($lokasi_foto, "../img/produk/$nama_file_foto");
+        
+        if($ukuran_foto > 0){
+          if ($ukuran_foto < 1048576) {
+            if (!in_array($file_ext, $allowed)) {
+              echo "<script>
+                        window.alert('Gambar Produk Thumbnail Tidak Valid');
+                        window.location='?page=produk';
+                      </script>";
+              exit;
             } else {
-              $nama_file_foto = $_POST["fotolama"];
+              if (!empty($lokasi_foto)) {
+                unlink("../img/produk/" . $data['foto']);
+                move_uploaded_file($lokasi_foto, "../img/produk/$nama_file_foto");
+              } else {
+                $nama_file_foto = $data['foto'];
+              }
+              // edit produk
+              $save = mysqli_query($con, "UPDATE tb_produk set judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]', harga_grosir='$_POST[harga_grosir]',harga_eceran='$_POST[harga_eceran]', foto='$nama_file_foto', judul_seo='$judulseo', status='$status' where id_produk='$_GET[id_produk]'");
             }
-            // edit produk
-            $save = mysqli_query($con, "UPDATE tb_produk set judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]', harga_grosir='$_POST[harga_grosir]',harga_eceran='$_POST[harga_eceran]', foto='$nama_file_foto', judul_seo='$judulseo', status='$status' where id_produk='$_GET[id_produk]'");
           }
+        }else{
+          $save = mysqli_query($con, "UPDATE tb_produk set judul='$_POST[judul]', berat='$_POST[berat]',deskripsi='$_POST[deskripsi]', harga_grosir='$_POST[harga_grosir]',harga_eceran='$_POST[harga_eceran]', judul_seo='$judulseo', status='$status' where id_produk='$_GET[id_produk]'");
         }
 
 
@@ -504,7 +541,8 @@ if (isset($_GET['aksi'])) {
                     <div class="form-group">
                       <label for="brt" class="col-sm-2 control-label">Berat</label>
                       <div class="col-sm-4">
-                        <input type="text" name="berat" id="brt" class="form-control" value="<?= $data['berat']; ?>">
+                        <input type="number" name="berat" id="brt" class="form-control" value="<?= $data['berat']; ?>">
+                        <span>*Dalam satuan gram</span>
                       </div>
                     </div>
 
@@ -542,7 +580,8 @@ if (isset($_GET['aksi'])) {
                       <div class="col-sm-4">
                         <input type="file" name="foto" id="foto" class="form-control">
                         <input type="hidden" name="fotolama" id="foto" class="form-control" value="<?= $data["foto"]; ?>">
-                        <font color="red">*</font> <span>Ukuran Foto Maximal 1 MB</span>
+                        <font color="red">*<span>Ukuran Foto Maximal 1 MB dan Format JPG/JPEG</span></font>
+                        <font color="red">**<span>Ukuran foto sebaiknya 700px * 700px</span></font>
                       </div>
                     </div>
 
@@ -556,8 +595,9 @@ if (isset($_GET['aksi'])) {
                     <div class="form-group">
                       <label for="foto" class="col-sm-2 control-label">Tambahkan Foto Lainnya</label>
                       <div class="col-sm-4">
-                        <input type="file" name="foto1[]" id="foto" class="form-control" multiple>
-                        <font color="red">*</font> <span>Ukuran Foto Maximal 1 MB</span>
+                        <input type="file" name="foto1[]" id="foto" value="" class="form-control" multiple>
+                        <font color="red">*<span>Ukuran Foto Maximal 1 MB dan Format JPG/JPEG</span></font>
+                        <font color="red">**<span>Ukuran foto sebaiknya 700px * 700px</span></font>
                       </div>
                     </div>
 
@@ -585,7 +625,8 @@ if (isset($_GET['aksi'])) {
                     <div class="col-sm-4">
                       <input type="file" name="fotoupdate1" id="foto" class="form-control">
                       <input type="hidden" name="fotolama1" id="foto" class="form-control" value="<?= $data["gambar_produk"]; ?>">
-                      <font color="red">*</font> <span>Ukuran Foto Maximal 1 MB</span>
+                      <font color="red">*<span>Ukuran Foto Maximal 1 MB dan Format JPG/JPEG</span></font>
+                      <font color="red">**<span>Ukuran foto sebaiknya 700px * 700px</span></font>
                     </div>
                   </div>
                   <div class="form-group">
