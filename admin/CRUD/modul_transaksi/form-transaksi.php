@@ -434,6 +434,7 @@ span.pilihan{display:block;cursor:pointer;}
 			dataType: 'JSON',
 			success: function(data)
 			{
+				window.open('CRUD/modul_transaksi/nota.php?nota='+ faktur, '_blank');
 				console.log(data)
 				location.reload()
 			}
