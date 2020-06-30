@@ -422,6 +422,7 @@ span.pilihan{display:block;cursor:pointer;}
 		var tanggal = $('#tanggal').val()
 		var pelanggan = $('#pelanggan').val()
 		var total_belanja = $('#total_belanja').val()
+		var bayar = $('#total_bayar').val()
 		$.ajax({
 			url: 'simpanTransaksi.php',
 			type: 'POST',
@@ -434,7 +435,7 @@ span.pilihan{display:block;cursor:pointer;}
 			dataType: 'JSON',
 			success: function(data)
 			{
-				window.open('CRUD/modul_transaksi/nota.php?nota='+ faktur, '_blank');
+				window.open('CRUD/modul_transaksi/nota.php?nota='+ faktur +'&a='+bayar, '_blank');
 				console.log(data)
 				location.reload()
 			}

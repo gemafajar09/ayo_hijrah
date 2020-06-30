@@ -38,8 +38,8 @@ $data = mysqli_fetch_assoc(mysqli_query($con,"SELECT nama_pelanggan, tanggal_bel
             </div>
             <div class="card-body">
                 <table class="table">
-                    <tr>
-                        <th style="width:18px">No</th>
+                    <tr style="background-color:grey">
+                        <th style="width:18px; ">No</th>
                         <th>Kode Produk</th>
                         <th>Nama Produk</th>
                         <th>Ukuran</th>
@@ -48,20 +48,37 @@ $data = mysqli_fetch_assoc(mysqli_query($con,"SELECT nama_pelanggan, tanggal_bel
                     </tr>
                     <?php
                     $ambil = mysqli_query($con,"SELECT * FROM tb_transoff_detail a LEFT JOIN tb_produk b ON a.kd_produk=b.kd_produk WHERE nota='$nota'");
+                    $jumlah = 0;
                     foreach($ambil as $i => $a){
+                    $jumlah += $a['total'];
                     ?>
                     <tr>
-                        <td><?= $i+1 ?></td>
-                        <td><?= $a['kd_produk'] ?></td>
-                        <td><?= $a['judul'] ?></td>
-                        <td><?= $a['size'] ?></td>
-                        <td><?= $a['jumlah'] ?></td>
-                        <td>Rp.<?= number_format($a['total']) ?></td>
+                        <td style="border: 1px solid black;"><?= $i+1 ?></td>
+                        <td style="border: 1px solid black;"><?= $a['kd_produk'] ?></td>
+                        <td style="border: 1px solid black;"><?= $a['judul'] ?></td>
+                        <td style="border: 1px solid black;"><?= $a['size'] ?></td>
+                        <td style="border: 1px solid black;"><?= $a['jumlah'] ?></td>
+                        <td style="border: 1px solid black;">Rp.<?= number_format($a['total']) ?></td>
                     </tr>
                     <?php } ?>
+                    <tr>
+                        <td colspan="5" class="text-right"><b>Total Bayar</b></td>
+                        <td>Rp.<?= number_format($jumlah) ?></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="text-right"><b>Di Bayar</b></td>
+                        <td>Rp.<?= number_format($_GET['a']) ?></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="text-right"><b>Kembalian</b></td>
+                        <td>Rp.<?= number_format($_GET['a']- $jumlah) ?></td>
+                    </tr>
                 </table>
             </div>
         </div>
     </div>
+    <script>
+        window.print()
+    </script>
 </body>
 </html>

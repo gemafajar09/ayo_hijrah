@@ -48,7 +48,7 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
   <link rel="apple-touch-icon" sizes="152x152" href="rafika.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="rafika.ico">
   <link rel="apple-touch-icon" sizes="167x167" href="rafika.ico">
-  <!-- Vendor Styles including: Bootstrap, Font Icons, Plugins, etc.-->
+  Vendor Styles including: Bootstrap, Font Icons, Plugins, etc.-->
   <link rel="stylesheet" media="screen" href="css/vendor.min.css">
   <!-- Main Template Styles-->
   <link id="mainStyles" rel="stylesheet" media="screen" href="css/styles.min.css">
@@ -56,6 +56,7 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
   <!-- Customizer Styles-->
   <link rel="stylesheet" media="screen" href="customizer/customizer.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <style>
     .pagination {
       display: inline-block;
@@ -233,8 +234,9 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
 <!-- Body-->
 
 <body>
-
+    
   <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <!-- Google Tag Manager (noscript)-->
   <noscript>
     <iframe src="http://www.googletagmanager.com/ns.html?id=GTM-T4DJFPZ" height="0" width="0" style="display: none; visibility: hidden;"></iframe>
@@ -383,11 +385,13 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
   <!-- Backdrop-->
   <div class="site-backdrop"></div>
   <!-- JavaScript (jQuery) libraries, plugins and custom scripts-->
+
   <script src="js/vendor.min.js"></script>
   <script src="js/scripts.min.js"></script>
   <!-- Customizer scripts-->
   <script src="customizer/customizer.min.js"></script>
   <!-- WhatsHelp.io widget -->
+  
   <script type="text/javascript">
     (function() {
       var options = {
