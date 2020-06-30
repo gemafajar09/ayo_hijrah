@@ -3,22 +3,42 @@
 include "config/koneksi.php";
 
 ?>
-<section class="hero-slider" style="background-image: url(img/hero-slider/main-bg.jpg);height: auto;">
-  <div align="center" class="owl-carousel large-controls dots-inside" data-owl-carousel="{ &quot;nav&quot;: true, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 7000 }">
-    <?php
-    $sql = mysqli_query($con, "SELECT * FROM tb_slider");
-    foreach ($sql as $r) { ?>
+<section class="hero-slider">
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <?php
+      $sqls = mysqli_query($con, "SELECT * FROM tb_slider");
+      foreach ($sqls as $i => $r) { ?>
+      <li data-target="#myCarousel" data-slide-to="<?= $i+1 ?>"></li>
+      <?php } ?>
+    </ol>
 
-      <div class="item">
-        <div class="">
-          <div class="row justify-content-center align-items-center">
-            <div class="col-md-12">
-              <img class="img-fluid" alt="Responsive image" style="width: 100%; height: 650px;" src="img/slide/<?php echo $r['gambar_slider'] ?>" alt="Puma Backpack">
-            </div>
-          </div>
-        </div>
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+      <?php $sqli = mysqli_fetch_assoc(mysqli_query($con, "SELECT * FROM tb_slider ORDER BY id_slider DESC LIMIT 1")); ?>
+      <div class="item active">
+        <img width="100%" src="img/slide/<?php echo $sqli['gambar_slider'] ?>">
       </div>
-    <?php } ?>
+      <?php
+      $sql = mysqli_query($con, "SELECT * FROM tb_slider");
+      foreach ($sql as $r) { ?>
+        <div class="item">
+          <img width="100%" src="img/slide/<?php echo $r['gambar_slider'] ?>">
+        </div>
+      <?php } ?>
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right"></span>
+      <span class="sr-only">Next</span>
+    </a>
   </div>
 </section>
 <!-- Top Categories-->
@@ -37,66 +57,15 @@ include "config/koneksi.php";
     <div class="row">
       <!-- Left col -->
       <div class="img-fluid">
-        <!-- <div class="card" style="background-color: transparent;">
-          <div class="card-body">
-            <div id="wrapper">
-              <div class="container mb-end">
-                <center>
-                  <h3>KATEGORI</h3>
-                </center>
-                <div class="owl-carousel-2 owl-carousel dots-inside owl-loaded owl-drag" data-owl-carousel="{ &quot;loop&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 2000, &quot;items&quot;: 4, &quot;nav&quot;: true }">
-                  <?php
-                  $ambil = mysqli_query($con, "SELECT * FROM `tb_kategori`");
-
-                  while ($pecah = $ambil->fetch_object()) {
-                  ?>
-                    <div class="">
-                      <center>
-                        <table border="0">
-                          <tr height="200px" align="center">
-                            <td><a href="view-kategori-<?= $pecah->id_kategori ?>"><img src="<?= $base_url; ?>img/kategori/<?php echo $pecah->gambar_kategori ?>" style="width: 150px; height: 180px;"></a></td>
-                          </tr>
-                          <tr height="" align="center">
-                            <td>
-                              <hr>
-                              <b><a href='view-kategori-<?= $pecah->id_kategori ?>'><?php echo $pecah->nama_kategori; ?></a></b>
-                            </td>
-                          </tr>
-                        </table>
-                      </center>
-                    </div>
-                  <?php
-                  }
-                  ?>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
         <center>
           <h3 class="padding-bottom-1x" style="font-family: 'quick';">Kategori</h3>
         </center>
-        <div class="owl-carousel dots-outside owl-loaded owl-drag owl-theme" data-owl-carousel="{ &quot;loop&quot;: true,&quot;center&quot;: true,&quot;margin&quot;:10, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 2000, &quot;items&quot;: 4, &quot;nav&quot;: true }">
+        <div class="owl-carousel dots-outside owl-loaded owl-drag owl-theme" data-owl-carousel="{&quot;loop&quot;:true,&quot;margin&quot;:5,&quot;responsiveClass&quot;:true,&quot;responsive&quot;:{&quot;0&quot;:{&quot;items&quot;:2,&quot;nav&quot;:true,&quot;loop&quot;:true},&quot;600&quot;:{&quot;items&quot;:4,&quot;nav&quot;:true,&quot;loop&quot;:true},&quot;1000&quot;:{&quot;items&quot;:7,&quot;nav&quot;:true,&quot;loop&quot;:true}}}">
           <?php
           $ambil = mysqli_query($con, "SELECT * FROM `tb_kategori`");
 
           while ($pecah = $ambil->fetch_object()) {
           ?>
-            <!-- <div class="">
-                      <center>
-                        <table border="0">
-                          <tr height="200px" align="center">
-                            <td><a href="view-kategori-<?= $pecah->id_kategori ?>"><img src="<?= $base_url; ?>img/kategori/<?php echo $pecah->gambar_kategori ?>" style="width: 150px; height: 180px;"></a></td>
-                          </tr>
-                          <tr height="" align="center">
-                            <td>
-                              
-                              <h4><a href='view-kategori-<?= $pecah->id_kategori ?>'><?php echo $pecah->nama_kategori; ?></a></h4>
-                            </td>
-                          </tr>
-                        </table>
-                      </center>
-                    </div> -->
             <div class="img-thumbnail">
               <span style="padding: 0px; margin: 0px; color:white; background: white; border-radius: 5px;">
                 <a href="view-kategori-<?= $pecah->id_kategori ?>">
