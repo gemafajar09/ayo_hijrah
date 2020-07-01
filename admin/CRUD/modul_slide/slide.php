@@ -29,9 +29,9 @@ if (isset($_GET['aksi'])) {
                     window.location='?page=slide';
                   </script>";
           } else {
-            unlink('../img/slide/' . $r['gambar_slider']);
+            unlink('../img/slider/' . $r['gambar_slider']);
 
-            move_uploaded_file($lokasi_foto, "../img/slide/" . $nama_file_foto);
+            move_uploaded_file($lokasi_foto, "../img/slider/" . $nama_file_foto);
             $save = mysqli_query($con, "UPDATE tb_slider SET 
             gambar_slider='$nama_file_foto' WHERE id_slider='$_GET[id]'");
 
@@ -67,7 +67,7 @@ if (isset($_GET['aksi'])) {
                     <label class="col-sm-2 control-label">Gambar Slider</label>
                     <div class="col-sm-4">
                       <input type="hidden" name="foto_lama1" value="<?= $r['gambar_slider'] ?>">
-                      <img src="../img/slide/<?= $r['gambar_slider'] ?>" style="width: 100%; height: 200px;"><br><br>
+                      <img src="../img/slider/<?= $r['gambar_slider'] ?>" style="width: 100%; height: 200px;"><br><br>
                       <input type="file" name="gambar_slider">
                       <font color="red">**<span>Ukuran foto sebaiknya 1139px * 399px</span></font>
                     </div>
@@ -128,7 +128,7 @@ if (isset($_GET['aksi'])) {
 
                   <tr>
                     <td><?php echo $no + 1 ?></td>
-                    <td><img src="../img/slide/<?= $r['gambar_slider'] ?>" style="width: 100px; height: 70px;"></td>
+                    <td><img src="../img/slider/<?= $r['gambar_slider'] ?>" style="width: 100px; height: 70px;"></td>
                     <td><a class='btn btn-success btn-xs' title='Edit Data' href='?page=slide&aksi=editslide&id=<?php echo $r['id_slider']; ?>'><span class='glyphicon glyphicon-edit'></span></a></td>
                   </tr>
                 <?php

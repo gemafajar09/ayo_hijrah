@@ -3,9 +3,23 @@
 include "config/koneksi.php";
 
 ?>
-<section class="hero-slider">
+
+<section class="hero-slider" class="col span_3_of_3" style="position: relative;">
+    <ul class="rslides">
+      <?php
+      $sql = mysqli_query($con, "SELECT * FROM tb_slider");
+      foreach ($sql as $r) { ?>
+        <li><img width="100%" src="img/slider/<?php echo $r['gambar_slider'] ?>"></li>
+        <?php } ?>
+      </ul>
+      <a href="#" class="rslides_nav rslides1_nav prev">Previous</a><a href="#" class="rslides_nav rslides1_nav next">Next</a>
+</section>
+
+
+
+
+<!-- <section class="hero-slider">
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <!-- Indicators -->
     <ol class="carousel-indicators">
       <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
       <?php
@@ -15,22 +29,20 @@ include "config/koneksi.php";
       <?php } ?>
     </ol>
 
-    <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <?php $sqli = mysqli_fetch_assoc(mysqli_query($con, "SELECT * FROM tb_slider ORDER BY id_slider DESC LIMIT 1")); ?>
       <div class="item active">
-        <img width="100%" src="img/slide/<?php echo $sqli['gambar_slider'] ?>">
+        <img width="100%" src="img/slider/<?php echo $sqli['gambar_slider'] ?>">
       </div>
       <?php
       $sql = mysqli_query($con, "SELECT * FROM tb_slider");
       foreach ($sql as $r) { ?>
         <div class="item">
-          <img width="100%" src="img/slide/<?php echo $r['gambar_slider'] ?>">
+          <img width="100%" src="img/slider/<?php echo $r['gambar_slider'] ?>">
         </div>
       <?php } ?>
     </div>
 
-    <!-- Left and right controls -->
     <a class="left carousel-control" href="#myCarousel" data-slide="prev">
       <span class="glyphicon glyphicon-chevron-left"></span>
       <span class="sr-only">Previous</span>
@@ -40,7 +52,7 @@ include "config/koneksi.php";
       <span class="sr-only">Next</span>
     </a>
   </div>
-</section>
+</section> -->
 <!-- Top Categories-->
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -60,7 +72,23 @@ include "config/koneksi.php";
         <center>
           <h3 class="padding-bottom-1x" style="font-family: 'quick';">Kategori</h3>
         </center>
-        <div class="owl-carousel dots-outside owl-loaded owl-drag owl-theme" data-owl-carousel="{&quot;loop&quot;:true,&quot;margin&quot;:5,&quot;responsiveClass&quot;:true,&quot;responsive&quot;:{&quot;0&quot;:{&quot;items&quot;:2,&quot;nav&quot;:true,&quot;loop&quot;:true},&quot;600&quot;:{&quot;items&quot;:4,&quot;nav&quot;:true,&quot;loop&quot;:true},&quot;1000&quot;:{&quot;items&quot;:7,&quot;nav&quot;:true,&quot;loop&quot;:true}}}">
+        <div class="owl-carousel dots-outside owl-loaded owl-drag owl-theme" 
+        data-owl-carousel="{&quot;loop&quot;:true,&quot;margin&quot;:5,&quot;responsiveClass&quot;:true,&quot;responsive&quot;:
+          {
+          &quot;0&quot;:
+          {
+            &quot;items&quot;:2,&quot;nav&quot;:true,&quot;loop&quot;:true
+          },
+          &quot;600&quot;:
+          {
+            &quot;items&quot;:4,&quot;nav&quot;:true,&quot;loop&quot;:true
+          },
+          &quot;1000&quot;:
+          {
+            &quot;items&quot;:5,&quot;nav&quot;:true,&quot;loop&quot;:true
+          }
+        }
+      }">
           <?php
           $ambil = mysqli_query($con, "SELECT * FROM `tb_kategori`");
 
