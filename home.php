@@ -183,7 +183,7 @@ include "config/koneksi.php";
         $harga_eceran = "Rp. " . number_format($r['harga_eceran'], 0, ',', '.');
         $judul = substr($r['judul'], 0, 23) . "";
       ?>
-        <div class="col-sm-3">
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3">
           <div class="card mb-30"><a class="card-img-tiles" href="view-produk-<?= $r['id_produk']; ?>">
               <div class="inner">
                 <div class="text-center" style="padding:10px">

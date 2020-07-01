@@ -246,8 +246,8 @@ if ($_SESSION['pengaturan']['mode_maintenance'] == "1") {
   text-indent: -9999px;
   overflow: hidden;
   text-decoration: none;
-  height: 61px;
-  width: 38px;
+  height: 4em;
+  width: 2em;
   background: transparent url("http://responsiveslides.com/with-captions/themes.gif") no-repeat left top;
   margin-top: -45px;
   }
