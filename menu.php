@@ -48,7 +48,8 @@ $r = mysqli_fetch_assoc($sql);
   </nav>
 </div>
 <!-- Off-Canvas Mobile Menu-->
-<div class="offcanvas-container" id="mobile-menu"><a class="account-link" href="./">
+<div class="offcanvas-container" id="mobile-menu">
+  <a class="account-link" href="./">
     <?php if (!empty($_SESSION["email"])) { ?>
       <div class="user-ava">
         <img src="foto/customer/<?= $r["fotoregis"]; ?>">
@@ -59,9 +60,7 @@ $r = mysqli_fetch_assoc($sql);
         <img src="img/user-default.png" alt="Ayo Hijrah">
       </div>
     <?php } ?>
-    <div class="user-info">
-
-    </div>
+    </a>
     <nav class="offcanvas-menu">
       <ul class="menu">
         <li class="has-children active"><span><a href="./"><span>Home</span></a></span>

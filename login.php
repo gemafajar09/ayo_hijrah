@@ -42,7 +42,7 @@ include "config/koneksi.php";
     <div class="row">
       <!-- Logo -->
       <div class="col-lg-4 col-sm-12 col-md-offset-4 text-center">
-        <h2><a href="#">Ayo Hijrah</a></h2>
+        <h2><img src="img/logoayohijarh-1.png" alt=""></h2>
         <b>
           <h3 style="color: #3c3835;">Masuk Ayo Hijrah</h3>
         </b>
