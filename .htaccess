@@ -20,17 +20,17 @@ RewriteRule ^pembayaran$ index.php?module=pembayaran [L]
 RewriteRule ^pembayaran3$ index.php?module=pembayaran3 [L]
 RewriteRule ^simpantrans$ index.php?module=simpantrans [L]
 RewriteRule ^histori-pesanan$ index.php?module=histori_pesanan [L]
-RewriteRule ^histori-pesanan-detail-(.*)$ index.php?module=histori_pesanan_detail&id_transaksi=$1 [L]
+RewriteRule ^histori-pesanan-detail-([0-9]+)$ index.php?module=histori_pesanan_detail&id_transaksi=$1 [L]
 
-RewriteRule ^view-produk-(.*)$ index.php?module=view_produk&id_produk=$1 [L]
-RewriteRule ^view-kategori-(.*)$ index.php?module=view_kategori&id_kategori=$1 [L]
+RewriteRule ^view-produk-([0-9]+)$ index.php?module=view_produk&id_produk=$1 [L]
+RewriteRule ^view-kategori-([0-9]+)$ index.php?module=view_kategori&id_kategori=$1 [L]
 
-RewriteRule ^del-keranjang-(.*)$ index.php?module=del_keranjang&id_keranjang=$1 [L]
-RewriteRule ^transaksi-(.*)$ index.php?module=transaksi&id=$1 [L]
-RewriteRule ^konfirmasi-(.*)$ index.php?module=konfirmasi_pembayaran&id_transaksi=$1 [L]
-RewriteRule ^update-keranjang-(.*)$ index.php?module=update_keranjang&id_keranjang=$1 [L]
+RewriteRule ^del-keranjang-([0-9]+)$ index.php?module=del_keranjang&id_keranjang=$1 [L]
+RewriteRule ^transaksi-([0-9]+)$ index.php?module=transaksi&id=$1 [L]
+RewriteRule ^konfirmasi-([0-9]+)$ index.php?module=konfirmasi_pembayaran&id_transaksi=$1 [L]
+RewriteRule ^update-keranjang-([0-9]+)$ index.php?module=update_keranjang&id_keranjang=$1 [L]
 
-RewriteRule ^shop-(.*)$ index.php?module=shop&pg=$1 [L]
-RewriteRule ^kategori-(.*)-page-(.*)$ index.php?module=view_kategori&id_kategori=$1&pg=$2 [L]
+RewriteRule ^shop-([0-9]+)$ index.php?module=shop&pg=$1 [L]
+RewriteRule ^kategori-([0-9]+)-page-([0-9]+)$ index.php?module=view_kategori&id_kategori=$1&pg=$2 [L]
 
 Options All -Indexes
